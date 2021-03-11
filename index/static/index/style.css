@@ -1,0 +1,10 @@
+#nav-right-search{
+  position:absolute;
+  right:150px;
+  bottom:-7px
+}
+#search-button{
+  position:relative;
+  right:5px;
+  top:0px
+}
