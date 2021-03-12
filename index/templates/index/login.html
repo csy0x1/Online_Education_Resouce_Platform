@@ -1,3 +1,6 @@
+<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,17 +9,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>登录 iMooc 在线教育资源平台</title>
 </head>
+
 <body>
-    <h1>登录</h1>
-    <form>
-        <fieldset>
-            <legend>登录</legend>
-                用户名: <input type="text" size="30">
-                <br>
-                &nbsp;&nbsp;&nbsp;密码: <input type="password" size="30">
-                <br>
-                <input type="submit" value="提交">
-        </fieldset>
-    </form>
+    <div class="login">
+        <form class="form-horizontal" role="form" action="/login/" method="POST">
+            {% if message %}
+            <div class="alert alert-warning alert-dismissable">{{message}}
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            {% endif %}
+
+            {% csrf_token %}
+
+            <h3 class="text-center">用户登录</h3>
+            <div class="form-group">
+                <label for="name" class="col-lg-1 col-sm-2 control-label">用户名</label>
+                <div class="col-lg-2 col-sm-4">
+                    <input type="text" class="form-control" name="username" id="id_username" placeholder="请输入用户名"
+                        autofocus required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-lg-1 col-sm-2 control-label">密码</label>
+                <div class="col-lg-2 col-sm-4">
+                    <input type="password" class="form-control" name="password" id="id_password" placeholder="请输入密码"
+                        required>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-1 col-sm-offset-2 col-lg-1 col-sm-4">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox">自动登录
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-offset-1 col-sm-offset-2 col-lg-2 col-sm-2">
+                <button type="submit" class="btn btn-primary float-right col-lg-10 col-sm-12">登录</button>
+            </div>
+        </form>
+    </div>
 </body>
+
 </html>

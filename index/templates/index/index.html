@@ -12,44 +12,62 @@
 </head>
 
 <body>
-	<nav class="navbar navbar-default" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">iMooc 在线教育资源平台</a>
-			</div>
-			<div>
-				<ul class="nav navbar-nav">
-					<li><a href="#">测试选项1</a></li>
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							下拉测试项目2
-							<b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<li><a href="#">测试1</a></li>
-						</ul>
-					</li>
-				</ul>
-				<div class="nav-right-part">
-					<div class="nav-right-search navbar-left" id="nav-right-search">
-						<form class="navbar-form" role="search">
-							<div class="form-group">
-								<input type="text" class="form-control" placeholder="搜索课程">
-							</div>
-							<button type="submit" class="btn btn-primary navbar-btn glyphicon glyphicon-search"
-								id="search-button"></button>
-						</form>
-					</div>
-					<div class="nav-right-login navbar-right" id="nav-right-login">
-						<ul class="nav navbar-nav">
-							<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
-							<li><a href="/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
-						</ul>
+	<div class="navbar head">
+		<nav class="navbar navbar-default" role="navigation">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">iMooc 在线教育资源平台</a>
+				</div>
+				<div>
+					<ul class="nav navbar-nav">
+						<li><a href="#">测试选项1</a></li>
+						<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+								下拉测试项目2
+								<b class="caret"></b>
+							</a>
+							<ul class="dropdown-menu">
+								<li><a href="#">测试1</a></li>
+							</ul>
+						</li>
+					</ul>
+					<div class="nav-right-part">
+						<div class="nav-right-search navbar-left" id="nav-right-search">
+							<form class="navbar-form" role="search">
+								<div class="form-group">
+									<input type="text" class="form-control" placeholder="搜索课程">
+								</div>
+								<button type="submit" class="btn btn-primary navbar-btn glyphicon glyphicon-search"
+									id="search-button"></button>
+							</form>
+						</div>
+						<div class="nav-right-login navbar-right" id="nav-right-login">
+							<ul class="nav navbar-nav">
+								<li><a href="/login"><span class="glyphicon glyphicon-log-in"></span> 登录</a></li>
+								<li><a href="/register"><span class="glyphicon glyphicon-user"></span> 注册</a></li>
+							</ul>
+						</div>
 					</div>
 				</div>
 			</div>
+		</nav>
+	</div>
+
+	<div class="container">
+	{% block content %}
+	{% endblock %}
+	</div>
+	<div class="infobar footer" id="footer">
+		<div class="footer-logo">
+			<a class="navbar-brand" href="#">iMooc 在线教育资源平台</a>
 		</div>
-	</nav>
+		<div class="footer-about">
+			<h4>关于我们</h4>
+		</div>
+		<div class="footer-follow">
+			<h4>关注我们</h4>
+		</div>
+	</div>
 </body>
 
 </html>
