@@ -1,6 +1,6 @@
 #nav-right-search{
   position:absolute;
-  right:150px;
+  right:210px;
   bottom:-7px
 }
 #search-button{
@@ -17,4 +17,14 @@
 }
 .footer h4{
   color: #ccc;
+}
+#avatar{
+  position:relative;
+  right:40px;
+  bottom:25px
+}
+#user-info{
+  position:relative;
+  height: 50px;
+  width: 72px;
 }
