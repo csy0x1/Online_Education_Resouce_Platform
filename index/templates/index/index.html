@@ -33,13 +33,17 @@
 					</ul>
 					<div class="nav-right-part">
 						<div class="nav-right-search navbar-left" id="nav-right-search">
-							<form class="navbar-form" role="search">
+							<form class="navbar-form" role="form">
 								<div class="form-group">
-									<input type="text" class="form-control visible-lg-block visible-md-block"
-										placeholder="搜索课程">
+									<div class="input-group">
+										<input type="text" class="form-control visible-lg-block visible-md-block"
+											placeholder="搜索课程">
+										<span class="input-group-btn">
+											<button class="btn btn-primary glyphicon glyphicon-search"
+												type="button" id="search-btn"></button>
+										</span>
+									</div>
 								</div>
-								<button type="submit" class="btn btn-primary navbar-btn glyphicon glyphicon-search"
-									id="search-button"></button>
 							</form>
 						</div>
 						<div class="nav-right-login navbar-right" id="nav-right-login">
@@ -48,8 +52,8 @@
 								<li>
 									<a href="#" id="user-info">
 										{{ request.session.user_name }}
-										<img class="img-circle img-responsive" src="{{ request.session.avatar }}"
-											alt="" width="30" height="30" id="avatar"/>
+										<img class="img-circle img-responsive" src="{{ request.session.avatar }}" alt=""
+											width="35" height="33" id="avatar" />
 									</a>
 								</li>
 								<li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span>登出</a></li>

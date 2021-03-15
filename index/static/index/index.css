@@ -1,12 +1,6 @@
 #nav-right-search{
   position:absolute;
   right:210px;
-  bottom:-7px
-}
-#search-button{
-  position:relative;
-  right:5px;
-  top:0px
 }
 #footer{
   position: relative;
@@ -20,11 +14,15 @@
 }
 #avatar{
   position:relative;
-  right:40px;
-  bottom:25px
+  right:50px;
+  bottom:28px;
 }
 #user-info{
   position:relative;
   height: 50px;
   width: 72px;
+}
+#search-btn{
+  position: relative;
+  top: 0px;
 }
