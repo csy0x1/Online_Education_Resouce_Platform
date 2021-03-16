@@ -1,7 +1,5 @@
+{% extends 'index/base.html' %}
 {% load static %}
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -9,71 +7,73 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注册 iMooc 在线教育资源平台</title>
+    {% block extrastatic %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/register.css' %}">
+    <script src="{% static 'index/js/register.js' %}"></script>
+    {% endblock %}
+    <title>{% block title %}注册 iMooc 在线教育资源平台{% endblock %}</title>
 </head>
 
 <body>
-    <div class="register">
-        <form class="form-horizontal" role="form" action="/register/" method="POST">
+    {% block log-reg-div %}
+    <div class="row clearfix" id="reg-div">
+        <div class="col-md-4 column">
+            <div id="form-img">
+                <img src="/media/material/psc.jpg" height="524px" width="450px" />
+            </div>
+        </div>
+        <div class="col-md-4 column">
             {% if message %}
-            <div class="alert alert-warning alert-dismissable">{{message}}
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
-                    ×
-                </button>
+            <div class="alert alert-dismissable alert-warning">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4>
+                    错误!
+                </h4> <strong>{{ message }}</strong>
             </div>
             {% endif %}
-            {% csrf_token %}
-
-            <h3 class="text-center">用户注册</h3>
-            <div class="form-group">
-                <label for="name" class="col-lg-1 control-label">用户名</label>
-                <div class="col-lg-2">
-                    <input type="text" class="form-control" name="username" id="id_username" placeholder="请输入用户名">
+    
+            <form role="form" action="/register/" method="POST" id="reg-form">
+                {% csrf_token %}
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" name="username" id="id_username">
+                    <label for="name" id="lab_name">用户名</label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="password" class="col-lg-1 control-label">密码</label>
-                <div class="col-lg-2">
-                    <input type="password" class="form-control" name="password" id="id_password" placeholder="请输入密码">
+    
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="password" name="password" id="id_password">
+                    <label for="password">密码</label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="re_password" class="col-lg-1 control-label">重复密码</label>
-                <div class="col-lg-2">
-                    <input type="password" class="form-control" name="re_password" id="id_re_password"
-                        placeholder="请再次输入密码">
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="password" name="re_password" id="id_re_password">
+                    <label for="password">再次输入密码</label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="email" class="col-lg-1 control-label">电子邮箱</label>
-                <div class="col-lg-2">
-                    <input type="email" class="form-control" name="email" id="id_email" placeholder="请输入邮箱">
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="email" name="email" id="id_email">
+                    <label for="email">电子邮箱</label>
                 </div>
-            </div>
-            <div class="form-group">
-                <label for="gender" class="col-lg-1 control-label">性别</label>
-                <div class="col-lg-2">
-                    <select class="form-control" name="gender">
+                <div class="mui-select">
+                    <select name="gender" id="id_gender">
                         <option value="male">男</option>
                         <option value="female">女</option>
                     </select>
+                    <label for="gender">性别</label>
                 </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-offset-1 col-sm-offset-2 col-lg-2 col-sm-4">
-                    <div class="checkbox">
-                            <label>
-                                <input type="checkbox" checked>同意
-                                <a href="http://www.baidu.com">《网站服务条款》</a>
-                            </label>
-                        </div>
-                    </div>
+                <div class="mui-checkbox form-group">
+                    <label>
+                        <input type="checkbox" checked id="id_agreed">同意
+                        <a href="http://www.baidu.com">《网站服务条款》</a>
+                    </label>
+                    <a href="/login/" id="id_login">已有账号？登录</a>
                 </div>
-            <div class="col-lg-offset-1 col-sm-offset-2 col-lg-2 col-sm-2">
-                <button type="submit" class="btn btn-primary float-right col-lg-10 col-sm-12">注册</button>
-            </div>
-        </form>
+                <div class="form-group">
+                    <button type="button" class="mui-btn mui-btn--primary col-lg-12" id="sub-btn">注册</button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4 column">
+        </div>
     </div>
+    {% endblock %}
 </body>
 
 </html>

@@ -5,8 +5,8 @@ body{
     background-color: white;
     position:relative;
     height: auto;
-    margin: 270px auto 65px;
-    min-height: 300px;
+    margin: 200px auto 65px;
+    min-height: 525px;
     border-radius: 4px;
     box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
 }
@@ -21,9 +21,9 @@ body{
     position:relative;
     height: auto;
     min-height: 200px;
-    margin: 70px auto 100px;
-    left:170px;
-    top:30px
+    margin: 120px auto 100px;
+    left:220px;
+    top:25px;
 }
 /*
 #test > input{

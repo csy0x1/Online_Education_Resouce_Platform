@@ -1,13 +1,5 @@
+{% extends 'index/base.html' %}
 {% load static %}
-<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-<script src="https://cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-<!--以上为Bootstrap3.3.7 以下为MUI material design-->
-<link href="//cdn.muicss.com/mui-0.10.3/extra/mui-noglobals.css" rel="stylesheet" type="text/css" />
-<script src="//cdn.muicss.com/mui-0.10.3/extra/mui-combined.js"></script>
-<link href="//cdn.muicss.com/mui-0.10.3/extra/mui-colors.css" rel="stylesheet" type="text/css" />
-
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -15,65 +7,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'index/login.css' %}">
-    <title>登录 iMooc 在线教育资源平台</title>
+    {% block extrastatic %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/login.css' %}">
+    {% endblock %}
+    <title>{% block title %}登录 iMooc 在线教育资源平台{% endblock %}</title>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-12 column">
-                <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="nav-bar">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="/index/">iMooc 在线教育资源平台</a>
-                    </div>
-                </nav>
+    {% block log-reg-div %}
+    <div class="row clearfix" id="login-div">
+        <div class="col-md-4 column">
+            <div id="form-img">
+                <img src="/media/material/test.png" height="524px" width="450px" />
             </div>
         </div>
+        <div class="col-md-4 column">
+            {% if message %}
+            <div class="alert alert-dismissable alert-warning">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4>
+                    错误!
+                </h4> <strong>{{ message }}</strong>
+            </div>
+            {% endif %}
 
-        <div class="row clearfix" id="login-div">
-            <div class="col-md-4 column">
-                <div id="form-img">
-                    <img class="img-responsive" src="/media/material/test.png" height="360px" width="360px"/>
+            <form role="form" action="/login/" method="POST" id="login-form">
+                {% csrf_token %}
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="text" id="id-username" name="username" />
+                    <label for="username">用户名</label>
                 </div>
-            </div>
-            <div class="col-md-4 column">
-                {% if message %}
-                <div class="alert alert-dismissable alert-warning">
-                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                    <h4>
-                        错误!
-                    </h4> <strong>{{ message }}</strong>
+
+                <div class="mui-textfield mui-textfield--float-label">
+                    <input type="password" id="id-password" name="password" />
+                    <label for="password">密码</label>
                 </div>
-                {% endif %}
-
-                <form role="form" action="/login/" method="POST" id="login-form">
-                    {% csrf_token %}
-                    <div class="mui-textfield mui-textfield--float-label">
-                        <input type="text" id="id-username" name="username"/>
-                        <label for="username">用户名</label>
-                    </div>
-
-                    <div class="mui-textfield mui-textfield--float-label">
-                        <input type="password" id="id-password" name="password"/>
-                        <label for="password">密码</label>
-                    </div>
-                    <div class="mui-checkbox form-group">
-                        <label><input type="checkbox" />自动登录</label>
-                        <a href="#" id="forget-password">忘记密码?</a>
-                    </div> 
-                    <div class="form-group">
-                        <button type="submit" class="mui-btn mui-btn--primary col-lg-12" id="sub-btn">登录</button>
-                    </div>
-                    <div class="form-group">
-                        <a href="/register/" id="register">注册</a>
-                    </div>
-                </form>
-            </div>
-            <div class="col-md-4 column">
-            </div>
+                <div class="mui-checkbox form-group">
+                    <label><input type="checkbox" />自动登录</label>
+                    <a href="#" id="forget-password">忘记密码?</a>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="mui-btn mui-btn--primary col-lg-12" id="sub-btn">登录</button>
+                </div>
+                <div class="form-group">
+                    <a href="/register/" id="register">注册</a>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-4 column">
         </div>
     </div>
+    {% endblock %}
 </body>
 
 </html>
