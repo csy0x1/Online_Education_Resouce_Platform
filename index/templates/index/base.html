@@ -6,6 +6,9 @@
 <link href="//cdn.muicss.com/mui-0.10.3/extra/mui-noglobals.css" rel="stylesheet" type="text/css" />
 <script src="//cdn.muicss.com/mui-0.10.3/extra/mui-combined.js"></script>
 <link href="//cdn.muicss.com/mui-0.10.3/extra/mui-colors.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+@import url("../../static/index/css/base.css");
+</style>
 
 
 <!DOCTYPE html>
@@ -15,21 +18,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="/static/index/css/base.css" rel="stylesheet" type="text/css">
     {% block extrastatic %}{% endblock %}
     <title>{% block title %}{% endblock %}</title>
 </head>
 
 <body>
-    <div class="container">
-        <div class="row clearfix">
-            <div class="col-md-12 column">
+    <div class="container-fluid">
                 <nav class="navbar navbar-default navbar-fixed-top" role="navigation" id="nav-bar">
-                    <div class="navbar-header">
+                    <div class="container-fluid">
                         <a class="navbar-brand" href="/index/">iMooc 在线教育资源平台</a>
                     </div>
                 </nav>
-            </div>
-        </div>
             {% block log-reg-div %}
             {% endblock %}
     </div>

@@ -1,16 +1,31 @@
-#nav-right-search{
-  position:absolute;
-  right:210px;
+.container-fluid{
+	margin: 0 auto;
+	width: 1190px;
 }
-#footer{
+.navbar-default{
+	width: auto;
+	
+}
+#nav-right-search{
+  position:relative;
+  left: 300px
+}
+.infobar{
   position: relative;
-  bottom: 0px;
-  width: 100%;
+  width: auto;
   height: 143px;
   background-color:#333;
 }
+#footer{
+	width: auto;
+	margin: 0 auto;
+	width: 1190px;
+}
 .footer h4{
-  color: #ccc;
+  color: #CCC;
+}
+.footer h5{
+	color:#CCCCCC;
 }
 #avatar{
   position:relative;

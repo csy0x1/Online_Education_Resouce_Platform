@@ -1,13 +1,16 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html class="widthauto">
 
 <head>
 	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
 	<title>iMooc 在线教育资源平台</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/index.css' %}">
 	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+	<style type="text/css">
+	@import url("../../static/index/css/index.css");
+    </style>
+<script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 
@@ -71,19 +74,26 @@
 		</nav>
 	</div>
 
-	<div class="container">
+	<div class="container-fluid">
 		{% block content %}
 		{% endblock %}
 	</div>
-	<div class="infobar footer" id="footer">
+	
+	<div class="infobar footer">
+		<div  id="footer">
 		<div class="footer-logo">
 			<a class="navbar-brand" href="#">iMooc 在线教育资源平台</a>
 		</div>
-		<div class="footer-about">
-			<h4>关于我们</h4>
-		</div>
-		<div class="footer-follow">
-			<h4>关注我们</h4>
+		<div class="footer-about col-lg-4 col-lg-offset-1">
+		  <h4 class="col-lg-12"><strong>关于我们</strong></h4>
+          <h5 class="col-lg-4">&nbsp;关于我们</h5>
+          <h5 class="col-lg-5">&nbsp;联系我们</h5>
+          <h5 class="col-lg-4">&nbsp;常见问题</h5>
+          <h5 class="col-lg-5">&nbsp;意见反馈</h5>
+      </div>
+	  <div class="footer-follow col-lg-offset-0 col-lg-2">
+		<h4 class="col-lg-12 col-lg-offset-0"><strong>关注我们</strong></h4>
+      </div>
 		</div>
 	</div>
 </body>
