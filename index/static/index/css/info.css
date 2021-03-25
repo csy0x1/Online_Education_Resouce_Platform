@@ -1,0 +1,23 @@
+body{
+    background-color: #f3f7f9;
+}
+#info-div{
+    background-color: white;
+    position:relative;
+    width:550px;
+    height: auto;
+    margin: 200px auto 370px;
+    min-height: 130px;
+    border-radius: 4px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+}
+#info-icon{
+    position: relative;
+    left:30px;
+    top:45px
+}
+#info-text{
+    position: relative;
+    left:90px;
+    top:5px;
+}

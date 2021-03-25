@@ -1,0 +1,31 @@
+{% extends 'index/index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extrastatic %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/info.css' %}">
+    <script src="{% static 'index/js/info.js' %}"></script>
+    {% endblock %}
+    <title>{% block title %}提示信息{% endblock %}</title>
+</head>
+<body>
+    {% block content %}
+    <div class="row clearfix" id="info-div">
+        <div id="info-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-exclamation-circle-fill" viewBox="0 0 16 16" style="font-size: 2rem; color: rgb(0, 202, 175);">
+                <path d="M2.5 8a5.5 5.5 0 0 1 8.25-4.764.5.5 0 0 0 .5-.866A6.5 6.5 0 1 0 14.5 8a.5.5 0 0 0-1 0 5.5 5.5 0 1 1-11 0z"/>
+                <path d="M15.354 3.354a.5.5 0 0 0-.708-.708L8 9.293 5.354 6.646a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l7-7z"/>
+            </svg>
+        </div>
+        <div id="info-text">
+            <p>您已成功退出，现在将以游客身份转入首页，请稍候......</p>
+            <a href="/index/">如果您的浏览器没有自动跳转，请点击此链接</a>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+</html>

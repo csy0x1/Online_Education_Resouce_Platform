@@ -1,0 +1,16 @@
+.left-nav{
+    width: 30%;
+    height:100%;
+    float:left;
+}
+
+#setting-frame{
+    position: relative;
+    height: 699px;
+    width:70%;
+    float:right;
+}
+
+ul li{
+    list-style: none;
+}

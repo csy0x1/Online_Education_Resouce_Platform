@@ -8,7 +8,7 @@
 }
 #nav-right-search{
   position:relative;
-  left: 300px
+  left: 280px
 }
 .infobar{
   position: relative;
@@ -30,14 +30,22 @@
 #avatar{
   position:relative;
   right:50px;
-  bottom:28px;
+  bottom:35px;
+  padding-bottom: 7px;
+  padding-top: 7px;
 }
 #user-info{
   position:relative;
   height: 50px;
   width: 72px;
+  background: transparent;
+  font-size:16px;
 }
 #search-btn{
   position: relative;
   top: 0px;
+}
+#user-info-dropdown{
+  min-width: 105px;
+  right:15px
 }

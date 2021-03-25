@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!--以上为Bootstrap3.3.7 以下为MUI material design-->
+    <link href="//cdn.muicss.com/mui-0.10.3/extra/mui-noglobals.css" rel="stylesheet" type="text/css" />
+    <script src="//cdn.muicss.com/mui-0.10.3/extra/mui-combined.js"></script>
+    <link href="//cdn.muicss.com/mui-0.10.3/extra/mui-colors.css" rel="stylesheet" type="text/css" />
+    <title>个人设置</title>
+</head>
+
+<body>
+    <form role="form" method="POST" id="profile">
+        <div class="mui-textfield mui-textfield--float-label">
+            {{ profileForm.username }}
+            {{ profileForm.username.label_tag }}
+        </div>
+        <div class="mui-textfield mui-textfield--float-label">
+            {{ profileForm.realname }}
+            {{ profileForm.realname.label_tag }}
+        </div>
+        <div class="mui-textfield mui-textfield--float-label">
+            {{ profileForm.email }}
+            {{ profileForm.email.label_tag }}
+        </div>
+    </form>
+</body>
+
+</html>

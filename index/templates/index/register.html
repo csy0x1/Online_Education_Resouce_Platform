@@ -35,35 +35,58 @@
             <form role="form" action="/register/" method="POST" id="reg-form">
                 {% csrf_token %}
                 <div class="mui-textfield mui-textfield--float-label">
-                    <input type="text" name="username" id="id_username">
-                    <label for="name" id="lab_name">用户名</label>
+                    {{ reg_form.username }}
+                    {{ reg_form.username.label_tag }}
                 </div>
     
                 <div class="mui-textfield mui-textfield--float-label">
-                    <input type="password" name="password" id="id_password">
-                    <label for="password">密码</label>
+                    {{ reg_form.password }}
+                    {{ reg_form.password.label_tag }}
                 </div>
                 <div class="mui-textfield mui-textfield--float-label">
-                    <input type="password" name="re_password" id="id_re_password">
-                    <label for="password">再次输入密码</label>
+                    {{ reg_form.re_password }}
+                    {{ reg_form.re_password.label_tag }}
                 </div>
                 <div class="mui-textfield mui-textfield--float-label">
-                    <input type="email" name="email" id="id_email">
-                    <label for="email">电子邮箱</label>
+                    {{ reg_form.email }}
+                    {{ reg_form.email.label_tag }}
                 </div>
-                <div class="mui-select">
+                <div class="mui-textfield mui-textfield--float-label">
+                    {{ reg_form.captcha }}
+                    {{ reg_form.captcha.label_tag }}
+                </div>
+<!--                 <div class="mui-select">
                     <select name="gender" id="id_gender">
                         <option value="male">男</option>
                         <option value="female">女</option>
                     </select>
                     <label for="gender">性别</label>
-                </div>
+                </div> -->
                 <div class="mui-checkbox form-group">
-                    <label>
+                    <label for="ToS">
                         <input type="checkbox" checked id="id_agreed">同意
-                        <a href="http://www.baidu.com">《网站服务条款》</a>
+                        <a id="toggle_ToS">《网站服务条款》</a>
                     </label>
                     <a href="/login/" id="id_login">已有账号？登录</a>
+                </div>
+                <div class="modal" id="modal_ToS" tabindex="-1" rold="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title" id="ModalLabel">网站服务条款</h4>
+                            </div>
+                            <div class="modal-body">
+                                我已阅读并同意使用条款：<a href="#">《iMooc 在线教育资源平台用户协议》</a>
+                                <br>
+                                如对以上条款有任何异议，应立即停止访问或使用 iMooc 在线教育资源平台的服务
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" id="modal_agree">同意</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal" id="modal_disagree">不同意</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="form-group">
                     <button type="button" class="mui-btn mui-btn--primary col-lg-12" id="sub-btn">注册</button>

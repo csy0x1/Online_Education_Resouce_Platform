@@ -4,14 +4,15 @@
 
 <head>
 	<meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-	<title>iMooc 在线教育资源平台</title>
+	<title>{% block title %}iMooc 在线教育资源平台{% endblock %}</title>
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/index.css' %}">
 	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-	<style type="text/css">
-	@import url("../../static/index/css/index.css");
-    </style>
-<script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
+	<script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="http://cdn.bootcss.com/bootstrap-hover-dropdown/2.0.10/bootstrap-hover-dropdown.min.js"></script>
+	{% block extrastatic %}
+    <script src="{% static 'index/js/index.js' %}"></script>
+    {% endblock %}
 </head>
 
 <body>
@@ -19,7 +20,7 @@
 		<nav class="navbar navbar-default" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
-					<a class="navbar-brand" href="#">iMooc 在线教育资源平台</a>
+					<a class="navbar-brand" href="/index">iMooc 在线教育资源平台</a>
 				</div>
 				<div>
 					<ul class="nav navbar-nav">
@@ -42,8 +43,8 @@
 										<input type="text" class="form-control visible-lg-block visible-md-block"
 											placeholder="搜索课程">
 										<span class="input-group-btn">
-											<button class="btn btn-primary glyphicon glyphicon-search"
-												type="button" id="search-btn"></button>
+											<button class="btn btn-primary glyphicon glyphicon-search" type="button"
+												id="search-btn"></button>
 										</span>
 									</div>
 								</div>
@@ -52,14 +53,21 @@
 						<div class="nav-right-login navbar-right" id="nav-right-login">
 							{% if request.session.is_login == True %}
 							<ul class="nav navbar-nav">
-								<li>
-									<a href="#" id="user-info">
+								<li class="dropdown">
+									<a href="#" id="user-info" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="100">
 										{{ request.session.user_name }}
-										<img class="img-circle img-responsive" src="{{ request.session.avatar }}" alt=""
-											width="35" height="33" id="avatar" />
+										<span class="user-avatar">
+											<img class="img-circle img-responsive dropdown"
+												src="{{ request.session.avatar }}" alt="" width="35" height="33"
+												id="avatar" />
+										</span>
 									</a>
+									<ul class="dropdown-menu" id="user-info-dropdown">
+										<li><a href="/setting">设置</a></li>
+										<li class="divider"></li>
+										<li><a href="/logout/">退出</a></li>
+									</ul>
 								</li>
-								<li><a href="/logout/"><span class="glyphicon glyphicon-log-out"></span>登出</a></li>
 							</ul>
 							{% else %}
 							<ul class="nav navbar-nav">
@@ -78,22 +86,22 @@
 		{% block content %}
 		{% endblock %}
 	</div>
-	
+
 	<div class="infobar footer">
-		<div  id="footer">
-		<div class="footer-logo">
-			<a class="navbar-brand" href="#">iMooc 在线教育资源平台</a>
-		</div>
-		<div class="footer-about col-lg-4 col-lg-offset-1">
-		  <h4 class="col-lg-12"><strong>关于我们</strong></h4>
-          <h5 class="col-lg-4">&nbsp;关于我们</h5>
-          <h5 class="col-lg-5">&nbsp;联系我们</h5>
-          <h5 class="col-lg-4">&nbsp;常见问题</h5>
-          <h5 class="col-lg-5">&nbsp;意见反馈</h5>
-      </div>
-	  <div class="footer-follow col-lg-offset-0 col-lg-2">
-		<h4 class="col-lg-12 col-lg-offset-0"><strong>关注我们</strong></h4>
-      </div>
+		<div id="footer">
+			<div class="footer-logo">
+				<a class="navbar-brand" href="/index">iMooc 在线教育资源平台</a>
+			</div>
+			<div class="footer-about col-lg-4 col-lg-offset-1">
+				<h4 class="col-lg-12"><strong>关于我们</strong></h4>
+				<h5 class="col-lg-4">&nbsp;关于我们</h5>
+				<h5 class="col-lg-5">&nbsp;联系我们</h5>
+				<h5 class="col-lg-4">&nbsp;常见问题</h5>
+				<h5 class="col-lg-5">&nbsp;意见反馈</h5>
+			</div>
+			<div class="footer-follow col-lg-offset-0 col-lg-2">
+				<h4 class="col-lg-12 col-lg-offset-0"><strong>关注我们</strong></h4>
+			</div>
 		</div>
 	</div>
 </body>
