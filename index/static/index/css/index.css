@@ -1,3 +1,7 @@
+body{
+  background-color: #f3f7f9;
+}
+
 .container-fluid{
 	margin: 0 auto;
 	width: 1190px;
@@ -61,4 +65,21 @@
   float: right;
   width: 70%;
   height: 340px;
+}
+
+a.category_item{
+  display: block;
+  width: auto;
+  width: 37px;
+}
+
+#category{
+  background-color: white;
+  border-radius: 4px;
+  box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+  padding:4px 12px;
+}
+
+a.category_more{
+  color:#FF9900;
 }
