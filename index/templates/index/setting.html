@@ -9,11 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {% block extrastatic %}
     <link rel="stylesheet" type="text/css" href="{% static 'index/css/setting.css' %}">
-    <script>    //实现点击列表项刷新iframe进入相应的设置页面
+    <script>    //实现点击列表项刷新iframe进入相应的设置页面，高亮已选项
         $(function () {
             $(".left-nav li").on("click", function () {
-                var address = $(this).attr("data-src");
-                $("iframe").attr("src", address);
+                $("li").removeAttr("class")
+                $(this).attr({"class":"active"});
             });
         });
     </script>
@@ -24,14 +24,13 @@
 <body>
     {% block content %}
     <div class="left-nav">
-        <ul>
-            <li data-src="/avatar/">修改头像</li>
-            <li data-src="/profile/">个人资料</li>
-            <li>账号安全</li>
+        <ul class="nav nav-pills nav-stacked">
+            <li role="presentation" class="active"><a href="/profile/" target="frame">个人资料</a></li>
+            <li role="presentation"><a href="/avatar/" target="frame">修改头像</a></li>
         </ul>
     </div>
     <div class="setting-area">
-        <iframe frameborder="0" scrolling="no" src="/profile/" id="setting-frame"></iframe>
+        <iframe frameborder="0" scrolling="no" src="/profile/" id="setting-frame" name="frame"></iframe>
     </div>
     {% endblock %}
 </body>

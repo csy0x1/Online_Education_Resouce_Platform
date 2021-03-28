@@ -18,17 +18,31 @@
 
 <body>
     <form role="form" method="POST" id="profile">
-        <div class="mui-textfield mui-textfield--float-label">
-            {{ profileForm.username }}
-            {{ profileForm.username.label_tag }}
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            {{ profileForm.name.label_tag }}
+            {{ profileForm.name }}
         </div>
-        <div class="mui-textfield mui-textfield--float-label">
-            {{ profileForm.realname }}
-            {{ profileForm.realname.label_tag }}
+        <div class="form-group">
+            {{ profileForm.real_name.label_tag }}
+            {{ profileForm.real_name }}
         </div>
-        <div class="mui-textfield mui-textfield--float-label">
-            {{ profileForm.email }}
+        <div class="form-group">
             {{ profileForm.email.label_tag }}
+            {{ profileForm.email }}
+        </div>
+        <div class="form-group">
+            {{ profileForm.phone_number.label_tag }}
+            {{ profileForm.phone_number }}
+        </div>
+        <div class="form-group">
+            {{ profileForm.sex.label_tag }}
+            {{ profileForm.sex }}
+        </div>
+        <div class="form-group">
+            <button type="button" class="btn btn-primary float-right">保存</button>
         </div>
     </form>
 </body>

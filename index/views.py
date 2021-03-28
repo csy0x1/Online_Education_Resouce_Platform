@@ -11,7 +11,7 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 # Create your views here.
 
 def index(request):
-    return render(request, 'index/index.html')
+    return render(request, 'index/indexpage.html')
 
 def login(request):
     if request.session.get('is_login',None):    #不允许重复登录
@@ -88,19 +88,24 @@ def logout(request):
 
 def settings(request):
     if request.method == 'POST':
-        pass
+        set_Form=forms.settingForm(request.POST)
+        real_name = set_Form.cleaned_data.get('realname')
+        e_mail = set_Form.cleaned_data.get('email')
+        phone_number = set_Form.cleaned_data.get('phone_number')
+        gender = set_Form.cleaned_data.get('gender')
     
     return render(request,'index/setting.html')
-
-@xframe_options_exempt
+    
 def profile(request):
-    profileForm=forms.settingForm()
+    user = models.Users.objects.get(name=request.session['user_name'])
+    profileForm=forms.settingForm(instance=user)
     return render(request,'index/profile.html',locals())
 
-@xframe_options_exempt
 def avatar(request):
-    profileForm=forms.settingForm()
-    username=request.session['user_name']
-    user = models.Users.objects.get(name=username)
+    user = models.Users.objects.get(name=request.session['user_name'])
+    profileForm=forms.settingForm(instance=user)
     avatar = user.profile_picture.url
     return render(request,'index/avatar.html',locals())
+
+def aboutus(request):
+    return render(request,'index/aboutus.html')

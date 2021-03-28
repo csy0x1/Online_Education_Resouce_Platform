@@ -11,6 +11,8 @@
     float:right;
 }
 
-ul li{
+.left-nav ul li{
     list-style: none;
+    width: 200px;
+
 }

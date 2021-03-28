@@ -49,3 +49,16 @@
   min-width: 105px;
   right:15px
 }
+
+#category{
+  position: relative;
+  float: left;
+  width: 15%;
+}
+
+#indexCarousel{
+  position: relative;
+  float: right;
+  width: 70%;
+  height: 340px;
+}

@@ -28,4 +28,5 @@ urlpatterns = [
     path('setting/',views.settings),
     path('profile/',views.profile),
     path('avatar/',views.avatar),
+    path('aboutus/',views.aboutus),
 ]
