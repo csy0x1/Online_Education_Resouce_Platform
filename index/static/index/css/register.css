@@ -4,7 +4,7 @@ body{
 #reg-div{
     background-color: white;
     position:relative;
-    height: auto;
+    height: 525px;
     margin: 200px auto 65px;
     min-height: 300px;
     border-radius: 4px;

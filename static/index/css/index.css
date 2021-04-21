@@ -1,0 +1,57 @@
+body{
+  background-color: #f3f7f9;
+}
+
+.container-fluid{
+	margin: 0 auto;
+	width: 1190px;
+}
+.navbar-default{
+	width: auto;
+}
+
+#nav-right-search{
+  position:relative;
+  left: 280px
+}
+.infobar{
+  position: relative;
+  width: auto;
+  height: 143px;
+  background-color:#333;
+}
+#footer{
+	width: auto;
+	margin: 0 auto;
+	width: 1190px;
+}
+.footer h4{
+  color: #CCC;
+}
+.footer h5{
+	color:#CCCCCC;
+}
+#avatar{
+  position:relative;
+  right:50px;
+  bottom:35px;
+  padding-bottom: 7px;
+  padding-top: 7px;
+}
+#user-info{
+  position:relative;
+  height: 50px;
+  width: 72px;
+  background: transparent;
+  font-size:16px;
+}
+#search-btn{
+  position: relative;
+  top: 0px;
+}
+#user-info-dropdown{
+  min-width: 105px;
+  right:15px
+}
+
+

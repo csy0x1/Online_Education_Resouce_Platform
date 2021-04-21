@@ -1,0 +1,35 @@
+body{
+    background-color: #f3f7f9;
+}
+#reg-div{
+    background-color: white;
+    position:relative;
+    height: auto;
+    margin: 200px auto 65px;
+    min-height: 300px;
+    border-radius: 4px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+}
+#reg-form{
+    position:relative;
+    height: auto;
+    min-height: 200px;
+    margin: 70px auto 100px;
+    left:170px;
+    bottom:25px
+}
+#form-img{
+    position: relative;
+    right: 15px;
+}
+#nav-bar{
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+}
+#id_login{
+    position:relative;
+    left:85px;
+  }
+#modal_ToS{
+    top:200px;
+    left:100px
+}

@@ -31,14 +31,14 @@
                 </h4> <strong>{{ message }}</strong>
             </div>
             {% endif %}
-    
+
             <form role="form" action="/register/" method="POST" id="reg-form">
                 {% csrf_token %}
                 <div class="mui-textfield mui-textfield--float-label">
                     {{ reg_form.username }}
                     {{ reg_form.username.label_tag }}
                 </div>
-    
+
                 <div class="mui-textfield mui-textfield--float-label">
                     {{ reg_form.password }}
                     {{ reg_form.password.label_tag }}
@@ -55,7 +55,7 @@
                     {{ reg_form.captcha }}
                     {{ reg_form.captcha.label_tag }}
                 </div>
-<!--                 <div class="mui-select">
+                <!--                 <div class="mui-select">
                     <select name="gender" id="id_gender">
                         <option value="male">男</option>
                         <option value="female">女</option>
@@ -69,11 +69,13 @@
                     </label>
                     <a href="/login/" id="id_login">已有账号？登录</a>
                 </div>
-                <div class="modal" id="modal_ToS" tabindex="-1" rold="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+                <div class="modal" id="modal_ToS" tabindex="-1" rold="dialog" aria-labelledby="ModalLabel"
+                    aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <button type="button" class="close" data-dismiss="modal"
+                                    aria-hidden="true">&times;</button>
                                 <h4 class="modal-title" id="ModalLabel">网站服务条款</h4>
                             </div>
                             <div class="modal-body">
@@ -83,13 +85,14 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-primary" id="modal_agree">同意</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal" id="modal_disagree">不同意</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal"
+                                    id="modal_disagree">不同意</button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="button" class="mui-btn mui-btn--primary col-lg-12" id="sub-btn">注册</button>
+                    <button type="submit" class="mui-btn mui-btn--primary col-lg-12" id="sub-btn">注册</button>
                 </div>
             </form>
         </div>

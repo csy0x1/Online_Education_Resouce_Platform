@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models.lookups import IsNull
 
 # Create your models here.
 
@@ -19,7 +20,7 @@ class Users(models.Model):
     profile_picture = models.ImageField(verbose_name='头像',null=True,upload_to='avatar',blank=True,default='avatar/default-profile-picture.jpg')
     name = models.CharField(verbose_name='*用户名',max_length=128,unique=True,null=False)  #昵称
     real_name = models.CharField(verbose_name='真实姓名',max_length=64,null=True,blank=True) #真实姓名
-    password = models.CharField(verbose_name='*密码',max_length=256) #密码
+    password = models.CharField(verbose_name='*密码',max_length=256,editable=False) #密码
     email = models.EmailField(verbose_name='*电子邮箱',unique=True)  #邮箱
     phone_number = models.CharField(verbose_name='手机号码',max_length=32,unique=True,null=True,blank=True)   #手机号码
     access = models.CharField(verbose_name='*权限等级',max_length=16,choices=access,default='guest')    #权限级别
@@ -51,13 +52,57 @@ class Course(models.Model):
     Course_Info = models.CharField(verbose_name="课程说明",max_length=400)
     Course_Img = models.ImageField(verbose_name="课程图片",null=True,upload_to="Course_Img",blank=True)
     Stu_Count = models.IntegerField(verbose_name="选课人数")
-    Course_Category = models.CharField(verbose_name="课程分类",max_length=32)
+    #Course_Category = models.CharField(verbose_name="课程分类",max_length=32,default='0')
+    Course_Category = models.ForeignKey(
+        'CourseCategory',
+        on_delete=models.CASCADE,
+        limit_choices_to={'Is_Root':0},
+        null=True,
+        blank=True,)
     View_Count = models.IntegerField(verbose_name="访问人数")
     Status = models.CharField(verbose_name="课程状态",max_length=16,choices=status,default='1')
     Starting_Time = models.DateTimeField(verbose_name="开课时间",auto_now_add=True)
     Ending_Time = models.DateTimeField(verbose_name="结课时间")
 
+    def __str__(self) -> str:
+        return self.Course_Name
+
     class Meta:
         ordering = ["-Starting_Time"]
         verbose_name = '课程'
         verbose_name_plural = '课程'
+
+class CourseCategory(models.Model):
+    # def Check_Category_Layer(self):
+    #     if(self.ParentID==0):
+    #         return self.ParentID
+    CategoryID = models.AutoField(primary_key=True,verbose_name='分类编号')
+    CategoryName = models.CharField(verbose_name='分类名',max_length=64)
+    Is_Root = models.BooleanField(verbose_name='根分类',default=True,editable=False)
+    DisplayOrder = models.IntegerField(verbose_name='显示顺序',default=1)
+    ParentID = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        limit_choices_to={'Is_Root':1},
+        null=True,
+        blank=True,)
+    # CountNumber = models.IntegerField(verbose_name='下属分类数',default=0)
+
+    def __str__(self) -> str:
+        return self.CategoryName
+
+    class Meta:
+        ordering = ["-CategoryID"]
+        verbose_name = '课程分类'
+        verbose_name_plural = '课程分类'
+
+    def save(self,*args, **kwargs):
+        if self.ParentID_id is not None:                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 
+            self.Is_Root=False
+            # temp=CourseCategory.objects.filter(CategoryID=self.ParentID_id)
+            # print(temp[0])
+            # temp=temp[0]
+            # print(temp.CountNumber)
+            # temp.CountNumber+=1 #增加分类计数
+            # temp.save()
+        super().save(*args, **kwargs)

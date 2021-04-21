@@ -1,0 +1,110 @@
+.container{
+    margin-top:-25px;
+    margin-bottom:30px;  
+    margin-left:-15px;
+    min-width:1140px;
+}
+
+#indexCarousel{
+    position: abs;
+    float: right;
+    right:195px;
+    width: 730px;
+    height: 330px;
+}
+
+.carousel-inner .item img{
+    width:730px;
+    height: 330px;
+    max-height:330px;
+}
+
+.category{
+    position: relative;
+    float: left;
+    width: auto;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+}
+
+.category .header{
+    margin-right:6px;
+    font-size: 14px;
+    color: black;
+}
+
+.category .item{
+    font-size: 10px;
+    color: #a7a7a7;
+}
+
+.category p{
+    color: #a7a7a7;
+}
+
+.category .content{
+    width: 200px;
+    height: 34px;
+    line-height: 34px;
+    padding: 0px 10px;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+    overflow:hidden;
+}
+
+.category p{
+    display:initial;
+}
+
+#category-container{
+    margin:12px 0;
+}
+
+.userInfo{
+    display:flex;
+    flex-flow:column nowrap;
+    align-items:center;
+    position: relative;
+    float: right;
+    width: 200px;
+    height:330px;
+    left:750px;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+}
+
+#userInfo-avatar{
+    position:relative;
+    top:20px;
+}
+
+.loginRegister{
+    position: relative;
+    top:80px;
+    text-align: center;
+}
+
+.username{
+    position:relative;
+    top:30px;
+    font-size:16px;
+    font-weight:400;
+    text-align:center;
+    color:#111;
+    max-width:150px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+}
+
+.sub-content-area{
+    position:absolute;
+    background-color:#fff;
+    z-index:999;
+}
+
+.subContainer{
+    margin-bottom: 12px;
+}

@@ -3,6 +3,7 @@ import email
 from django.core.checks import messages
 from django.http.request import HttpRequest
 from django.shortcuts import redirect, render
+from django.contrib.auth import authenticate, hashers
 from . import models
 from . import forms
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -11,7 +12,22 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 # Create your views here.
 
 def index(request):
-    return render(request, 'index/indexpage.html')
+    root = models.CourseCategory.objects.filter(Is_Root=True).order_by('DisplayOrder')
+    rootlist=[]
+    dict={}
+    for i in range(root.count()):
+        Child = models.CourseCategory.objects.filter(ParentID=root[i].CategoryID).order_by('DisplayOrder')
+        ChildCategory = []
+        for j in range(Child.count()):
+            ChildCategory.append(str(Child[j]))
+        rootlist.append(str(root[i]))
+        print(ChildCategory)
+        dict[str(root[i])]=ChildCategory
+    
+    print(rootlist,ChildCategory)
+    print(dict)
+
+    return render(request, 'index/indexpage.html',locals())
 
 def login(request):
     if request.session.get('is_login',None):    #不允许重复登录
@@ -27,7 +43,7 @@ def login(request):
             except: #出错
                 message = '用户不存在!'
                 return render(request,'index/login.html',{'message':message})
-            if user.password == password:   #密码不能为明码，需修改
+            if hashers.check_password(password,user.password):
                 request.session['is_login'] = True
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
@@ -47,7 +63,7 @@ def register(request):
 
     if request.method == 'POST':
         message='请检查输入的内容'
-        reg_form=forms.UserForm(request.POST)
+        reg_form=forms.userForm(request.POST)
         if reg_form.is_valid():
             username = reg_form.cleaned_data.get('username')
             password = reg_form.cleaned_data.get('password')
@@ -55,25 +71,27 @@ def register(request):
             email = reg_form.cleaned_data.get('email')
             captcha = reg_form.cleaned_data.get('captcha')
             
-            tempuser = models.Users.objects.get(name=username)
-            tempmail = models.Users.objects.get(email=email)
+            tempuser = models.Users.objects.filter(name=username)
+            tempmail = models.Users.objects.filter(email=email)
+            print(tempuser,tempmail)
             if tempuser:
+                print('1')
                 message='用户名已被注册'
                 return render(request,'index/register.html',locals())
             if tempmail:
+                print('2')
                 message='邮箱已被注册'
                 return render(request,'index/register.html',locals())
             if password!=re_password:
                 message='两次输入的密码不一致'
                 return render(request,'index/register.html',locals())
-
-            new_user = models.Users()
-            new_user.name = username
-            new_user.password = re_password
-            new_user.email = email
-            new_user.save()
-
-            return redirect('/login/')
+            else:
+                new_user = models.Users()
+                new_user.name = username
+                new_user.password = hashers.make_password(re_password,None,'pbkdf2_sha256')
+                new_user.email = email
+                new_user.save()
+                return redirect('/login/')
         else:
             return render(request,'index/register.html',locals())
     
