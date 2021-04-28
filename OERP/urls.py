@@ -29,4 +29,5 @@ urlpatterns = [
     path('profile/',views.profile),
     path('avatar/',views.avatar),
     path('aboutus/',views.aboutus),
+    path('course/',include('index.urls')),
 ]

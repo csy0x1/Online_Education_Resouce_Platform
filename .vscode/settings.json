@@ -1,6 +1,6 @@
 {
     "emmet.includeLanguages": {
-        "html": "django-html"
+        "django-html": "html"
     },
     "python.formatting.provider": "black",
 }

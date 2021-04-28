@@ -1,9 +1,10 @@
 from email import message
-import email
+import email,json
 from django.core.checks import messages
 from django.http.request import HttpRequest
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, hashers
+from .functions import viewFunction as VF
 from . import models
 from . import forms
 from django.views.decorators.clickjacking import xframe_options_exempt
@@ -12,22 +13,11 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 # Create your views here.
 
 def index(request):
-    root = models.CourseCategory.objects.filter(Is_Root=True).order_by('DisplayOrder')
-    rootlist=[]
-    dict={}
-    for i in range(root.count()):
-        Child = models.CourseCategory.objects.filter(ParentID=root[i].CategoryID).order_by('DisplayOrder')
-        ChildCategory = []
-        for j in range(Child.count()):
-            ChildCategory.append(str(Child[j]))
-        rootlist.append(str(root[i]))
-        print(ChildCategory)
-        dict[str(root[i])]=ChildCategory
-    
-    print(rootlist,ChildCategory)
-    print(dict)
-
-    return render(request, 'index/indexpage.html',locals())
+    rootlist,dict=VF.Get_Category()
+    userCount,newestUser,courseCount = VF.Get_Website_Info().values() #locals()以字典形式返回所有局部变量，要用values()取出值，否则获取的为key
+    #testjson = json.dumps(testjson)    #向JSONfield传递json可以直接传dict，不用编码成json
+    #VF.test(testjson)
+    return render(request, 'index/indexpage.html',locals()) 
 
 def login(request):
     if request.session.get('is_login',None):    #不允许重复登录
@@ -48,6 +38,7 @@ def login(request):
                 request.session['user_id'] = user.id
                 request.session['user_name'] = user.name
                 request.session['avatar'] = user.profile_picture.url
+                #request.session.set_expiry(0)
                 #print(user.profile_picture.url)
                 return redirect('/index/')
             else:
@@ -127,3 +118,7 @@ def avatar(request):
 
 def aboutus(request):
     return render(request,'index/aboutus.html')
+
+def courseInfo(request,courseid):
+    courseDetail,courseInfo = VF.Get_Course(courseid)
+    return render(request,'index/courseInfo.html',locals())

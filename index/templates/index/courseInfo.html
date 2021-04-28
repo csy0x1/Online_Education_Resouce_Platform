@@ -1,0 +1,87 @@
+{% extends 'index/index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{courseDetail.Course_Name}}-iMooc在线教育资源平台{% endblock %}</title>
+    {% block extrastatic %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseInfo.css' %}">
+    <script src="{% static 'index/js/courseInfo.js' %}"></script>
+    {% endblock %}
+
+</head>
+
+<body>
+    {% block content %}
+    <div class="infoHeader">
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="/index/">主页</a></li>
+                <li><a href="#">{{courseDetail.Course_Category}}</a></li>
+                <li class="active">{{courseDetail.Course_Name}}</li>
+            </ul>
+        </div>
+        <div class="infoHeader-left-img">
+            <img src="{{courseDetail.Course_Img}}" alt="课程图片">
+        </div>
+        <div class="infoHeader-right-info">
+            <div class="info-courseName">
+                {{courseDetail.Course_Name}}
+            </div>
+            <div class="info-termInfo">
+                <div class="info-teacherName">
+                    <span>开课教师: {{courseDetail.Course_Teacher}} </span>
+                </div>
+                <div class="info-termTime">
+                    <span>开课时间: {{courseDetail.Starting_Time}} ~ {{courseDetail.Ending_Time}}</span>
+                </div>
+            </div>
+            <div class="info-StudentCount">
+                <span>已有 {{courseDetail.Stu_Count}} 人参加</span>
+            </div>
+            <div class="courseBtn">
+                <p>立即参加</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="infoContent">
+        {% for key,value in courseInfo.items %}
+        <div class="contentHeader">
+            <span class="glyphicon glyphicon-tag"></span>
+            <span>{{key}}</span>
+        </div>
+        <div class="content">
+            {% if key == '课程大纲' %}
+            <!-- {% if value == None %}
+            <span>暂未设置</span>
+            {% endif %} -->
+            {% for chapter,section in value.items %}
+            <p>
+                <span class="chapter">{{chapter}}</span>
+            </p>
+            {% for sectionNumber,sectionTitle in section.items %}
+            <p class="section">
+                <span class="sectionNumber">{{sectionNumber}}</span>
+                <span class="sectionTitle">{{sectionTitle}}</span>
+            </p>
+            {% endfor %}
+            {% endfor %}
+            {% else %}
+            <span>{{value}}</span>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="otherInfoContent">
+        <p>PlaceHolder</p>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

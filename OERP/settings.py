@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'index',
     'captcha',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

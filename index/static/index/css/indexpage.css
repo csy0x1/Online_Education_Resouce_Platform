@@ -8,7 +8,7 @@
 #indexCarousel{
     position: abs;
     float: right;
-    right:195px;
+    right:205px;
     width: 730px;
     height: 330px;
 }
@@ -124,4 +124,19 @@
 
 .subContainer{
     margin-bottom: 12px;
+}
+
+.websiteInfo{
+    display:flex;
+    flex-flow:column nowrap;
+    background-color: #fff;
+    align-items:center;
+    width:1180px;
+    height:60px;
+    /*line-height:60px;*/
+}
+
+.websiteInfo p{
+    position:relative;
+    top:20px;
 }
