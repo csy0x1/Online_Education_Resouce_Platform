@@ -1,6 +1,7 @@
 from email import message
 import email,json
 from django.core.checks import messages
+from django.dispatch.dispatcher import receiver
 from django.http.request import HttpRequest
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, hashers
@@ -120,5 +121,5 @@ def aboutus(request):
     return render(request,'index/aboutus.html')
 
 def courseInfo(request,courseid):
-    courseDetail,courseInfo = VF.Get_Course(courseid)
+    courseDetail,courseInfo,teacher = VF.Get_Course(courseid)
     return render(request,'index/courseInfo.html',locals())

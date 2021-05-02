@@ -49,7 +49,13 @@ class Course(models.Model):
         ('3','已结课'),
     )
     Course_Name = models.CharField(verbose_name="课程名称",max_length=64)
-    Course_Teacher = models.CharField(verbose_name="开课教师",max_length=32)
+    Course_Teacher = models.ForeignKey(
+        'Users',
+        on_delete=models.CASCADE,
+        limit_choices_to={'access':'teacher'},
+        null=True,
+        blank=True,
+    )
     Course_Info = models.TextField(verbose_name="课程说明")
     Course_Goal = models.TextField(verbose_name="课程目标",default='暂未设置')
     Grade_Requirements = models.TextField(verbose_name="成绩要求",default='暂未设置')

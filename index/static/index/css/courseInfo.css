@@ -96,4 +96,35 @@
     overflow:hidden;
     height:auto;
     margin-top:50px;
+    padding:20px;
+}
+
+.otherInfoContent img{
+    display:inline-block;
+}
+
+.infoName{
+    display:inline-block;
+    margin-left:10px;
+    font-size:18px;    
+}
+
+.bs-callout {
+    padding:0 10px;
+    margin: 10px 0px;
+    border: 1px solid #fff;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+.bs-callout-primary {
+    border-left-color: #428bca;
+}
+.bs-callout-primary h4 {
+    color: #428bca;
+}
+
+.teacherHeader p{
+    font-size:18px;
+    margin:0px;
 }

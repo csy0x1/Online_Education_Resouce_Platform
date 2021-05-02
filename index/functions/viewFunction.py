@@ -3,7 +3,10 @@ import datetime
 from .. import models
 from rest_framework import serializers
 from datetime import datetime
+from notifications.signals import notify
+from django.contrib.auth.models import User
 
+import index
 
 def Get_Category(): #获取分类信息
     root = models.CourseCategory.objects.filter(Is_Root=True).order_by('DisplayOrder')
@@ -39,6 +42,8 @@ def Get_Course(courseid):   #获取课程信息
     courseDetail = CourseDetailSerializer(object).data
     try:
         courseDetail['Course_Category'] = models.CourseCategory.objects.get(pk=courseDetail['Course_Category']) #格式化器只获取了外键的ID，要通过ID再获取外键的数值
+        teacher = models.Users.objects.get(pk=courseDetail['Course_Teacher'])
+        courseDetail['Course_Teacher'] = models.Users.objects.get(pk=courseDetail['Course_Teacher']) #格式化器只获取了外键的ID，要通过ID再获取外键的数值
     except:
         pass
     courseInfo = CourseInfoSerializer(object).data
@@ -52,7 +57,9 @@ def Get_Course(courseid):   #获取课程信息
     #https://stackoverflow.com/questions/13182075/how-to-convert-a-timezone-aware-string-to-datetime-in-python-without-dateutil
     courseDetail['Starting_Time'] = datetime.fromisoformat(courseDetail['Starting_Time']).strftime('%Y年%m月%d日')
     courseDetail['Ending_Time'] = datetime.fromisoformat(courseDetail['Ending_Time']).strftime('%Y年%m月%d日')
-    return courseDetail,courseInfo
+
+    return courseDetail,courseInfo,teacher
+
 
 # def test(Chapter):
 #     course = models.Course.objects.create(Course_Name='1',Course_Teacher='1',Course_Info='1',Stu_Count=1,Course_Chapter=Chapter,View_Count=1,Ending_Time=datetime.datetime.now())

@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     $('#id_username').removeAttr("class")
     $('#id_password').removeAttr("class")
     $('#id_re_password').removeAttr("class")
@@ -7,7 +7,7 @@ $(document).ready(function () {
     $('#id_captcha_1').removeAttr("class")
     is_validate = false
 
-    function username_check(username){
+    function username_check(username) {
         if (username == "") {
             $('#id_username').css({ "border-color": "red" })
             $('label[for=id_username]').css({ "color": "red" })
@@ -27,7 +27,7 @@ $(document).ready(function () {
         }
     }
 
-    function password_check(password){
+    function password_check(password) {
         if (password == "") {
             $('#id_password').css({ "border-color": "red" })
             $('label[for=id_password]').css({ "color": "red" })
@@ -46,7 +46,7 @@ $(document).ready(function () {
         }
     }
 
-    function re_password_check(password,re_password){
+    function re_password_check(password, re_password) {
         if (re_password == "") {
             $('#id_re_password').css({ "border-color": "red" })
             $('label[for=id_re_password]').css({ "color": "red" })
@@ -64,7 +64,7 @@ $(document).ready(function () {
         }
     }
 
-    function email_check(email){
+    function email_check(email) {
         var eFormat = /^[A-Za-z0-9+]+[A-Za-z0-9\.\_\-+]*@([A-Za-z0-9\-]+\.)+[A-Za-z0-9]+$/;
 
         if (email == "") {
@@ -89,7 +89,7 @@ $(document).ready(function () {
             .blur(function () { //文本框失去焦点事件
                 $(this).attr('placeholder', '')
             })
-            .on("blur keyup",function(){
+            .on("blur keyup", function () {
                 var username = $('#id_username').val()
                 username_check(username)
             })
@@ -100,7 +100,7 @@ $(document).ready(function () {
             .blur(function () { //文本框失去焦点事件
                 $(this).attr('placeholder', '')
             })
-            .on("blur keyup",function(){
+            .on("blur keyup", function () {
                 var password = $('#id_password').val()
                 password_check(password)
             })
@@ -111,11 +111,11 @@ $(document).ready(function () {
             .blur(function () { //文本框失去焦点事件
                 $(this).attr('placeholder', '')
             })
-            .on("blur keyup",function(){
+            .on("blur keyup", function () {
                 var password = $('#id_password').val()
                 var re_password = $('#id_re_password').val()
 
-                re_password_check(password,re_password)
+                re_password_check(password, re_password)
             })
     });
 
@@ -124,7 +124,7 @@ $(document).ready(function () {
             .blur(function () { //文本框失去焦点事件
                 $(this).attr('placeholder', '')
             })
-            .on("blur keyup",function(){
+            .on("blur keyup", function () {
                 var email = $('#id_email').val()
                 email_check(email)
             })
@@ -142,7 +142,7 @@ $(document).ready(function () {
         $(location).attr("href", "/index/")
     })
 
-     $('#sub-btn').click(function () { //前端初步数据验证
+    $('#sub-btn').click(function () { //前端初步数据验证
         var is_agreed = $('#id_agreed').prop("checked")
         var username = $('#id_username').val()
         var password = $('#id_password').val()
@@ -151,18 +151,18 @@ $(document).ready(function () {
 
         var userchk = username_check(username)
         var pwdchk = password_check(password)
-        var repwdchk = re_password_check(password,re_password)
+        var repwdchk = re_password_check(password, re_password)
         var emailchk = email_check(email)
 
-        if(is_agreed){
-            if(userchk && pwdchk  && repwdchk && emailchk){
+        if (is_agreed) {
+            if (userchk && pwdchk && repwdchk && emailchk) {
                 is_validate = true
             }
-            else{
+            else {
                 is_validate = false
             }
         }
-        else{
+        else {
             $("#modal_ToS").modal('show')
         }
 
@@ -173,7 +173,7 @@ $(document).ready(function () {
         else {
             console.log('not validated')
         }
-    }); 
+    });
 
 });
 

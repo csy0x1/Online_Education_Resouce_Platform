@@ -79,7 +79,14 @@
     </div>
 
     <div class="otherInfoContent">
-        <p>PlaceHolder</p>
+        <div class="bs-callout bs-callout-primary teacherHeader">
+            <p>授课教师</p>
+        </div>
+        <div class="teacherContent">
+            <img class="img-circle img-responsive infoAvatar" src={{teacher.profile_picture.url}} alt="头像" height="50px"
+                width="50px">
+            <p class="infoName">{{teacher.real_name}}</p>
+        </div>
     </div>
     {% endblock %}
 </body>
