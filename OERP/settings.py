@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'index',
     'captcha',
     'rest_framework',
+    'commentSystem',
 ]
 
 MIDDLEWARE = [
