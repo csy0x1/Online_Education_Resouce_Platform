@@ -2,9 +2,11 @@ from email import message
 import email,json
 from django.core.checks import messages
 from django.dispatch.dispatcher import receiver
+from django.http.response import HttpResponse
 from django.http.request import HttpRequest
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, hashers
+from django.db.models import F
 from .functions import viewFunction as VF
 from . import models
 from . import forms
@@ -16,8 +18,9 @@ from django.views.decorators.clickjacking import xframe_options_exempt
 def index(request):
     rootlist,dict=VF.Get_Category()
     userCount,newestUser,courseCount = VF.Get_Website_Info().values() #locals()以字典形式返回所有局部变量，要用values()取出值，否则获取的为key
-    #testjson = json.dumps(testjson)    #向JSONfield传递json可以直接传dict，不用编码成json
-    #VF.test(testjson)
+    recommendCourses = VF.Get_Recommend_Courses()
+    # testjson = json.dumps(testjson)    #向JSONfield传递json可以直接传dict，不用编码成json
+    # VF.test(testjson)
     return render(request, 'index/indexpage.html',locals()) 
 
 def login(request):
@@ -122,4 +125,45 @@ def aboutus(request):
 
 def courseInfo(request,courseid):
     courseDetail,courseInfo,teacher = VF.Get_Course(courseid)
+    isSignedUp = False
+    username=request.session["user_name"]
+    user = models.Users.objects.filter(name=username)   #filter返回Queryset对象
+    if user.filter(selected_courses=courseid).exists(): #使用exists方法判断该用户是否已选择该课程
+        isSignedUp = True
+    else:
+        #do other thing
+        pass
     return render(request,'index/courseInfo.html',locals())
+
+def SignUp(request,courseid):
+    isSignUp = request.POST.get("isSignUp")
+    if(isSignUp):
+        username=request.session["user_name"]
+        course = models.Course.objects.get(id=courseid)
+        user = models.Users.objects.get(name=username)
+        user.selected_courses.add(course.id)
+        #应修改：User表中已选课程的字段类型不应为Charfield, 应为关系类型字段，应该是多对多(checked)
+        course.Stu_Count = F('Stu_Count') + 1 #用F表达式增加报名人数
+        #使用它可以直接引用模型字段的值并执行数据库操作而不用把它们导入到python的内存中。
+        user.save()
+        course.save()
+        message = '报名成功'
+    return HttpResponse(message)
+
+def Resign(request,courseid):
+    isResign = request.POST.get("isResign")
+    if(isResign):
+        username=request.session["user_name"]
+        course = models.Course.objects.get(id=courseid)
+        user = models.Users.objects.get(name=username)
+        user.selected_courses.remove(course.id)
+        course.Stu_Count = F('Stu_Count') - 1
+        user.save()
+        course.save()
+        message = '退课成功'
+    return HttpResponse(message)
+
+def list(request):
+    #pk=1
+    course = models.Course.objects.get(id=1)
+    return render(request,'comments/list.html',locals())

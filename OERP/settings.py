@@ -34,6 +34,9 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'simpleui',
+    'threadedcomments',
+    'django_comments',
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -43,8 +46,11 @@ INSTALLED_APPS = [
     'index',
     'captcha',
     'rest_framework',
-    'commentSystem',
 ]
+
+SITE_ID=1
+
+COMMENTS_APP = 'threadedcomments'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -34,6 +34,7 @@ def Get_Course(courseid):   #获取课程信息
         class Meta:
             model = models.Course
             fields = '__all__'
+
     class CourseInfoSerializer(serializers.ModelSerializer):
         class Meta:
             model = models.Course
@@ -59,6 +60,10 @@ def Get_Course(courseid):   #获取课程信息
     courseDetail['Ending_Time'] = datetime.fromisoformat(courseDetail['Ending_Time']).strftime('%Y年%m月%d日')
 
     return courseDetail,courseInfo,teacher
+
+def Get_Recommend_Courses():    #获取课程排行信息
+    recommendCourses = models.Course.objects.all().order_by('-Stu_Count')[:5]
+    return recommendCourses
 
 
 # def test(Chapter):

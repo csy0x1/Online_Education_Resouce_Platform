@@ -1,0 +1,28 @@
+{% load threadedcomments_tags %}
+{% load comments %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h2>Comments for {{ course }}:</h2>
+    {% get_comment_count for course as comment_count %}
+    <p>{{ comment_count }} comments have been posted.</p>
+    {% get_comment_list for course as comment_list %}
+    {% for comment in comment_list %}
+    <p>Posted by: {{ comment.user_name }} on {{ comment.submit_date }}</p>
+    ...
+    <p>Comment: {{ comment.comment }}</p>
+    ...
+    {% endfor %}
+    {% render_comment_form for course %}
+</body>
+
+</html>
