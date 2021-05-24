@@ -68,4 +68,16 @@ $(document).ready(function () {
     function hoverOutExit() {
         $('.courseBtn-Resign').animate({ backgroundColor: 'rgb(255,165,0)' }, 50)
     }
+
+    $('.courseBtn-Setting').hover(hoverInSetting, hoverOutSetting)
+        .click(function () {
+            $(location).attr('href', 'Setting')
+        })
+
+    function hoverInSetting() {
+        $('.courseBtn-Setting').animate({ backgroundColor: 'rgb(0,162,216)' }, 50)
+    }
+    function hoverOutSetting() {
+        $('.courseBtn-Setting').animate({ backgroundColor: 'rgb(0,191,255)' }, 50)
+    }
 });

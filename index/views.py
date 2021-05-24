@@ -2,11 +2,13 @@ from email import message
 import email,json
 from django.core.checks import messages
 from django.dispatch.dispatcher import receiver
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, JsonResponse
 from django.http.request import HttpRequest
 from django.shortcuts import redirect, render
 from django.contrib.auth import authenticate, hashers
 from django.db.models import F
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from .functions import viewFunction as VF
 from . import models
 from . import forms
@@ -128,6 +130,7 @@ def courseInfo(request,courseid):
     isSignedUp = False
     username=request.session["user_name"]
     user = models.Users.objects.filter(name=username)   #filter返回Queryset对象
+    access = user[0].access #获取用户权限
     if user.filter(selected_courses=courseid).exists(): #使用exists方法判断该用户是否已选择该课程
         isSignedUp = True
     else:
@@ -163,7 +166,36 @@ def Resign(request,courseid):
         message = '退课成功'
     return HttpResponse(message)
 
-def list(request):
+def list(request):  #评论功能测试，无用界面
     #pk=1
     course = models.Course.objects.get(id=1)
     return render(request,'comments/list.html',locals())
+
+def courseSetting(request,courseid):
+    courseDetail,_,_ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    img = course.Course_Img
+    if request.method == 'POST':
+        print("POST")
+        settingForm = forms.CourseSettingForm(request.POST,request.FILES,instance=course)
+        if settingForm.is_valid():
+            instance = settingForm.save(commit=False)
+            instance.save()
+            return HttpResponseRedirect(reverse('index:courseSetting',args=(courseid,)))
+            #反向解析URL https://www.liujiangblog.com/course/django/136
+    else:
+        settingForm = forms.CourseSettingForm(instance=course)
+
+    return render(request,'index/courseSetting.html',locals())
+
+def saveNode(request,courseid): #保存节点，测试通过，待重构
+    course = models.Course.objects.get(id=courseid)
+    dict = request.POST.get("dict") #获取树状图的数据
+    course.Course_Chapter = dict
+    course.save()
+    return HttpResponse(dict)
+
+def getNode(request,courseid):  #读取节点，生成章节树状图
+    course = models.Course.objects.filter(id=courseid)
+    Chapter_Tree = course[0].Course_Chapter
+    return HttpResponse(Chapter_Tree)

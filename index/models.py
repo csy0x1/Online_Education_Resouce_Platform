@@ -61,13 +61,14 @@ class Course(models.Model):
     Course_Goal = models.TextField(verbose_name="课程目标",default='暂未设置')
     Grade_Requirements = models.TextField(verbose_name="成绩要求",default='暂未设置')
     Reference = models.TextField(verbose_name="参考资料",default='暂未设置')
-    QA  = models.JSONField(verbose_name="常见问题",null=True,blank=True,default='暂未设置')
+    QA  = models.TextField(verbose_name="常见问题",null=True,blank=True,default='暂未设置')
     Course_Img = models.ImageField(verbose_name="课程图片",null=True,upload_to="Course_Img",blank=True,default='material/defaultCourseImage.jpg')
     Stu_Count = models.PositiveIntegerField(verbose_name="选课人数",default=0)
-    Course_Chapter = models.JSONField(verbose_name="课程章节",null=True,blank=True,default='暂未设置')
+    Course_Chapter = models.TextField(verbose_name="课程章节",null=True,blank=True,default='[{"title":"New Node","key":"1"}]')
     #Course_Category = models.CharField(verbose_name="课程分类",max_length=32,default='0')
     Course_Category = models.ForeignKey(
         'CourseCategory',
+        verbose_name="课程分类",
         on_delete=models.CASCADE,
         limit_choices_to={'Is_Root':0},
         null=True,

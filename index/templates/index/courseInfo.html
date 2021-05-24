@@ -22,7 +22,9 @@
             <ul class="breadcrumb">
                 <li><a href="/index/">主页</a></li>
                 <li><a href="#">{{courseDetail.Course_Category}}</a></li>
-                <li class="active">{{courseDetail.Course_Name}}</li>
+                <li class="active"><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="infoHeader-left-img">
@@ -43,6 +45,11 @@
             <div class="info-StudentCount">
                 <span>已有 {{courseDetail.Stu_Count}} 人参加</span>
             </div>
+            {% if access == 'teacher' %}
+            <div class="courseBtn-Setting">
+                <p>课程设置</p>
+            </div>
+            {% else %}
             {% if isSignedUp %}
             <div class="courseBtn-Resign">
                 <p>退出课程</p>
@@ -51,6 +58,7 @@
             <div class="courseBtn-SignUp">
                 <p>立即参加</p>
             </div>
+            {% endif %}
             {% endif %}
         </div>
     </div>

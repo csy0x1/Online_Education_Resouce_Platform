@@ -1,0 +1,117 @@
+{% extends 'index/index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extrastatic %}
+    <!-- basic static -->
+    <script src="{% static 'index/js/courseSetting.js' %}"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSetting.css' %}">
+
+    <!-- FancyTree -->
+    <script src="//cdn.jsdelivr.net/npm/jquery.fancytree@2.38.0/dist/modules/jquery.fancytree.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery.fancytree@2.38.0/dist/jquery.fancytree-all-deps.js"></script>
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/treeView.css' %}">
+
+    <!-- Bootstrap Fileinput -->
+    <link rel="stylesheet" type="text/css" href="{% static 'fileinput/css/fileinput.css' %}">
+    <script src="{% static 'fileinput/js/fileinput.js' %}"></script>
+    <script src="{% static 'fileinput/js/locales/zh.js' %}"></script>
+    {% endblock %}
+    <title>{% block title %}模板{% endblock %}</title>
+</head>
+
+<body>
+    {% block content %}
+    <div>
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="/index/">主页</a></li>
+                <li><a href="#">{{courseDetail.Course_Category}}</a></li>
+                <li><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+                    </a>
+                </li>
+                <li class="active"><a href="{% url 'index:courseSetting' courseid %}">课程设置
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="settingForm">
+            <form action="Setting" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="item form-Name">
+                        {{settingForm.Course_Name.label_tag}}
+                        {{settingForm.Course_Name}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Info">
+                        {{settingForm.Course_Info.label_tag}}
+                        {{settingForm.Course_Info}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Goal">
+                        {{settingForm.Course_Goal.label_tag}}
+                        {{settingForm.Course_Goal}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Grade">
+                        {{settingForm.Grade_Requirements.label_tag}}
+                        {{settingForm.Grade_Requirements}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Refer">
+                        {{settingForm.Reference.label_tag}}
+                        {{settingForm.Reference}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-QA">
+                        {{settingForm.QA.label_tag}}
+                        {{settingForm.QA}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Img">
+                        <img src="{{img.url}}" height="60px">
+                        <!-- <input type="file" id="updateImg" class="file-loading" data-browse-on-zone-click="true"> -->
+                        {{settingForm.Course_Img}}
+                    </div>
+                </div>
+                <!-- <div id="tree"></div> -->
+                <div class="form-group">
+                    <div class="item form-Category">
+                        {{settingForm.Course_Category.label_tag}}
+                        {{settingForm.Course_Category}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-STime">
+                        {{settingForm.Starting_Time.label_tag}}
+                        {{settingForm.Starting_Time}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-ETime">
+                        {{settingForm.Ending_Time.label_tag}}
+                        {{settingForm.Ending_Time}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
