@@ -1,20 +1,21 @@
 $(document).ready(function () {
-    $(".user-avatar").mouseover(function () {
+    $(".user-avatar").mouseover(function () {   //用户头像下拉菜单
         $('.dropdown-toggle').dropdown('toggle')
     })
 
-    $('#indexCarousel').carousel({
+    $('#indexCarousel').carousel({  //轮播间隔
         interval: 3000
     })
 
-    $('#indexCarousel').hover(hoverInCarousel, hoverOutCarousel)
+    $('#indexCarousel').hover(hoverInCarousel, hoverOutCarousel)    //轮播鼠标悬浮
     function hoverInCarousel() {
         $('.carousel-control').removeAttr('hidden')
     }
     function hoverOutCarousel() {
         $('.carousel-control').prop('hidden', 'hidden');
     }
-    $('.content').hover(hoverInContent, hoverOutContent)
+
+    $('.content').hover(hoverInContent, hoverOutContent)    //课程分类鼠标悬浮变色
     function hoverInContent() {
         $(this).css({ "background-color": "rgba(0,204,153,0.1)" })
         $(this).children('.item').siblings().css({ "color": "rgb(0,204,153)" })
@@ -26,7 +27,7 @@ $(document).ready(function () {
         $(this).children(".header").removeAttr("style")
     }
 
-    $('#moreContent').hover(hoverInMore, hoverOutMore)
+    $('#moreContent').hover(hoverInMore, hoverOutMore)  //打开更多课程分类
     function hoverInMore() {
         $('#moreContent').prop('hidden', 'hidden')
         $('.sub-content-area').show(100)
@@ -35,7 +36,7 @@ $(document).ready(function () {
     function hoverOutMore() {
     }
 
-    $('.sub-content-area').hover(hoverInSub, hoverOutSub)
+    $('.sub-content-area').hover(hoverInSub, hoverOutSub)   //关闭更多课程分类
     function hoverInSub() {
     }
     function hoverOutSub() {
@@ -44,7 +45,7 @@ $(document).ready(function () {
         $('.sub-content-area').hide()
     }
 
-    $('.loginRegister').hover(hoverInLogin, hoverOutLogin)
+    $('.loginRegister').hover(hoverInLogin, hoverOutLogin)  //登录注册按钮鼠标悬浮
         .click(function () {
             $(location).attr('href', '/login/')
         })
@@ -54,4 +55,10 @@ $(document).ready(function () {
     function hoverOutLogin() {
         $('.loginRegister').animate({ backgroundColor: 'rgb(0,204,153)' }, 50)
     }
+
+    $(".MPContent").click(function () { //跳转到相应课程界面
+        var courseID = $(this).children(".RankCourseInfo").children(".courseID").text() //获取课程ID
+        var href = '/course/' + courseID
+        $(location).attr('href', href)
+    })
 })

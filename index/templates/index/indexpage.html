@@ -1,5 +1,6 @@
 {% extends 'index/index.html' %}
 {% load static %}
+{% load threadedcomments_tags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -84,8 +85,29 @@
                 {% endif %}
             </div>
         </div>
-        <div>
+    </div>
+    <div class="CourseRank Container">
+        <div class="CourseRankHeader">
+            <h3>
+                课程排行
+            </h3>
+        </div>
+        <div class="Most-Popular Container">
+            <span class="MPHeader">热门课程 TOP5</span>
+            <p hidden>asd</p>
+            {% for course in recommendCourses %}
+            <div class="MPContent">
+                <span class="Rank{{forloop.counter}} RankNumber">{{forloop.counter}}</span>
+                <img src="{{course.Course_Img.url}}" height="60px" class="courseImage">
+                <div class="RankCourseInfo">
+                    <span class="courseID" hidden>{{course.id}}</span>
+                    <p class="courseName">{{course.Course_Name}}</p>
+                    <p class="Teacher">{{course.Course_Teacher}}</p>
+                    <p class="stuCount">{{course.Stu_Count}} 人参加</p>
+                </div>
 
+            </div>
+            {% endfor %}
         </div>
     </div>
     <div class="websiteInfo">

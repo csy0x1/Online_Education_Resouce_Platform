@@ -25,7 +25,8 @@ class Users(models.Model):
     email = models.EmailField(verbose_name='*电子邮箱',unique=True)  #邮箱
     phone_number = models.CharField(verbose_name='手机号码',max_length=32,unique=True,null=True,blank=True)   #手机号码
     access = models.CharField(verbose_name='*权限等级',max_length=16,choices=access,default='guest')    #权限级别
-    selected_course = models.CharField(verbose_name='已选课程',max_length=256,null=True,blank=True)  #已选课程
+    #selected_course = models.CharField(verbose_name='已选课程',max_length=256,null=True,blank=True)  #已选课程
+    selected_courses = models.ManyToManyField('Course') #已选课程
     sex = models.CharField(verbose_name='*性别',max_length=32,choices=gender,default='default')   #性别
     create_time = models.DateTimeField(verbose_name='账号创建时间',auto_now_add=True)   #创建时间
     is_deleted = models.BooleanField(verbose_name='删除标记',default=False,editable=False) #删除标记
@@ -56,22 +57,23 @@ class Course(models.Model):
         null=True,
         blank=True,
     )
-    Course_Info = models.TextField(verbose_name="课程说明")
+    Course_Info = models.TextField(verbose_name="课程说明",default='暂未设置')
     Course_Goal = models.TextField(verbose_name="课程目标",default='暂未设置')
     Grade_Requirements = models.TextField(verbose_name="成绩要求",default='暂未设置')
     Reference = models.TextField(verbose_name="参考资料",default='暂未设置')
-    QA  = models.JSONField(verbose_name="常见问题",null=True,blank=True)
+    QA  = models.TextField(verbose_name="常见问题",null=True,blank=True,default='暂未设置')
     Course_Img = models.ImageField(verbose_name="课程图片",null=True,upload_to="Course_Img",blank=True,default='material/defaultCourseImage.jpg')
-    Stu_Count = models.IntegerField(verbose_name="选课人数")
-    Course_Chapter = models.JSONField(verbose_name="课程章节",null=True,blank=True)
+    Stu_Count = models.PositiveIntegerField(verbose_name="选课人数",default=0)
+    Course_Chapter = models.TextField(verbose_name="课程章节",null=True,blank=True,default='[{"title":"New Node","key":"1"}]')
     #Course_Category = models.CharField(verbose_name="课程分类",max_length=32,default='0')
     Course_Category = models.ForeignKey(
         'CourseCategory',
+        verbose_name="课程分类",
         on_delete=models.CASCADE,
         limit_choices_to={'Is_Root':0},
         null=True,
         blank=True,)
-    View_Count = models.IntegerField(verbose_name="访问人数")
+    View_Count = models.PositiveIntegerField(verbose_name="访问人数",default=0)
     Status = models.CharField(verbose_name="课程状态",max_length=16,choices=status,default='1')
     Starting_Time = models.DateTimeField(verbose_name="开课时间",auto_now_add=True)
     Ending_Time = models.DateTimeField(verbose_name="结课时间")
@@ -91,7 +93,7 @@ class CourseCategory(models.Model):
     CategoryID = models.AutoField(primary_key=True,verbose_name='分类编号')
     CategoryName = models.CharField(verbose_name='分类名',max_length=64)
     Is_Root = models.BooleanField(verbose_name='根分类',default=True,editable=False)
-    DisplayOrder = models.IntegerField(verbose_name='显示顺序',default=1)
+    DisplayOrder = models.PositiveIntegerField(verbose_name='显示顺序',default=1)
     ParentID = models.ForeignKey(
         'self',
         on_delete=models.CASCADE,

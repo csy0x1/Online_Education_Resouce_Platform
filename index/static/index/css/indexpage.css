@@ -140,3 +140,65 @@
     position:relative;
     top:20px;
 }
+
+.Most-Popular{
+    background-color:white;
+    width:30%;
+    margin:20px 0;
+    padding:10px;
+    border-radius: 4px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+}
+
+.MPHeader{
+    font-size:medium;
+    font-weight:600;
+    margin:10px;
+}
+
+.MPContent{
+    margin:10px;
+    cursor: pointer;
+}
+
+.RankNumber{
+    font-size:large;
+    font-weight:700;
+    vertical-align:top;
+    margin-right:10px;
+}
+
+.Rank1{
+    color:red;
+}
+
+.Rank2{
+    color:rgb(255,101,0);
+}
+
+.Rank3{
+    color:orange;
+}
+
+.RankCourseInfo{
+    display:inline-grid;
+    position:relative;
+    vertical-align:top;
+    margin-left:10px;
+}
+
+.RankCourseInfo p{
+    margin-bottom:2px;
+}
+
+.courseName{
+    font-size:medium;
+}
+
+.Teacher{
+    font-size:small;
+}
+
+.stuCount{
+    color:gray;
+}

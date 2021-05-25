@@ -12,17 +12,19 @@
     <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseInfo.css' %}">
     <script src="{% static 'index/js/courseInfo.js' %}"></script>
     {% endblock %}
-
 </head>
 
 <body>
     {% block content %}
+    {% csrf_token %}
     <div class="infoHeader">
         <div>
             <ul class="breadcrumb">
                 <li><a href="/index/">主页</a></li>
                 <li><a href="#">{{courseDetail.Course_Category}}</a></li>
-                <li class="active">{{courseDetail.Course_Name}}</li>
+                <li class="active"><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+                    </a>
+                </li>
             </ul>
         </div>
         <div class="infoHeader-left-img">
@@ -43,8 +45,40 @@
             <div class="info-StudentCount">
                 <span>已有 {{courseDetail.Stu_Count}} 人参加</span>
             </div>
-            <div class="courseBtn">
+            {% if access == 'teacher' %}
+            <div class="courseBtn-Setting">
+                <p>课程设置</p>
+            </div>
+            {% else %}
+            {% if isSignedUp %}
+            <div class="courseBtn-Resign">
+                <p>退出课程</p>
+            </div>
+            {% else %}
+            <div class="courseBtn-SignUp">
                 <p>立即参加</p>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- 模态框 -->
+    <div class="modal fade" id="resignConfirm" tabindex="-1" role="dialog" aria-labelledby="resignConfirmLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="resignConfirmLabel">提示</h4>
+                </div>
+                <div class="modal-body">
+                    退出该课程？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary confirm">确定退出</button>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,157 @@
+{% extends 'index/index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extrastatic %}
+    <!-- basic static -->
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSetting.css' %}">
+
+    <!-- FancyTree -->
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/treeView.css' %}">
+
+    <!-- Bootstrap Fileinput -->
+    <link rel="stylesheet" type="text/css" href="{% static 'fileinput/css/fileinput.css' %}">
+
+    <!-- bootstrap-select -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/css/bootstrap-select.min.css">
+
+    <!-- Bootstrap Datepicker-->
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
+        rel="stylesheet">
+    {% endblock %}
+    <title>{% block title %}{{courseDetail.Course_Name}} - iMooc在线教育资源平台 课程设置{% endblock %}</title>
+</head>
+
+<body>
+    {% block content %}
+    <div>
+        <div>
+            <ul class="breadcrumb">
+                <li><a href="/index/">主页</a></li>
+                <li><a href="#">{{courseDetail.Course_Category}}</a></li>
+                <li><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+                    </a>
+                </li>
+                <li class="active"><a href="{% url 'index:courseSetting' courseid %}">课程设置
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="navSideBar">
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" class="active"><a href="#">保留</a></li>
+            </ul>
+        </div>
+        <div class="settingForm">
+            <form action="Setting" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="item form-Name">
+                        <label for="{{settingForm.Course_Name.id_for_label}}"
+                            class="control-label col-sm-2">课程名称:</label>
+                        {{settingForm.Course_Name}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Info">
+                        <label for="{{settingForm.Course_Info.id_for_label}}"
+                            class="control-label col-sm-2">课程说明:</label>
+                        {{settingForm.Course_Info}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Goal">
+                        <label for="{{settingForm.Course_Goal.id_for_label}}"
+                            class="control-label col-sm-2">课程目标:</label>
+                        {{settingForm.Course_Goal}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Grade">
+                        <label for="{{settingForm.Grade_Requirements.id_for_label}}"
+                            class="control-label col-sm-2">成绩要求:</label>
+                        {{settingForm.Grade_Requirements}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Refer">
+                        <label for="{{settingForm.Reference.id_for_label}}" class="control-label col-sm-2">参考资料:</label>
+                        {{settingForm.Reference}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-QA">
+                        <label for="{{settingForm.QA.id_for_label}}" class="control-label col-sm-2">常见问题:</label>
+                        {{settingForm.QA}}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="item form-Img">
+                        <label for="Course_Img" class="control-label col-sm-2">课程图片:</label>
+                        <div class="imgUpload">
+                            <p>当前课程图片</p>
+                            <img src="{{img.url}}">
+                            <p>设置新的课程图片</p>
+                            {{settingForm.Course_Img}}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="Course_Category" class="control-label col-sm-2">课程大纲:</label>
+                    <div id="tree"></div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Category">
+                        <label for="{{settingForm.Course_Category.id_for_label}}"
+                            class="control-label col-sm-2">课程分类:</label>
+                        {{settingForm.Course_Category}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-ETime">
+                        <label for="{{settingForm.Ending_Time.id_for_label}}"
+                            class="control-label col-sm-2">结课时间:</label>
+                        <div class='input-group date' id='datetimepicker1'>
+                            {{settingForm.Ending_Time}}
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- basic static -->
+    <script src="{% static 'index/js/courseSetting.js' %}"></script>
+
+    <!-- FancyTree -->
+    <script src="//cdn.jsdelivr.net/npm/jquery.fancytree@2.38.0/dist/modules/jquery.fancytree.js"></script>
+    <script src="//cdn.jsdelivr.net/npm/jquery.fancytree@2.38.0/dist/jquery.fancytree-all-deps.js"></script>
+
+    <!-- Bootstrap Fileinput -->
+    <script src="{% static 'fileinput/js/fileinput.js' %}"></script>
+    <script src="{% static 'fileinput/js/locales/zh.js' %}"></script>
+
+    <!-- bootstrap-select -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.4/js/bootstrap-select.min.js"></script>
+
+    <!-- Bootstrap Datepicker-->
+    <script src="https://cdn.bootcss.com/moment.js/2.22.0/moment-with-locales.js"></script>
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    {% endblock %}
+</body>
+
+</html>
