@@ -1,13 +1,15 @@
-from django.db.models.fields import CharField, DateTimeField
-from django.forms import widgets
-from django.forms.models import ModelChoiceField
-from index.models import Course, Users
-from django import forms
 from captcha.fields import CaptchaField
+from django import forms
 from django.db.models.base import Model
+from django.db.models.fields import CharField, DateTimeField
+from django.forms import ModelForm, widgets
 from django.forms.fields import ChoiceField, ImageField
-from django.forms.widgets import ChoiceWidget, EmailInput, Select, TextInput, Textarea
-from django.forms import ModelForm
+from django.forms.models import ModelChoiceField
+from django.forms.widgets import (ChoiceWidget, EmailInput, Select, Textarea,
+                                  TextInput)
+
+from index.models import Course, Users
+
 
 class userForm(forms.Form):
     username=forms.CharField(label="用户名", max_length=128,widget=forms.TextInput)
@@ -43,7 +45,7 @@ class CourseSettingForm(ModelForm):
                 })
             else:
                 self.fields[field].widget.attrs.update({
-                    'class': 'form-control'
+                    'class': 'form-control col-sm-10',
                 })
     class Meta:
         model = Course

@@ -4,11 +4,56 @@
     border-radius: 4px;
 }
 
+.navSideBar{
+    display:block;
+    float:left;
+    width:20%;
+}
+
+.settingForm label{
+    width:90px;
+    padding-left:0px;
+}
+
 .settingForm{
+    position:relative;
+    display:block;
+    float:right;
     background-color:white;
     margin:0px;
     padding:20px;
     box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
     border-radius: 0px 0px 4px 4px;
+    width:80%;
+}
 
+.form-Img img{
+    height: 60%;
+    width: 100%;
+}
+
+.item input{
+    width:85%;
+}
+
+.item textarea{
+    width:85%;
+}
+
+.imgUpload{
+    float:left;
+    width:85%;
+}
+
+.imgUpload p{
+    margin-top:10px;
+}
+
+#datetimepicker1{
+    width:85%;
+}
+
+.fancytree-container{
+    float:left;
+    width:85%;
 }

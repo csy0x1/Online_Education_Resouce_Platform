@@ -1,19 +1,20 @@
+import email
+import json
 from email import message
-import email,json
-from django.core.checks import messages
-from django.dispatch.dispatcher import receiver
-from django.http.response import HttpResponse, JsonResponse
-from django.http.request import HttpRequest
-from django.shortcuts import redirect, render
+
 from django.contrib.auth import authenticate, hashers
+from django.core.checks import messages
 from django.db.models import F
+from django.dispatch.dispatcher import receiver
 from django.http import HttpResponseRedirect
+from django.http.request import HttpRequest
+from django.http.response import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from .functions import viewFunction as VF
-from . import models
-from . import forms
 from django.views.decorators.clickjacking import xframe_options_exempt
 
+from . import forms, models
+from .functions import viewFunction as VF
 
 # Create your views here.
 

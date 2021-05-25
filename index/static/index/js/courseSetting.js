@@ -1,4 +1,25 @@
 $(document).ready(function () {
+
+    $("#id_Course_Category").attr({ //初始化下拉选择框
+        "class": "selectpicker",
+        "data-live-search": "true",
+        "data-width": "85%"
+    })
+
+    $(function () { //初始化日期选择器
+        var today = new Date()
+        $('#datetimepicker1').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-tw'),
+            minDate: today
+        });
+        $('#id_Ending_Time').datetimepicker({
+            format: 'YYYY-MM-DD HH:mm',
+            locale: moment.locale('zh-tw'),
+            minDate: today
+        });
+    });
+
     function getCookie(name) {      //获取CSRF令牌
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
