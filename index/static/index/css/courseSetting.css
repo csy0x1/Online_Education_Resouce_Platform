@@ -27,6 +27,10 @@
     width:80%;
 }
 
+.settingForm button{
+    margin-left:15px;
+}
+
 .form-Img img{
     height: 60%;
     width: 100%;

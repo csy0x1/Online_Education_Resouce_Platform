@@ -17,6 +17,19 @@ $(document).ready(function () {
     }
     const csrftoken = getCookie('csrftoken');
 
+
+    $('.LoginBtn').hover(hoverInLogin, hoverOutLogin)
+        .click(function () {
+            $(location).attr('href', '/login')
+        })
+
+    function hoverInLogin() {
+        $('.LoginBtn').animate({ backgroundColor: 'rgb(0,165,124)' }, 50)
+    }
+    function hoverOutLogin() {
+        $('.LoginBtn').animate({ backgroundColor: 'rgb(0,204,153)' }, 50)
+    }
+
     $('.courseBtn-SignUp').hover(hoverInJoin, hoverOutJoin)
         /*
         此处打算实现报名功能，不一定要通过Jquery和Ajax提交用户数据，可以发送一个报名的信号，然后在后端

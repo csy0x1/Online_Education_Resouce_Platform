@@ -45,12 +45,15 @@
             <div class="info-StudentCount">
                 <span>已有 {{courseDetail.Stu_Count}} 人参加</span>
             </div>
-            {% if access == 'teacher' %}
+            {% if not isLogin %}
+            <div class="LoginBtn">
+                <p>登录以加入课程</p>
+            </div>
+            {% elif access == 'teacher' %}
             <div class="courseBtn-Setting">
                 <p>课程设置</p>
             </div>
-            {% else %}
-            {% if isSignedUp %}
+            {% elif isSignedUp %}
             <div class="courseBtn-Resign">
                 <p>退出课程</p>
             </div>
@@ -58,7 +61,6 @@
             <div class="courseBtn-SignUp">
                 <p>立即参加</p>
             </div>
-            {% endif %}
             {% endif %}
         </div>
     </div>

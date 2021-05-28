@@ -18,6 +18,7 @@ from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
 from django.urls.conf import include
+from django.contrib.auth import views as auth_views
 from index import views
 
 app_name = 'rootURL'

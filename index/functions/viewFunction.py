@@ -65,6 +65,13 @@ def Get_Recommend_Courses():    #获取课程排行信息
     recommendCourses = models.Course.objects.all().order_by('-Stu_Count')[:5]
     return recommendCourses
 
+def checkLogin(request):
+    loginStatus = request.session.get('is_login')
+    if loginStatus:
+        return True
+    else:
+        return False
+
 
 # def test(Chapter):
 #     course = models.Course.objects.create(Course_Name='1',Course_Teacher='1',Course_Info='1',Stu_Count=1,Course_Chapter=Chapter,View_Count=1,Ending_Time=datetime.datetime.now())
