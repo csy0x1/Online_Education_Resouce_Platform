@@ -70,7 +70,7 @@ $(document).ready(function () {
                     },
                     success: function (response) {
                         $('#resignConfirm').modal('hide')
-                        window.parent.location.reload();
+                        //window.parent.location.reload();
                     }
                 });
             })

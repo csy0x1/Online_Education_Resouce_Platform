@@ -12,6 +12,7 @@
 	<script src="http://cdn.bootcss.com/bootstrap-hover-dropdown/2.0.10/bootstrap-hover-dropdown.min.js"></script>
 	<script src="//cdn.jsdelivr.net/jquery.color-animation/1/mainfile"></script>
 	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+	<script src="{% static 'index/js/indexpage.js' %}"></script>
 	{% block extrastatic %}
 	{% endblock %}
 </head>
@@ -54,10 +55,12 @@
 						<div class="nav-right-login navbar-right" id="nav-right-login">
 							{% if request.session.is_login == True %}
 							<ul class="nav navbar-nav">
-								<li class="dropdown">
+								<li class="dropdown user-dropdown">
 									<a href="#" id="user-info" class="dropdown-toggle" data-toggle="dropdown"
 										data-hover="dropdown" data-delay="100">
-										{{ request.session.user_name }}
+										<span class="user-name">
+											{{ request.session.user_name }}
+										</span>
 										<span class="user-avatar">
 											<img class="img-circle img-responsive dropdown"
 												src="{{ request.session.avatar }}" alt="" width="35" height="33"

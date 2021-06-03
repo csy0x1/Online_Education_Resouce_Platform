@@ -41,8 +41,7 @@ def login(request):
         username = request.POST.get("username")
         password = request.POST.get("password")
         message = "请检查输入的内容"
-        nextUrl = request.session['next']
-        print(nextUrl)
+        nextUrl = request.session.get("next", None)  # 获取跳转链接，登录后跳转回登录前的页面
         if username.strip() and password:  # 确保用户名和密码不为空
             pass  # 做合法性检测
             try:
@@ -57,7 +56,7 @@ def login(request):
                 request.session["avatar"] = user.profile_picture.url
                 # request.session.set_expiry(0)
                 # print(user.profile_picture.url)
-                if nextUrl!="":
+                if nextUrl:
                     return redirect(nextUrl)
                 else:
                     return redirect("/index/")
@@ -201,16 +200,18 @@ def list(request):  # 评论功能测试，无用界面
     course = models.Course.objects.get(id=1)
     return render(request, "comments/list.html", locals())
 
+
 def courseSetting(request, courseid):
     if not VF.checkLogin(request):
         nextUrl = request.path
-        request.session['next'] = nextUrl
-        return redirect('/login?next=%s' % nextUrl)
+        request.session["next"] = nextUrl
+        return redirect("/login?next=%s" % nextUrl)
     else:
         username = request.session["user_name"]
         user = models.Users.objects.get(name=username)
-        if user.access != 'teacher':
-            return HttpResponseRedirect(reverse("index:index",))
+        if user.access != "teacher":
+            # return HttpResponseRedirect(reverse("index:index",))
+            return render(request, "index/courseSettingError.html")
         courseDetail, _, _ = VF.Get_Course(courseid)
         course = models.Course.objects.get(id=courseid)
         img = course.Course_Img
@@ -229,7 +230,8 @@ def courseSetting(request, courseid):
         else:
             settingForm = forms.CourseSettingForm(instance=course)
 
-    return render(request, "index/courseSetting.html", locals())
+    students = course.students.all()
+    return render(request, "index/courseSettingStudent.html", locals())
 
 
 def saveNode(request, courseid):  # 保存节点，测试通过，待重构
@@ -244,3 +246,13 @@ def getNode(request, courseid):  # 读取节点，生成章节树状图
     course = models.Course.objects.filter(id=courseid)
     Chapter_Tree = course[0].Course_Chapter
     return HttpResponse(Chapter_Tree)
+
+
+def modifyStudents(request, courseid):
+    studentsList = request.POST.getlist("studentsList")
+    # for student in studentsList:
+    #     course = models.Course.objects.get(id=courseid)
+    #     stu = models.Users.objects.get(name=student)
+    #     course.students.remove(stu.id)
+    #     course.save()
+    return HttpResponse("succeed")

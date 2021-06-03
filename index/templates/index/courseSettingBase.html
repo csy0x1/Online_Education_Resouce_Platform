@@ -1,0 +1,39 @@
+{% extends 'index/index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block extrastatic %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSettingBase.css' %}">
+    {% endblock %}
+    <title>{% block title %}{% endblock %}</title>
+</head>
+
+<body>
+    {% block content %}
+    <div>
+        <ul class="breadcrumb">
+            <li><a href="/index/">主页</a></li>
+            <li><a href="#">{{courseDetail.Course_Category}}</a></li>
+            <li><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+                </a>
+            </li>
+            <li class="active"><a href="{% url 'index:courseSetting' courseid %}">课程设置
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="navSideBar">
+        <ul class="nav nav-pills nav-stacked">
+            <li role="basicInfo" class="active"><a href="#">基础设置</a></li>
+            <li role="studentManagement"><a href="#">学生管理</a></li>
+        </ul>
+    </div>
+    {% endblock %}
+</body>
+
+</html>

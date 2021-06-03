@@ -1,0 +1,81 @@
+{% extends 'index/courseSettingBase.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}学生管理 - {{courseDetail.Course_Name}} iMooc在线教育资源平台{% endblock title %}</title>
+
+    {% block extrastatic %}
+    {{ block.super }}
+    <!-- basic static -->
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSettingStudent.css' %}">
+    {% endblock extrastatic %}
+
+</head>
+
+<body>
+    {% block content %}
+    {{ block.super }}
+    <div class="content-container">
+        <div class="button-group">
+            <button class="btn btn-danger removeStudent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                    class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                    <path
+                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                </svg>
+                移出课程
+            </button>
+        </div>
+        <div class="studentList">
+            <table class="table table-hover">
+                <tr>
+                    <th></th>
+                    <th>学生姓名</th>
+                </tr>
+
+                {% for student in students %}
+                <tr>
+                    <td>
+                        <input type="checkbox">
+                    </td>
+                    <td class="student-Name">
+                        {{ student.name }}
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+
+        <!-- 模态框 -->
+        <div class="modal fade" id="removeConfirm" tabindex="-1" role="dialog" aria-labelledby="removeConfirmLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="removeConfirmLabel">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        确认将选中学生移出本课程？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger confirm">确定移出</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="{% static 'index/js/courseSettingStudent.js' %}"></script>
+    {% endblock content %}
+</body>
+
+</html>
