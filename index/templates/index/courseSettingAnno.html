@@ -1,0 +1,84 @@
+{% extends 'index/courseSettingBase.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    {% block extrastatic %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'index/css/courseSettingAnno.css' %}">
+    {% endblock extrastatic %}
+
+</head>
+
+<body>
+    {% block content %}
+    {{ block.super }}
+    <div class="mainContainer">
+        <div class="newAnnoForm">
+            <form action="Announcement" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="item form-Title">
+                        <label for="{{annoForm.Title.id_for_label}" class="control-label col-sm-2">标题: </label>
+                        {{annoForm.Title}}
+                        <span class="input-group-addon" id="titleaddon">0/20</span>
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Title">
+                        <label for="{{annoForm.Message.id_for_label}" class="control-label col-sm-2">内容: </label>
+                        {{annoForm.Message}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">发布</button>
+                </div>
+            </form>
+        </div>
+        <div class="historyAnno">
+            <h3>历史公告</h3>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="headingOne">
+                        <h4 class="panel-title">
+                            <input type="checkbox">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
+                                aria-expanded="true" aria-controls="collapseOne">
+                                Collapsible Group Item #1
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
+                        aria-labelledby="headingOne">
+                        <div class="panel-body">
+                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
+                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
+                            nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
+                            single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
+                            beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
+                            lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you
+                            probably haven't heard of them accusamus labore sustainable VHS.
+                        </div>
+                        <div>
+                            <button class="btn btn-danger histAnnoBtn">删除</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- basic JQuery -->
+    <script src="{% static 'index/js/courseSettingAnno.js' %}"></script>
+    {% endblock content %}
+</body>
+
+</html>

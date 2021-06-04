@@ -22,10 +22,22 @@ urlpatterns = [
         name="studentSetting",
     ),
     path(
+        "course/<int:courseid>/Setting/Announcement",
+        views.courseSettingAnno,
+        name="announcementSetting",
+    ),
+    path(
         "course/<int:courseid>/Modify",
         views.modifyStudents,
         name="modifyStudents",
     ),
+    # 课程学习相关url
+    path(
+        "course/<int:courseid>/learn/Announcement",
+        views.courseLearnAnno,
+        name="Announcement",
+    ),
+    path("course/<int:courseid>/learn", views.courseLearn, name="Learn"),
     # path('course/<int:courseid>/Setting/<str:section>',views.courseSetting, name='courseSetting'),
     path("course/<int:courseid>/", views.courseInfo, name="courseInfo"),
     # path('test/test',views.index) http://*link*/test/test 也可访问index

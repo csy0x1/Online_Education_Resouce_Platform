@@ -1,0 +1,70 @@
+{% extends 'index/index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} {{courseDetail.Course_Name}} - iMooc在线教育资源平台{% endblock title %}</title>
+
+    {% block extrastatic %}
+    <!-- Basic Static -->
+    <link rel="stylesheet" href="{% static 'index/css/courseLearnBase.css' %}">
+
+    {% endblock extrastatic %}
+
+</head>
+
+<body>
+    {% block content %}
+    <ul class="breadcrumb">
+        <li><a href="/index/">主页</a></li>
+        <li><a href="#">{{courseDetail.Course_Category}}</a></li>
+        <li><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+            </a>
+        </li>
+        <li class="active"><a href="{% url 'index:Learn' courseid %}">课程学习
+            </a>
+        </li>
+    </ul>
+    <div class="header">
+        <div class="courseName">
+            <a href="{% url 'index:courseInfo' courseid %}">
+                <h4>{{courseDetail.Course_Name}}</h4>
+            </a>
+        </div>
+        <div class="teachers">
+            <a href="#">
+                <h5>{{courseDetail.Course_Teacher}}</h5>
+            </a>
+        </div>
+    </div>
+    <div class="mainContainer">
+        <div class="navSideBar">
+            <div class="courseImage">
+                <img src="{{courseDetail.Course_Img}}" alt="课程图片">
+            </div>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#">公告</a></li>
+                <li><a href="#">评分标准</a></li>
+                <li><a href="#">课件</a></li>
+                <li><a href="#">测试与作业</a></li>
+                <li><a href="#">考试</a></li>
+                <li><a href="#">讨论区</a></li>
+            </ul>
+
+        </div>
+        <div>
+            <div class="content">
+                {% block learnContent %}
+                {% endblock learnContent %}
+            </div>
+        </div>
+    </div>
+
+    {% endblock content %}
+</body>
+
+</html>

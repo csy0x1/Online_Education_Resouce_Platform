@@ -9,8 +9,9 @@ from django.dispatch.dispatcher import receiver
 from django.http import HttpResponseRedirect
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, resolve_url
 from django.urls import reverse
+from django.urls.base import resolve
 from django.views.decorators.clickjacking import xframe_options_exempt
 from django.contrib.auth.decorators import login_required
 
@@ -216,7 +217,6 @@ def courseSetting(request, courseid):
         course = models.Course.objects.get(id=courseid)
         img = course.Course_Img
         if request.method == "POST":
-            print("POST")
             settingForm = forms.CourseSettingForm(
                 request.POST, request.FILES, instance=course
             )
@@ -238,6 +238,19 @@ def courseSettingStudent(request, courseid):
     course = models.Course.objects.get(id=courseid)
     students = course.students.all()
     return render(request, "index/courseSettingStudent.html", locals())
+
+
+def courseSettingAnno(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    annoForm = forms.AnnouncementForm()
+    if request.method == "POST":
+        annoForm = forms.AnnouncementForm(request.POST)
+        if annoForm.is_valid():
+            instance = annoForm.save(commit=False)
+            instance.sourceCourse = course  # 将公告的源课程设置为当前课程
+            instance.save()
+    return render(request, "index/courseSettingAnno.html", locals())
 
 
 def saveNode(request, courseid):  # 保存节点，测试通过，待重构
@@ -262,3 +275,13 @@ def modifyStudents(request, courseid):
     #     course.students.remove(stu.id)
     #     course.save()
     return HttpResponse("succeed")
+
+
+def courseLearn(request, courseid):
+    return HttpResponseRedirect(reverse("index:Announcement", args=(courseid,)))
+
+
+def courseLearnAnno(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    return render(request, "index/courseLearn/courseLearnAnnouncement.html", locals())

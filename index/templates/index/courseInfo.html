@@ -50,10 +50,16 @@
                 <p>登录以加入课程</p>
             </div>
             {% elif access == 'teacher' %}
+            <div class="courseBtn-Learn">
+                <p>开始学习</p>
+            </div>
             <div class="courseBtn-Setting">
                 <p>课程设置</p>
             </div>
             {% elif isSignedUp %}
+            <div class="courseBtn-Learn">
+                <p>开始学习</p>
+            </div>
             <div class="courseBtn-Resign">
                 <p>退出课程</p>
             </div>

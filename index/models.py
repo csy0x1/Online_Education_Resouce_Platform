@@ -1,4 +1,7 @@
 from django.db import models
+from django.db.models.deletion import CASCADE
+from django.db.models.fields import CharField, DateTimeField, TextField
+from django.db.models.fields.related import ForeignKey
 from django.db.models.lookups import IsNull
 
 # Create your models here.
@@ -77,6 +80,7 @@ class Course(models.Model):
         limit_choices_to={"access": "teacher"},
         null=True,
         blank=True,
+        related_name="teacher",
     )
     Course_Info = models.TextField(verbose_name="课程说明", default="暂未设置")
     Course_Goal = models.TextField(verbose_name="课程目标", default="暂未设置")
@@ -157,3 +161,25 @@ class CourseCategory(models.Model):
             # temp.CountNumber+=1 #增加分类计数
             # temp.save()
         super().save(*args, **kwargs)
+
+
+class CourseAnnouncement(models.Model):
+    sourceCourse = ForeignKey(
+        "Course",
+        verbose_name="源课程",
+        on_delete=CASCADE,
+        null=True,
+        blank=True,
+        related_name="sourceCourse",
+    )
+    Title = CharField(verbose_name="公告标题", default="新公告标题", max_length=20)
+    Message = TextField(verbose_name="课程公告", default="新公告内容")
+    createTime = DateTimeField(verbose_name="发布时间", auto_now_add=True)
+
+    def __str__(self) -> str:
+        return self.Title
+
+    class Meta:
+        ordering = ["-createTime"]
+        verbose_name = "课程公告"
+        verbose_name_plural = "课程公告"
