@@ -17,6 +17,11 @@ urlpatterns = [
     path("course/<int:courseid>/getNode", views.getNode),
     path("course/<int:courseid>/Setting", views.courseSetting, name="courseSetting"),
     path(
+        "course/<int:courseid>/Setting/Students",
+        views.courseSettingStudent,
+        name="studentSetting",
+    ),
+    path(
         "course/<int:courseid>/Modify",
         views.modifyStudents,
         name="modifyStudents",

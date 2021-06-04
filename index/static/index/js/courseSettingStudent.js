@@ -1,5 +1,9 @@
 $(function () {
 
+    $("[role='studentManagement']").attr({
+        "class": "active",
+    })
+
     function getCookie(name) {      //获取CSRF令牌
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {

@@ -230,6 +230,12 @@ def courseSetting(request, courseid):
         else:
             settingForm = forms.CourseSettingForm(instance=course)
 
+    return render(request, "index/courseSettingInfo.html", locals())
+
+
+def courseSettingStudent(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
     students = course.students.all()
     return render(request, "index/courseSettingStudent.html", locals())
 

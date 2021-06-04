@@ -29,8 +29,8 @@
     </div>
     <div class="navSideBar">
         <ul class="nav nav-pills nav-stacked">
-            <li role="basicInfo" class="active"><a href="#">基础设置</a></li>
-            <li role="studentManagement"><a href="#">学生管理</a></li>
+            <li role="basicInfo"><a href="{% url 'index:courseSetting' courseid %}">基础设置</a></li>
+            <li role="studentManagement"><a href="{% url 'index:studentSetting' courseid %}">学生管理</a></li>
         </ul>
     </div>
     {% endblock %}
