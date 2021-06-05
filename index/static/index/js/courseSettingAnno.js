@@ -27,4 +27,34 @@ $(function () {
     }
     const csrftoken = getCookie('csrftoken');
 
+    $(".remove").click(function () {
+        var List = []
+        $(".panel-heading").find("input[type='checkbox']").each(function () {
+            if ($(this).prop("checked")) {
+                var id = $(this).parent().parent().siblings(".panel-collapse").find(".id").text()
+                List.push(id)
+            }
+        })
+        $("#removeConfirm").modal({
+            keyboard: true,
+        })
+        $(".confirm").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "Announcement/Delete",
+                headers: { 'X-CSRFToken': csrftoken },
+                data: { announcementList: List, },
+                traditional: true,
+                success: function (response) {
+                    $("#removeConfirm").modal("hide")
+                    window.parent.location.reload()
+                }
+            })
+        })
+    })
+
+    $(".selectAll").click(function () {
+        $(".panel-heading").find("input[type='checkbox']").prop("checked", $(this).prop("checked"))
+        //全选按钮，令所有公告的复选框状态与全选复选框状态保持一致
+    })
 })

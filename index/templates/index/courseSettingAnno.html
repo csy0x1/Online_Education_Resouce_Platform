@@ -22,7 +22,8 @@
     {{ block.super }}
     <div class="mainContainer">
         <div class="newAnnoForm">
-            <form action="Announcement" method="POST" enctype="multipart/form-data" class="form-horizontal">
+            <form action="{% url 'index:announcementPost' courseid %}" method="POST" enctype="multipart/form-data"
+                class="form-horizontal">
                 {% csrf_token %}
                 <div class="form-group">
                     <div class="item form-Title">
@@ -39,37 +40,69 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">发布</button>
+                    <button type="submit" class="btn btn-primary postAnno">发布</button>
                 </div>
             </form>
         </div>
         <div class="historyAnno">
-            <h3>历史公告</h3>
+            <div class="header">
+                <h3>历史公告</h3>
+                <div class="btnheader">
+                    <input type="checkbox" class="selectAll">
+                    <button class="btn btn-danger remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                        </svg>
+                        删除公告
+                    </button>
+                </div>
+            </div>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                {% for Anno in historyAnnos %}
                 <div class="panel panel-default">
-                    <div class="panel-heading" role="tab" id="headingOne">
+                    <div class="panel-heading" role="tab" id="heading{{forloop.counter}}">
                         <h4 class="panel-title">
                             <input type="checkbox">
-                            <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne"
-                                aria-expanded="true" aria-controls="collapseOne">
-                                Collapsible Group Item #1
+                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                href="#collapse{{forloop.counter}}" aria-expanded="false"
+                                aria-controls="collapse{{forloop.counter}}" class="collapsed">
+                                {{Anno.Title}}
                             </a>
                         </h4>
                     </div>
-                    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel"
-                        aria-labelledby="headingOne">
+                    <div id="collapse{{forloop.counter}}" class="panel-collapse collapse" role="tabpanel"
+                        aria-labelledby="heading{{forloop.counter}}" aria-expanded="false">
                         <div class="panel-body">
-                            Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad
-                            squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa
-                            nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-                            single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft
-                            beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice
-                            lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you
-                            probably haven't heard of them accusamus labore sustainable VHS.
+                            {{Anno.Message}}
                         </div>
-                        <div>
-                            <button class="btn btn-danger histAnnoBtn">删除</button>
+                        <div class="postTime">
+                            <span>发布日期: </span>
+                            <span>{{Anno.createTime}}</span>
+                            <span class="id" hidden>{{Anno.id}}</span>
                         </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 模态框 -->
+        <div class="modal fade" id="removeConfirm" tabindex="-1" role="dialog" aria-labelledby="removeConfirmLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="removeConfirmLabel">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        确认删除选中公告？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger confirm">删除</button>
                     </div>
                 </div>
             </div>

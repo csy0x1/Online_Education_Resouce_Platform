@@ -24,7 +24,6 @@ $(function () {
     $(".removeStudent").click(function () {
         var List = []
         $("input[type='checkbox']").each(function () {
-            console.log(value)
             if ($(this).prop("checked")) {
                 var value = $(this).parent().siblings(".student-Name").text().trim()
                 //input是表格行td的子元素，而学生姓名是另一表格行td，要通过已选框查找到对应学生姓名

@@ -244,13 +244,27 @@ def courseSettingAnno(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     annoForm = forms.AnnouncementForm()
+    historyAnnos = models.CourseAnnouncement.objects.filter(sourceCourse=course)
+    return render(request, "index/courseSettingAnno.html", locals())
+
+
+def postAnnouncement(request, courseid):
+    course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
         annoForm = forms.AnnouncementForm(request.POST)
         if annoForm.is_valid():
             instance = annoForm.save(commit=False)
             instance.sourceCourse = course  # 将公告的源课程设置为当前课程
             instance.save()
-    return render(request, "index/courseSettingAnno.html", locals())
+    return HttpResponseRedirect(reverse("index:announcementSetting", args=(courseid,)))
+
+
+def deleteAnnouncement(request, courseid):
+    List = request.POST.getlist("announcementList")
+    print(List)
+    for item in List:
+        models.CourseAnnouncement.objects.filter(id=item).delete()
+    return HttpResponse("succeed")
 
 
 def saveNode(request, courseid):  # 保存节点，测试通过，待重构
@@ -269,11 +283,11 @@ def getNode(request, courseid):  # 读取节点，生成章节树状图
 
 def modifyStudents(request, courseid):
     studentsList = request.POST.getlist("studentsList")
-    # for student in studentsList:
-    #     course = models.Course.objects.get(id=courseid)
-    #     stu = models.Users.objects.get(name=student)
-    #     course.students.remove(stu.id)
-    #     course.save()
+    course = models.Course.objects.get(id=courseid)
+    for student in studentsList:
+        stu = models.Users.objects.get(name=student)
+        course.students.remove(stu.id)
+        course.save()
     return HttpResponse("succeed")
 
 

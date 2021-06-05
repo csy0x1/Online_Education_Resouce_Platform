@@ -27,6 +27,16 @@ urlpatterns = [
         name="announcementSetting",
     ),
     path(
+        "course/<int:courseid>/Setting/Announcement/Post",
+        views.postAnnouncement,
+        name="announcementPost",
+    ),
+    path(
+        "course/<int:courseid>/Setting/Announcement/Delete",
+        views.deleteAnnouncement,
+        name="announcementDelete",
+    ),
+    path(
         "course/<int:courseid>/Modify",
         views.modifyStudents,
         name="modifyStudents",
