@@ -35,14 +35,16 @@
         <div class="studentList">
             <table class="table table-hover">
                 <tr>
-                    <th></th>
+                    <th>
+                        <input type="checkbox" class="selectAll">
+                    </th>
                     <th>学生姓名</th>
                 </tr>
 
                 {% for student in students %}
                 <tr>
                     <td>
-                        <input type="checkbox">
+                        <input class="studentCkBox" type="checkbox">
                     </td>
                     <td class="student-Name">
                         {{ student.name }}

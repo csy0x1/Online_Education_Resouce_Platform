@@ -23,7 +23,7 @@ $(function () {
 
     $(".removeStudent").click(function () {
         var List = []
-        $("input[type='checkbox']").each(function () {
+        $(".studentCkBox").each(function () {
             if ($(this).prop("checked")) {
                 var value = $(this).parent().siblings(".student-Name").text().trim()
                 //input是表格行td的子元素，而学生姓名是另一表格行td，要通过已选框查找到对应学生姓名
@@ -37,7 +37,7 @@ $(function () {
         $(".confirm").click(function () {
             $.ajax({
                 type: "POST",
-                url: "Modify",
+                url: "Students/Remove",
                 headers: { 'X-CSRFToken': csrftoken },
                 data: {
                     studentsList: List,
@@ -50,5 +50,9 @@ $(function () {
 
             })
         })
+    })
+
+    $(".selectAll").click(function () {
+        $(".studentCkBox").prop("checked", $(this).prop("checked"))
     })
 })

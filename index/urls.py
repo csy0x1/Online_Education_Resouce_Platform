@@ -22,6 +22,11 @@ urlpatterns = [
         name="studentSetting",
     ),
     path(
+        "course/<int:courseid>/Setting/Students/Remove",
+        views.removeStudents,
+        name="removeStudents",
+    ),
+    path(
         "course/<int:courseid>/Setting/Announcement",
         views.courseSettingAnno,
         name="announcementSetting",
@@ -35,11 +40,6 @@ urlpatterns = [
         "course/<int:courseid>/Setting/Announcement/Delete",
         views.deleteAnnouncement,
         name="announcementDelete",
-    ),
-    path(
-        "course/<int:courseid>/Modify",
-        views.modifyStudents,
-        name="modifyStudents",
     ),
     # 课程学习相关url
     path(

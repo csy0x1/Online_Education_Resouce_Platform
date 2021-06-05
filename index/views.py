@@ -281,7 +281,7 @@ def getNode(request, courseid):  # 读取节点，生成章节树状图
     return HttpResponse(Chapter_Tree)
 
 
-def modifyStudents(request, courseid):
+def removeStudents(request, courseid):
     studentsList = request.POST.getlist("studentsList")
     course = models.Course.objects.get(id=courseid)
     for student in studentsList:
