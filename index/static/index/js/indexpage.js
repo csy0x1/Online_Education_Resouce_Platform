@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    $(".user-avatar").mouseover(function () {   //用户头像下拉菜单
+    $(".user-dropdown").mouseover(function () {   //用户头像下拉菜单
         $('.dropdown-toggle').dropdown('toggle')
     })
 

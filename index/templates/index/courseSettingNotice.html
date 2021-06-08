@@ -1,0 +1,117 @@
+{% extends 'index/courseSettingBase.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}公告管理 - {{courseDetail.Course_Name}} iMooc在线教育资源平台{% endblock title %}</title>
+
+    {% block extrastatic %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'index/css/courseSettingNotice.css' %}">
+    {% endblock extrastatic %}
+
+</head>
+
+<body>
+    {% block content %}
+    {{ block.super }}
+    <div class="mainContainer">
+        <div class="newNoticeForm">
+            <form action="{% url 'index:noticePost' courseid %}" method="POST" enctype="multipart/form-data"
+                class="form-horizontal">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="item form-Title">
+                        <label for="{{noticeForm.Title.id_for_label}" class="control-label col-sm-2">标题: </label>
+                        {{noticeForm.Title}}
+                        <span class="input-group-addon" id="titleaddon">0/20</span>
+                        </input>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="item form-Title">
+                        <label for="{{noticeForm.Message.id_for_label}" class="control-label col-sm-2">内容: </label>
+                        {{noticeForm.Message}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary postAnno">发布</button>
+                </div>
+            </form>
+        </div>
+        <div class="historyNotice">
+            <div class="header">
+                <h3>历史公告</h3>
+                <div class="btnheader">
+                    <input type="checkbox" class="selectAll">
+                    <button class="btn btn-danger remove">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                            class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z" />
+                        </svg>
+                        删除公告
+                    </button>
+                </div>
+            </div>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                {% for Notice in historyNotices %}
+                <div class="panel panel-default">
+                    <div class="panel-heading" role="tab" id="heading{{forloop.counter}}">
+                        <h4 class="panel-title">
+                            <input type="checkbox">
+                            <a role="button" data-toggle="collapse" data-parent="#accordion"
+                                href="#collapse{{forloop.counter}}" aria-expanded="false"
+                                aria-controls="collapse{{forloop.counter}}" class="collapsed">
+                                {{Notice.Title}}
+                            </a>
+                        </h4>
+                    </div>
+                    <div id="collapse{{forloop.counter}}" class="panel-collapse collapse" role="tabpanel"
+                        aria-labelledby="heading{{forloop.counter}}" aria-expanded="false">
+                        <div class="panel-body">
+                            {{Notice.Message}}
+                        </div>
+                        <div class="postTime">
+                            <span>发布日期: </span>
+                            <span>{{Notice.createTime}}</span>
+                            <span class="id" hidden>{{Notice.id}}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- 模态框 -->
+        <div class="modal fade" id="removeConfirm" tabindex="-1" role="dialog" aria-labelledby="removeConfirmLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="removeConfirmLabel">提示</h4>
+                    </div>
+                    <div class="modal-body">
+                        确认删除选中公告？
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default cancel" data-dismiss="modal">取消</button>
+                        <button type="button" class="btn btn-danger confirm">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- basic JQuery -->
+    <script src="{% static 'index/js/courseSettingNotice.js' %}"></script>
+    {% endblock content %}
+</body>
+
+</html>

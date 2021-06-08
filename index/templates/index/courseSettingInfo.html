@@ -1,5 +1,6 @@
-{% extends 'index/index.html' %}
+{% extends 'index/courseSettingBase.html' %}
 {% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,10 +8,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %} 基础设置 - {{courseDetail.Course_Name}} iMooc在线教育资源平台 {% endblock %}</title>
     {% block extrastatic %}
+    {{ block.super }}
     <!-- basic static -->
-    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSetting.css' %}">
-
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSettingInfo.css' %}">
     <!-- FancyTree -->
     <link rel="stylesheet" type="text/css" href="{% static 'index/css/treeView.css' %}">
 
@@ -25,29 +27,12 @@
     <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
         rel="stylesheet">
     {% endblock %}
-    <title>{% block title %}{{courseDetail.Course_Name}} - iMooc在线教育资源平台 课程设置{% endblock %}</title>
 </head>
 
 <body>
     {% block content %}
     <div>
-        <div>
-            <ul class="breadcrumb">
-                <li><a href="/index/">主页</a></li>
-                <li><a href="#">{{courseDetail.Course_Category}}</a></li>
-                <li><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
-                    </a>
-                </li>
-                <li class="active"><a href="{% url 'index:courseSetting' courseid %}">课程设置
-                    </a>
-                </li>
-            </ul>
-        </div>
-        <div class="navSideBar">
-            <ul class="nav nav-pills nav-stacked">
-                <li role="presentation" class="active"><a href="#">保留</a></li>
-            </ul>
-        </div>
+        {{ block.super }}
         <div class="settingForm">
             <form action="Setting" method="POST" enctype="multipart/form-data" class="form-horizontal">
                 {% csrf_token %}

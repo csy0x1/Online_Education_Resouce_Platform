@@ -1,5 +1,9 @@
 $(document).ready(function () {
 
+    $("[role='basicInfo']").attr({
+        "class": "active",
+    })
+
     $("#id_Course_Category").attr({ //初始化下拉选择框
         "class": "selectpicker",
         "data-live-search": "true",

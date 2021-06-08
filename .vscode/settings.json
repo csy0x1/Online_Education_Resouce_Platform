@@ -3,4 +3,5 @@
         "django-html": "html"
     },
     "python.formatting.provider": "black",
+    "python.pythonPath": "c:\\OERP\\.venv\\Scripts\\python.exe",
 }
