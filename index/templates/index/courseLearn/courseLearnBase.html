@@ -12,7 +12,6 @@
     {% block extrastatic %}
     <!-- Basic Static -->
     <link rel="stylesheet" href="{% static 'index/css/courseLearnBase.css' %}">
-
     {% endblock extrastatic %}
 
 </head>
@@ -41,27 +40,23 @@
             </a>
         </div>
     </div>
-    <div class="mainContainer">
-        <div class="navSideBar">
-            <div class="courseImage">
-                <img src="{{courseDetail.Course_Img}}" alt="课程图片">
-            </div>
-            <ul class="nav nav-pills nav-stacked">
-                <li class="active"><a href="#">公告</a></li>
-                <li><a href="#">评分标准</a></li>
-                <li><a href="#">课件</a></li>
-                <li><a href="#">测试与作业</a></li>
-                <li><a href="#">考试</a></li>
-                <li><a href="#">讨论区</a></li>
-            </ul>
+    <div class="navSideBar">
+        <div class="courseImage">
+            <img src="{{courseDetail.Course_Img}}" alt="课程图片">
+        </div>
+        <ul class="nav nav-pills nav-stacked">
+            <li class="active"><a href="#">公告</a></li>
+            <li><a href="#">评分标准</a></li>
+            <li><a href="#">课件</a></li>
+            <li><a href="#">测试与作业</a></li>
+            <li><a href="#">考试</a></li>
+            <li><a href="#">讨论区</a></li>
+        </ul>
 
-        </div>
-        <div>
-            <div class="content">
-                {% block learnContent %}
-                {% endblock learnContent %}
-            </div>
-        </div>
+    </div>
+    <div class="mainContainer">
+        {% block learnContent %}
+        {% endblock learnContent %}
     </div>
 
     {% endblock content %}

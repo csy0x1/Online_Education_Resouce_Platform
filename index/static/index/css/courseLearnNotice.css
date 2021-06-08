@@ -1,0 +1,39 @@
+.jumbotron{
+    margin-bottom:10px;
+}
+
+.newestNotice{
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+    border-radius: 4px;
+}
+
+.noticePostTime{
+    display: block;
+    float: right;
+}
+
+.noticeHeader h1{
+    font-size:xx-large;
+    font-weight:bold;
+}
+
+.historyNotices h4{
+    font-weight: bold;
+}
+
+
+.HnoticeContent p{
+    margin-bottom:0px;
+}
+
+.HnoticePostTime h5{
+    margin:0px;
+    float:right;
+}
+
+.historyNotices{
+    background-color:white;
+    padding:15px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+    border-radius: 4px;
+}

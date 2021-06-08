@@ -41,7 +41,7 @@ $(function () {
         $(".confirm").click(function () {
             $.ajax({
                 type: "POST",
-                url: "Announcement/Delete",
+                url: "Notice/Delete",
                 headers: { 'X-CSRFToken': csrftoken },
                 data: { announcementList: List, },
                 traditional: true,

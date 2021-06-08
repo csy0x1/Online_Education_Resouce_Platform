@@ -1,4 +1,4 @@
-from index.models import Course, CourseAnnouncement, Users, CourseCategory
+from index.models import Course, CourseNotice, Users, CourseCategory
 from django.contrib import admin
 
 # Register your models here.
@@ -21,7 +21,7 @@ class UserAdmin(admin.ModelAdmin):
     filter_horizontal = ("selected_courses",)
 
 
-class AnnoAdmin(admin.ModelAdmin):
+class NoticeAdmin(admin.ModelAdmin):
     list_display = ("id", "Title", "sourceCourse")
     list_filter = ("sourceCourse",)
 
@@ -29,4 +29,4 @@ class AnnoAdmin(admin.ModelAdmin):
 admin.site.register(Users, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(CourseCategory, CourseCategoryAdmini)
-admin.site.register(CourseAnnouncement, AnnoAdmin)
+admin.site.register(CourseNotice, NoticeAdmin)

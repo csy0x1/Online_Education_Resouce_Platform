@@ -8,11 +8,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{% block title %}公告管理 - {{courseDetail.Course_Name}} iMooc在线教育资源平台{% endblock title %}</title>
 
     {% block extrastatic %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'index/css/courseSettingAnno.css' %}">
+    <link rel="stylesheet" href="{% static 'index/css/courseSettingNotice.css' %}">
     {% endblock extrastatic %}
 
 </head>
@@ -21,22 +21,22 @@
     {% block content %}
     {{ block.super }}
     <div class="mainContainer">
-        <div class="newAnnoForm">
-            <form action="{% url 'index:announcementPost' courseid %}" method="POST" enctype="multipart/form-data"
+        <div class="newNoticeForm">
+            <form action="{% url 'index:noticePost' courseid %}" method="POST" enctype="multipart/form-data"
                 class="form-horizontal">
                 {% csrf_token %}
                 <div class="form-group">
                     <div class="item form-Title">
-                        <label for="{{annoForm.Title.id_for_label}" class="control-label col-sm-2">标题: </label>
-                        {{annoForm.Title}}
+                        <label for="{{noticeForm.Title.id_for_label}" class="control-label col-sm-2">标题: </label>
+                        {{noticeForm.Title}}
                         <span class="input-group-addon" id="titleaddon">0/20</span>
                         </input>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="item form-Title">
-                        <label for="{{annoForm.Message.id_for_label}" class="control-label col-sm-2">内容: </label>
-                        {{annoForm.Message}}
+                        <label for="{{noticeForm.Message.id_for_label}" class="control-label col-sm-2">内容: </label>
+                        {{noticeForm.Message}}
                     </div>
                 </div>
                 <div class="form-group">
@@ -44,7 +44,7 @@
                 </div>
             </form>
         </div>
-        <div class="historyAnno">
+        <div class="historyNotice">
             <div class="header">
                 <h3>历史公告</h3>
                 <div class="btnheader">
@@ -60,7 +60,7 @@
                 </div>
             </div>
             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
-                {% for Anno in historyAnnos %}
+                {% for Notice in historyNotices %}
                 <div class="panel panel-default">
                     <div class="panel-heading" role="tab" id="heading{{forloop.counter}}">
                         <h4 class="panel-title">
@@ -68,19 +68,19 @@
                             <a role="button" data-toggle="collapse" data-parent="#accordion"
                                 href="#collapse{{forloop.counter}}" aria-expanded="false"
                                 aria-controls="collapse{{forloop.counter}}" class="collapsed">
-                                {{Anno.Title}}
+                                {{Notice.Title}}
                             </a>
                         </h4>
                     </div>
                     <div id="collapse{{forloop.counter}}" class="panel-collapse collapse" role="tabpanel"
                         aria-labelledby="heading{{forloop.counter}}" aria-expanded="false">
                         <div class="panel-body">
-                            {{Anno.Message}}
+                            {{Notice.Message}}
                         </div>
                         <div class="postTime">
                             <span>发布日期: </span>
-                            <span>{{Anno.createTime}}</span>
-                            <span class="id" hidden>{{Anno.id}}</span>
+                            <span>{{Notice.createTime}}</span>
+                            <span class="id" hidden>{{Notice.id}}</span>
                         </div>
                     </div>
                 </div>
@@ -110,7 +110,7 @@
     </div>
 
     <!-- basic JQuery -->
-    <script src="{% static 'index/js/courseSettingAnno.js' %}"></script>
+    <script src="{% static 'index/js/courseSettingNotice.js' %}"></script>
     {% endblock content %}
 </body>
 

@@ -8,7 +8,7 @@ from django.forms.fields import ChoiceField, ImageField
 from django.forms.models import ModelChoiceField
 from django.forms.widgets import ChoiceWidget, EmailInput, Select, Textarea, TextInput
 
-from index.models import Course, CourseAnnouncement, Users
+from index.models import Course, CourseNotice, Users
 
 
 class userForm(forms.Form):
@@ -68,9 +68,9 @@ class CourseSettingForm(ModelForm):
         ]
 
 
-class AnnouncementForm(ModelForm):
+class NoticeForm(ModelForm):
     def __init__(self, *args, **kwargs):
-        super(AnnouncementForm, self).__init__(*args, **kwargs)
+        super(NoticeForm, self).__init__(*args, **kwargs)
         for field in iter(self.fields):
             self.fields[field].widget.attrs.update(
                 {
@@ -79,7 +79,7 @@ class AnnouncementForm(ModelForm):
             )
 
     class Meta:
-        model = CourseAnnouncement
+        model = CourseNotice
         exclude = [
             "sourceCourse",
         ]

@@ -163,7 +163,7 @@ class CourseCategory(models.Model):
         super().save(*args, **kwargs)
 
 
-class CourseAnnouncement(models.Model):
+class CourseNotice(models.Model):
     sourceCourse = ForeignKey(
         "Course",
         verbose_name="源课程",

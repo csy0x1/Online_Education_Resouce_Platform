@@ -4,6 +4,7 @@ from email import message
 
 from django.contrib.auth import authenticate, hashers
 from django.core.checks import messages
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F
 from django.dispatch.dispatcher import receiver
 from django.http import HttpResponseRedirect
@@ -240,30 +241,30 @@ def courseSettingStudent(request, courseid):
     return render(request, "index/courseSettingStudent.html", locals())
 
 
-def courseSettingAnno(request, courseid):
+def courseSettingNotice(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    annoForm = forms.AnnouncementForm()
-    historyAnnos = models.CourseAnnouncement.objects.filter(sourceCourse=course)
-    return render(request, "index/courseSettingAnno.html", locals())
+    noticeForm = forms.NoticeForm()
+    historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
+    return render(request, "index/courseSettingNotice.html", locals())
 
 
-def postAnnouncement(request, courseid):
+def postNotice(request, courseid):
     course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
-        annoForm = forms.AnnouncementForm(request.POST)
-        if annoForm.is_valid():
-            instance = annoForm.save(commit=False)
+        noticeForm = forms.NoticeForm(request.POST)
+        if noticeForm.is_valid():
+            instance = noticeForm.save(commit=False)
             instance.sourceCourse = course  # 将公告的源课程设置为当前课程
             instance.save()
-    return HttpResponseRedirect(reverse("index:announcementSetting", args=(courseid,)))
+    return HttpResponseRedirect(reverse("index:noticeSetting", args=(courseid,)))
 
 
-def deleteAnnouncement(request, courseid):
+def deleteNotice(request, courseid):
     List = request.POST.getlist("announcementList")
     print(List)
     for item in List:
-        models.CourseAnnouncement.objects.filter(id=item).delete()
+        models.CourseNotice.objects.filter(id=item).delete()
     return HttpResponse("succeed")
 
 
@@ -292,10 +293,21 @@ def removeStudents(request, courseid):
 
 
 def courseLearn(request, courseid):
-    return HttpResponseRedirect(reverse("index:Announcement", args=(courseid,)))
+    return HttpResponseRedirect(reverse("index:Notice", args=(courseid,)))
 
 
-def courseLearnAnno(request, courseid):
+def courseLearnNotice(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    return render(request, "index/courseLearn/courseLearnAnnouncement.html", locals())
+    historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
+    newestNotice = historyNotices.order_by("-createTime")[:1][0]
+    paginator = Paginator(historyNotices, 5)  # 分页功能
+    if request.method == "GET":
+        page = request.GET.get("page")
+        try:
+            Notices = paginator.page(page)
+        except PageNotAnInteger:
+            Notices = paginator.page(1)
+        except EmptyPage:
+            Notices = paginator.page(paginator.num_pages)
+    return render(request, "index/courseLearn/courseLearnNotice.html", locals())

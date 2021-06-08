@@ -1,10 +1,10 @@
-.newAnnoForm label{
+.newNoticeForm label{
     width:fit-content;
     margin-left:15px;
     padding-left:0px;
 }
 
-.newAnnoForm{
+.newNoticeForm{
     position:relative;
     display:block;
     float:right;
@@ -16,7 +16,7 @@
     width:80%;
 }
 
-.newAnnoForm button{
+.newNoticeForm button{
     margin-left:15px;
 }
 
@@ -36,7 +36,7 @@
     padding-top:8px;
 }
 
-.historyAnno{
+.historyNotice{
     position:relative;
     display:block;
     float:right;
@@ -59,7 +59,7 @@
     margin:0 15px;
 }
 
-.historyAnno .header button{
+.historyNotice .header button{
     margin-left:30px;
     margin-bottom:10px;
 }
