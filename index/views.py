@@ -149,6 +149,15 @@ def aboutus(request):
     return render(request, "index/aboutus.html")
 
 
+def getTitle(children):
+    Title = children[0]["title"]
+    try:
+        Children = children[0]["children"]
+    except:
+        Children = "null"
+    return Title, Children
+
+
 def courseInfo(request, courseid):
     courseDetail, courseInfo, teacher = VF.Get_Course(courseid)
     isSignedUp = False
@@ -164,6 +173,20 @@ def courseInfo(request, courseid):
             pass
     except:
         isLogin = False
+    a = courseInfo["课程大纲"]
+    a = json.loads(a)
+    # print(a["title"])
+    # print(a["children"])
+    j = 2
+    for i in range(j):
+        for key, value in a.items():
+            if key == "children":
+                title, a = getTitle(value)
+                print(title)
+                j = len(a)
+                b = a
+                a = b[i]
+
     return render(request, "index/courseInfo.html", locals())
 
 
@@ -311,3 +334,9 @@ def courseLearnNotice(request, courseid):
         except EmptyPage:
             Notices = paginator.page(paginator.num_pages)
     return render(request, "index/courseLearn/courseLearnNotice.html", locals())
+
+
+def courseLearnGrading(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    return render(request, "index/courseLearn/courseLearnGrading.html", locals())
