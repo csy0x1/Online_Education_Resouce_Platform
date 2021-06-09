@@ -108,7 +108,9 @@ $(document).ready(function () {
     $("#tree").keydown(function (e) {   //快捷键
         if (e.shiftKey && e.keyCode == 112) {
             var node = $.ui.fancytree.getTree("#tree").getActiveNode();
-            node.editCreateNode("child", "");
+            if (node.getLevel() < 2) {
+                node.editCreateNode("child", "");
+            }
         }
         if (e.shiftKey && e.keyCode == 113) {
             var node = $.ui.fancytree.getTree("#tree").getActiveNode();
@@ -120,7 +122,19 @@ $(document).ready(function () {
         if (e.keyCode == 13) {
             var tree = $.ui.fancytree.getTree("#tree")
             var dic = tree.toDict(true)
+            var leafNodes = [];
+            var parent = [];
+            var dict = {}
+
+            tree.visit(function (node) {
+                if (node.parent && node.parent.title != "root") {
+                    parent.push(node.parent.title)
+                }
+            });
+            parent = unique(parent)
             console.log(dic)
+            console.log(parent)
+            console.log(leafNodes)
             $.ajax({
                 type: "POST",
                 url: "saveNode",
@@ -137,5 +151,16 @@ $(document).ready(function () {
     $("#updateImg").fileinput({     //文件上传
         'language': 'zh'
     });
+
+    function unique(arr) {
+        var result = [], hash = {};
+        for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+            if (!hash[elem]) {
+                result.push(elem);
+                hash[elem] = true;
+            }
+        }
+        return result;
+    }
 
 });

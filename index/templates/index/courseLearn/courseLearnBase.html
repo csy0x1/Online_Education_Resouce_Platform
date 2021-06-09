@@ -45,8 +45,8 @@
             <img src="{{courseDetail.Course_Img}}" alt="课程图片">
         </div>
         <ul class="nav nav-pills nav-stacked">
-            <li class="active"><a href="#">公告</a></li>
-            <li><a href="#">评分标准</a></li>
+            <li name="Notices"><a href="{% url 'index:Notice' courseid %}">公告</a></li>
+            <li name="Grading"><a href="{% url 'index:Grading' courseid %}">评分标准</a></li>
             <li><a href="#">课件</a></li>
             <li><a href="#">测试与作业</a></li>
             <li><a href="#">考试</a></li>
