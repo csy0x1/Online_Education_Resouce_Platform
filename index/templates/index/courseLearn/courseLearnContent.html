@@ -12,10 +12,6 @@
 
 <body>
 
-    {% for Section in Chapter.sourceChapter.all %}
-    <li><a href="#">{{Section}}</a></li>
-    {% endfor %}
-
     {% block learnContent %}
     <div class="Selector">
         <ul class="breadcrumb">
@@ -34,11 +30,6 @@
         </ul>
     </div>
 
-    <form action="" method="POST" enctype="multipart/form-data">
-        {% csrf_token %}
-        {{FilesForm}}
-        <button type="submit">submit</button>
-    </form>
     <div class="fileList">
         <table class="table table-hover fileTable">
             <tr>

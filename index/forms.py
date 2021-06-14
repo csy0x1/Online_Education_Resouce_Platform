@@ -98,5 +98,7 @@ class CourseFilesForm(ModelForm):
         # fields = ["courseFile"]
         fields = ["courseFile"]
         widgets = {
-            "courseFile": ClearableFileInput(attrs={"multiple": True}),
+            "courseFile": ClearableFileInput(
+                attrs={"multiple": True, "class": "form-control"}
+            ),
         }

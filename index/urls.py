@@ -37,6 +37,16 @@ urlpatterns = [
         name="chapterSetting",
     ),
     path(
+        "course/<int:courseid>/Setting/Chapter/GetSection",
+        views.GetSection,
+        name="GetSection",
+    ),
+    path(
+        "course/<int:courseid>/Setting/Chapter/GetContent",
+        views.GetContent,
+        name="GetContent",
+    ),
+    path(
         "course/<int:courseid>/Setting/Notice/Post",
         views.postNotice,
         name="noticePost",

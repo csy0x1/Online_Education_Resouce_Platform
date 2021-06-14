@@ -264,13 +264,15 @@ def courseSettingChapter(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     Chapters = models.Chapter.objects.filter(sourceCourse=course)
-    Section = models.Section.objects.get(sectionName="1.1 sb Bot2")
     FilesForm = forms.CourseFilesForm()
-    FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
+    # FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
 
     if request.method == "POST":
+        POSTsection = request.POST.get("section")
+        Section = models.Section.objects.get(sectionName__startswith=POSTsection)
         FilesForm = forms.CourseFilesForm(request.POST, request.FILES)
-        files = request.FILES.getlist("courseFile")
+        files = request.FILES.getlist("file_obj")
+        print(request.FILES)
         if FilesForm.is_valid():
             for file in files:
                 file_instance = models.CourseFiles(
@@ -356,19 +358,19 @@ def courseLearnContent(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     Chapters = models.Chapter.objects.filter(sourceCourse=course)
-    Section = models.Section.objects.get(sectionName="1.1 sb Bot2")
-    FilesForm = forms.CourseFilesForm()
-    FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
+    # Section = models.Section.objects.get(sectionName="1.1 sb Bot2")
+    # FilesForm = forms.CourseFilesForm()
+    # FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
 
-    if request.method == "POST":
-        FilesForm = forms.CourseFilesForm(request.POST, request.FILES)
-        files = request.FILES.getlist("courseFile")
-        if FilesForm.is_valid():
-            for file in files:
-                file_instance = models.CourseFiles(
-                    courseFile=file, sourceSection=Section
-                )
-                file_instance.save()
+    # if request.method == "POST":
+    #     FilesForm = forms.CourseFilesForm(request.POST, request.FILES)
+    #     files = request.FILES.getlist("courseFile")
+    #     if FilesForm.is_valid():
+    #         for file in files:
+    #             file_instance = models.CourseFiles(
+    #                 courseFile=file, sourceSection=Section
+    #             )
+    #             file_instance.save()
     return render(request, "index/courseLearn/courseLearnContent.html", locals())
 
 
@@ -391,5 +393,5 @@ def GetContent(request, courseid):
     for f in FilesList:
         filename = f.filename()
         data[filename] = f.courseFile.url
-    print(data)
+    # print(data)
     return JsonResponse(data, safe=False)

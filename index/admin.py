@@ -1,4 +1,12 @@
-from index.models import Chapter, Course, CourseNotice, Section, Users, CourseCategory
+from index.models import (
+    Chapter,
+    Course,
+    CourseFiles,
+    CourseNotice,
+    Section,
+    Users,
+    CourseCategory,
+)
 from django.contrib import admin
 
 # Register your models here.
@@ -26,9 +34,14 @@ class NoticeAdmin(admin.ModelAdmin):
     list_filter = ("sourceCourse",)
 
 
+class FilesAdmin(admin.ModelAdmin):
+    list_display = ("id", "sourceSection", "courseFile")
+
+
 admin.site.register(Users, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(CourseCategory, CourseCategoryAdmini)
 admin.site.register(CourseNotice, NoticeAdmin)
 admin.site.register(Chapter)
 admin.site.register(Section)
+admin.site.register(CourseFiles, FilesAdmin)
