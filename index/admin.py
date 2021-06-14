@@ -1,4 +1,4 @@
-from index.models import Course, CourseNotice, Users, CourseCategory
+from index.models import Chapter, Course, CourseNotice, Section, Users, CourseCategory
 from django.contrib import admin
 
 # Register your models here.
@@ -30,3 +30,5 @@ admin.site.register(Users, UserAdmin)
 admin.site.register(Course, CourseAdmin)
 admin.site.register(CourseCategory, CourseCategoryAdmini)
 admin.site.register(CourseNotice, NoticeAdmin)
+admin.site.register(Chapter)
+admin.site.register(Section)

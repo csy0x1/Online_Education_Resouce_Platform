@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models.deletion import CASCADE
 from django.db.models.fields import CharField, DateTimeField, TextField
+from django.db.models.fields.files import FileField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.lookups import IsNull
 
@@ -183,3 +184,41 @@ class CourseNotice(models.Model):
         ordering = ["-createTime"]
         verbose_name = "课程公告"
         verbose_name_plural = "课程公告"
+
+
+class Chapter(models.Model):
+    sourceCourse = ForeignKey(
+        "Course",
+        verbose_name="源课程",
+        on_delete=CASCADE,
+        related_name="chapterSourceCourse",
+    )
+    chapterName = CharField(verbose_name="章名", max_length=100)
+
+    def __str__(self) -> str:
+        return self.chapterName
+
+    class Meta:
+        ordering = ["sourceCourse"]
+        verbose_name = "章名"
+        verbose_name_plural = "章名"
+
+
+def Upload_File_Path(instance, filename):  # 文件上传目录回调函数
+    return "courseFile/{0}/{1}".format(instance.sourceChapter.sourceCourse, filename)
+
+
+class Section(models.Model):
+    sourceChapter = ForeignKey(
+        "Chapter", verbose_name="所属章", on_delete=CASCADE, related_name="sourceChapter"
+    )
+    sectionName = CharField(verbose_name="节名", max_length=100)
+    courseFile = FileField(upload_to=Upload_File_Path, blank=True, null=True)
+
+    def __str__(self) -> str:
+        return self.sectionName
+
+    class Meta:
+        ordering = ["sourceChapter"]
+        verbose_name = "节名"
+        verbose_name_plural = "节名"
