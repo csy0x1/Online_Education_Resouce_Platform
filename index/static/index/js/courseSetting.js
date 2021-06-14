@@ -133,8 +133,8 @@ $(document).ready(function () {
             });
             parent = unique(parent)
             console.log(dic)
-            console.log(parent)
-            console.log(leafNodes)
+            // console.log(parent)
+            // console.log(leafNodes)
             $.ajax({
                 type: "POST",
                 url: "saveNode",

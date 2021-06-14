@@ -173,19 +173,6 @@ def courseInfo(request, courseid):
             pass
     except:
         isLogin = False
-    a = courseInfo["课程大纲"]
-    a = json.loads(a)
-    # print(a["title"])
-    # print(a["children"])
-    j = 2
-    for i in range(j):
-        for key, value in a.items():
-            if key == "children":
-                title, a = getTitle(value)
-                print(title)
-                j = len(a)
-                b = a
-                a = b[i]
 
     return render(request, "index/courseInfo.html", locals())
 
@@ -296,6 +283,8 @@ def saveNode(request, courseid):  # 保存节点，测试通过，待重构
     dict = request.POST.get("dict")  # 获取树状图的数据
     course.Course_Chapter = dict
     course.save()
+    chapterDict = VF.get_Chapter(dict)
+    VF.save_Chapter(chapterDict, courseid)
     return HttpResponse(dict)
 
 
@@ -340,3 +329,9 @@ def courseLearnGrading(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     return render(request, "index/courseLearn/courseLearnGrading.html", locals())
+
+
+def courseLearnContent(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    return render(request, "index/courseLearn/courseLearnContent.html", locals())
