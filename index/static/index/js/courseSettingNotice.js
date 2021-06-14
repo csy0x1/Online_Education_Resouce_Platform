@@ -8,7 +8,7 @@ $(function () {
     };
     $('input[name="Title"]').bind('change blur keyup input', titleCount);
 
-    titleCount();
+    titleCount()
 
     function getCookie(name) {      //获取CSRF令牌
         let cookieValue = null;

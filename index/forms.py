@@ -6,9 +6,16 @@ from django.db.models.fields import CharField, DateTimeField
 from django.forms import ModelForm, widgets
 from django.forms.fields import ChoiceField, ImageField
 from django.forms.models import ModelChoiceField
-from django.forms.widgets import ChoiceWidget, EmailInput, Select, Textarea, TextInput
+from django.forms.widgets import (
+    ChoiceWidget,
+    ClearableFileInput,
+    EmailInput,
+    Select,
+    Textarea,
+    TextInput,
+)
 
-from index.models import Course, CourseNotice, Users
+from index.models import Course, CourseFiles, CourseNotice, Section, Users
 
 
 class userForm(forms.Form):
@@ -83,3 +90,13 @@ class NoticeForm(ModelForm):
         exclude = [
             "sourceCourse",
         ]
+
+
+class CourseFilesForm(ModelForm):
+    class Meta:
+        model = CourseFiles
+        # fields = ["courseFile"]
+        fields = ["courseFile"]
+        widgets = {
+            "courseFile": ClearableFileInput(attrs={"multiple": True}),
+        }

@@ -3,19 +3,20 @@ import json
 from email import message
 
 from django.contrib.auth import authenticate, hashers
+from django.contrib.auth.decorators import login_required
+from django.core import serializers
 from django.core.checks import messages
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F
 from django.dispatch.dispatcher import receiver
-from django.http import HttpResponseRedirect
+from django.forms.forms import Form
+from django.http import HttpResponseRedirect, response
 from django.http.request import HttpRequest
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render, resolve_url
 from django.urls import reverse
 from django.urls.base import resolve
 from django.views.decorators.clickjacking import xframe_options_exempt
-from django.contrib.auth.decorators import login_required
-
 
 from . import forms, models
 from .functions import viewFunction as VF
@@ -259,6 +260,26 @@ def courseSettingNotice(request, courseid):
     return render(request, "index/courseSettingNotice.html", locals())
 
 
+def courseSettingChapter(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    Chapters = models.Chapter.objects.filter(sourceCourse=course)
+    Section = models.Section.objects.get(sectionName="1.1 sb Bot2")
+    FilesForm = forms.CourseFilesForm()
+    FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
+
+    if request.method == "POST":
+        FilesForm = forms.CourseFilesForm(request.POST, request.FILES)
+        files = request.FILES.getlist("courseFile")
+        if FilesForm.is_valid():
+            for file in files:
+                file_instance = models.CourseFiles(
+                    courseFile=file, sourceSection=Section
+                )
+                file_instance.save()
+    return render(request, "index/courseSettingChapter.html", locals())
+
+
 def postNotice(request, courseid):
     course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
@@ -334,4 +355,41 @@ def courseLearnGrading(request, courseid):
 def courseLearnContent(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
+    Chapters = models.Chapter.objects.filter(sourceCourse=course)
+    Section = models.Section.objects.get(sectionName="1.1 sb Bot2")
+    FilesForm = forms.CourseFilesForm()
+    FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
+
+    if request.method == "POST":
+        FilesForm = forms.CourseFilesForm(request.POST, request.FILES)
+        files = request.FILES.getlist("courseFile")
+        if FilesForm.is_valid():
+            for file in files:
+                file_instance = models.CourseFiles(
+                    courseFile=file, sourceSection=Section
+                )
+                file_instance.save()
     return render(request, "index/courseLearn/courseLearnContent.html", locals())
+
+
+def GetSection(request, courseid):
+    Chapter = request.GET.get("Chapter")
+    Chapter = models.Chapter.objects.get(chapterName=Chapter)
+    data = []
+    Sections = Chapter.sourceChapter.all()
+    for Section in Sections:
+        data.append(Section.sectionName)
+
+    return JsonResponse(data, safe=False)
+
+
+def GetContent(request, courseid):
+    Section = request.GET.get("Section")
+    Section = models.Section.objects.get(sectionName__startswith=Section)
+    FilesList = Section.sourceSection.all()
+    data = {}
+    for f in FilesList:
+        filename = f.filename()
+        data[filename] = f.courseFile.url
+    print(data)
+    return JsonResponse(data, safe=False)

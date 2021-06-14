@@ -32,6 +32,11 @@ urlpatterns = [
         name="noticeSetting",
     ),
     path(
+        "course/<int:courseid>/Setting/Chapter",
+        views.courseSettingChapter,
+        name="chapterSetting",
+    ),
+    path(
         "course/<int:courseid>/Setting/Notice/Post",
         views.postNotice,
         name="noticePost",
@@ -52,6 +57,16 @@ urlpatterns = [
     ),
     path(
         "course/<int:courseid>/learn/Content", views.courseLearnContent, name="Content"
+    ),
+    path(
+        "course/<int:courseid>/learn/Content/GetSection",
+        views.GetSection,
+        name="GetSection",
+    ),
+    path(
+        "course/<int:courseid>/learn/Content/GetContent",
+        views.GetContent,
+        name="GetContent",
     ),
     path("course/<int:courseid>/learn", views.courseLearn, name="Learn"),
     # path('course/<int:courseid>/Setting/<str:section>',views.courseSetting, name='courseSetting'),

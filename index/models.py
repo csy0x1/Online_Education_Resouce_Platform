@@ -1,5 +1,6 @@
+import os
 from django.db import models
-from django.db.models.deletion import CASCADE
+from django.db.models.deletion import CASCADE, SET_NULL
 from django.db.models.fields import CharField, DateTimeField, TextField
 from django.db.models.fields.files import FileField
 from django.db.models.fields.related import ForeignKey
@@ -205,7 +206,9 @@ class Chapter(models.Model):
 
 
 def Upload_File_Path(instance, filename):  # 文件上传目录回调函数
-    return "courseFile/{0}/{1}".format(instance.sourceChapter.sourceCourse, filename)
+    return "courseFile/{0}/{1}".format(
+        instance.sourceSection.sourceChapter.sourceCourse, filename
+    )
 
 
 class Section(models.Model):
@@ -213,7 +216,6 @@ class Section(models.Model):
         "Chapter", verbose_name="所属章", on_delete=CASCADE, related_name="sourceChapter"
     )
     sectionName = CharField(verbose_name="节名", max_length=100)
-    courseFile = FileField(upload_to=Upload_File_Path, blank=True, null=True)
 
     def __str__(self) -> str:
         return self.sectionName
@@ -222,3 +224,26 @@ class Section(models.Model):
         ordering = ["sourceChapter"]
         verbose_name = "节名"
         verbose_name_plural = "节名"
+
+
+class CourseFiles(models.Model):
+    sourceSection = ForeignKey(
+        "Section",
+        verbose_name="所属节",
+        on_delete=SET_NULL,
+        related_name="sourceSection",
+        blank=True,
+        null=True,
+    )
+    courseFile = FileField(upload_to=Upload_File_Path, blank=True, null=True)
+
+    def __str__(self) -> str:
+        return self.courseFile.name
+
+    def filename(self):
+        return os.path.basename(self.courseFile.name)
+
+    class Meta:
+        ordering = ["sourceSection"]
+        verbose_name = "文件名"
+        verbose_name_plural = "文件名"
