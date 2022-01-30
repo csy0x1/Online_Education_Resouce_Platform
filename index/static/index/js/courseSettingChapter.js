@@ -1,5 +1,7 @@
 $(function () {
 
+
+
     $("[role='chapterManagement']").attr({
         "class": "active",
     })
@@ -34,9 +36,12 @@ $(function () {
                 $.each(response, function (i, item) {
                     content += '<option value=' + item + '>' + item + '</option>'
                 })
-                $('.SectionSelector').html(content)
-                Section = $('.SectionSelector').val()
-                console.log(Section)
+                $('#SectionSelector').empty()
+                $('#SectionSelector').html(content)
+                $('#SectionSelector').selectpicker('refresh')
+                $('#currentSection').text($('#SectionSelector').find("option:selected").text())
+                //Section = $('#SectionSelector').val()
+                //console.log(Section)
                 getContent()
             }
         })
@@ -64,35 +69,48 @@ $(function () {
                 tab.html(content)
             }
         })
+        $('#input-CourseFiles').fileinput('clear')
+        return Section
     }
-    $('.ChapterSelector').change(getSections)
-    $('.SectionSelector').change(getContent)
+    $('#ChapterSelector').change(getSections)
+    $('#SectionSelector').change(getContent)
+
+    // $(document).on('click', '.buttontest', function () {
+    //     var filename = $(this).parent().prev().text()
+    //     console.log("clicked test" + filename)
+    // })
 
     getSections()
 
-    function submitForm() {
-        var Section = $('.SectionSelector').val()
-        var form = new FormData()
-        var f_obj = $('[name="courseFile"]')[0].files
-        for (i = 0; i < f_obj.length; i++) {
-            var files = $('[name="courseFile"]')[0].files[i]
-            form.append("file_obj", files)
-        }
-        form.append("section", Section)
-        form.append("X-CSRFToken", csrftoken)
-        $.ajax({
-            type: "POST",
-            url: "Chapter",
-            dataType: "json",
-            headers: { 'X-CSRFToken': csrftoken },
-            data: form,
-            processData: false,
-            contentType: false,
-            success: function (response) {
-
-            }
+    $('#SectionSelector').on("changed.bs.select",
+        function (e,clickedIndex) {
+            $('#currentSection').text($('#SectionSelector').find("option:selected").text())
         })
-    }
+
+    // $("#test").on("click",
+    //     function (e){
+    //         console.log("this.value"+$('#SectionSelector').find("option:selected").text())
+    //
+    //     })
+
+    console.log("this.value"+$('#SectionSelector').find("option:selected").text())
+
+    $("#input-CourseFiles").fileinput({     //文件上传
+        'language': 'zh',
+        allowedFileExtensions: ['mp4', 'mp3', 'pdf', 'png', 'jpg'],//接收的文件后缀
+        uploadUrl: 'Chapter',
+        uploadExtraData: function (){
+            return{
+                "chapter":$('#ChapterSelector').val(),
+                "section":$('#currentSection').text(),
+            }
+        },
+        ajaxSettings:{
+            'headers':{"X-CSRFToken":csrftoken}
+            //uploadExtraData:{'section':$('#SectionSelector').val()},
+        }
+    });
+
 
     $('#submit').click(submitForm)
 })

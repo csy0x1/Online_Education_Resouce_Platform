@@ -1,6 +1,8 @@
+from __future__ import print_function
 import email
 import json
 from email import message
+import os
 
 from django.contrib.auth import authenticate, hashers
 from django.contrib.auth.decorators import login_required
@@ -264,21 +266,36 @@ def courseSettingChapter(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     Chapters = models.Chapter.objects.filter(sourceCourse=course)
-    FilesForm = forms.CourseFilesForm()
     # FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
 
+    # if request.method == "POST":
+    #     POSTsection = request.POST.get("section")
+    #     Section = models.Section.objects.get(sectionName__startswith=POSTsection)
+    #     FilesForm = forms.CourseFilesForm(request.POST, request.FILES)
+    #     files = request.FILES.getlist("file_obj")
+    #     print(request.FILES)
+    #     if FilesForm.is_valid():
+    #         for file in files:
+    #             file_instance = models.CourseFiles(
+    #                 courseFile=file, sourceSection=Section
+    #             )
+    #             file_instance.save()
+    #             j={}
+    #             return JsonResponse({'status':'success'})
+    # else:
+    #     FilesForm = forms.CourseFilesForm()
+
     if request.method == "POST":
-        POSTsection = request.POST.get("section")
-        Section = models.Section.objects.get(sectionName__startswith=POSTsection)
-        FilesForm = forms.CourseFilesForm(request.POST, request.FILES)
-        files = request.FILES.getlist("file_obj")
-        print(request.FILES)
-        if FilesForm.is_valid():
-            for file in files:
-                file_instance = models.CourseFiles(
-                    courseFile=file, sourceSection=Section
-                )
-                file_instance.save()
+        file = request.FILES['input-CourseFiles']
+        chapter = request.POST.get('chapter')
+        section = request.POST.get('section')
+        print(chapter,section)
+        file_path = "media/courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file.name
+        os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        with open(file_path,"wb") as f:
+            for chunk in file.chunks():
+                f.write(chunk)
+        return JsonResponse({})
     return render(request, "index/courseSettingChapter.html", locals())
 
 
