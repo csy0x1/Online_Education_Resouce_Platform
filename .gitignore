@@ -1,5 +1,5 @@
 /nohup.out
 /packages.microsoft.gpg
-/__pycache__
-/functions/__pycache__
-/migrations
+index/functions/__pycache__
+index/migrations
+index/__pycache__/
