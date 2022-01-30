@@ -264,7 +264,6 @@ def courseSettingChapter(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     Chapters = models.Chapter.objects.filter(sourceCourse=course)
-    FilesForm = forms.CourseFilesForm()
     # FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
 
     if request.method == "POST":
@@ -279,6 +278,8 @@ def courseSettingChapter(request, courseid):
                     courseFile=file, sourceSection=Section
                 )
                 file_instance.save()
+    else:
+        FilesForm = forms.CourseFilesForm()
     return render(request, "index/courseSettingChapter.html", locals())
 
 

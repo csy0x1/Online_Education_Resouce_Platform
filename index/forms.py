@@ -93,6 +93,28 @@ class NoticeForm(ModelForm):
 
 
 class CourseFilesForm(ModelForm):
+    Course_Files = forms.FileField(
+        label=("课程文件"), required=False, widget=forms.FileInput
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(CourseFilesForm, self).__init__(*args, **kwargs)
+        for field in iter(self.fields):
+            if field == "courseFile":
+                self.fields[field].widget.attrs.update(
+                    {
+                        "id": "id_Course_Files",
+                        "class": "file-loading",
+                        "data-browse-on-zone-click": "true",
+                    }
+                )
+            else:
+                self.fields[field].widget.attrs.update(
+                    {
+                        "class": "form-control col-sm-10",
+                    }
+                )
+
     class Meta:
         model = CourseFiles
         # fields = ["courseFile"]

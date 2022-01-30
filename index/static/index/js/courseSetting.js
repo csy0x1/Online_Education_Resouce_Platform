@@ -149,7 +149,8 @@ $(document).ready(function () {
     });
 
     $("#updateImg").fileinput({     //文件上传
-        'language': 'zh'
+        'language': 'zh',
+        allowedFileExtensions: ['jpg', 'png', 'gif'],//接收的文件后缀
     });
 
     function unique(arr) {

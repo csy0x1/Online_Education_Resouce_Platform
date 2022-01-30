@@ -4,6 +4,7 @@ $(function () {
         "class": "active",
     })
 
+
     function getCookie(name) {      //获取CSRF令牌
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -23,7 +24,7 @@ $(function () {
 
     // 根据所选章获取相应的内容
     function getSections() {
-        var Chapter = $('.ChapterSelector').val()
+        var Chapter = $('#ChapterSelector').val()
         $.ajax({
             type: "GET",
             url: "Chapter/GetSection",
@@ -33,17 +34,23 @@ $(function () {
                 var content = ''
                 $.each(response, function (i, item) {
                     content += '<option value=' + item + '>' + item + '</option>'
+                    // $('#SectionSelector').append(
+                    //     $("<option></option>").attr(
+                    //         "value", item).text(item)
+                    // )
                 })
-                $('.SectionSelector').html(content)
-                Section = $('.SectionSelector').val()
-                console.log(Section)
+                $('#SectionSelector').empty()
+                $('#SectionSelector').html(content)
+                $('#SectionSelector').selectpicker('refresh')
+                //Section = $('#SectionSelector').val()
+                //console.log(Section)
                 getContent()
             }
         })
     }
 
     function getContent() {
-        var Section = $('.SectionSelector').val()
+        var Section = $('#SectionSelector').val()
         $.ajax({
             type: "GET",
             url: "Chapter/GetContent",
@@ -57,30 +64,37 @@ $(function () {
                 $.each(response, function (key, value) {
                     content += ' <tr > ' +
                         '<td class="File">' +
-                        '<a href="' + value + '">' + key + '</a>'
-                        + '</td>' +
+                        '<a href="' + value + '">' + key + '</a>' +
+                        '<div class="test">' +
+                        '<button class="buttontest">' +
+                        '测试</button>' +
+                        '</div>' +
+                        '</td>' +
                         ' </tr>'
+
                 })
                 tab.html(content)
+                $('select').selectpicker('refresh')
             }
         })
     }
-    $('.ChapterSelector').change(getSections)
-    $('.SectionSelector').change(getContent)
+    $('#ChapterSelector').change(getSections)
+    $('#SectionSelector').change(getContent)
+
+    $(document).on('click', '.buttontest', function () {
+        var filename = $(this).parent().prev().text()
+        console.log("clicked test" + filename)
+    })
+
 
     getSections()
 
-    function submitForm() {
-        var Section = $('.SectionSelector').val()
+    function submitForm(operation = 0, filename = "null") {
+        var Section = $('#SectionSelector').val()
         var form = new FormData()
         var f_obj = $('[name="courseFile"]')[0].files
-        for (i = 0; i < f_obj.length; i++) {
-            var files = $('[name="courseFile"]')[0].files[i]
-            form.append("file_obj", files)
-        }
-        form.append("section", Section)
-        form.append("X-CSRFToken", csrftoken)
-        $.ajax({
+        var params =
+        {
             type: "POST",
             url: "Chapter",
             dataType: "json",
@@ -88,11 +102,25 @@ $(function () {
             data: form,
             processData: false,
             contentType: false,
-            success: function (response) {
+            operation: 0,
+        }
 
-            }
-        })
+        for (i = 0; i < f_obj.length; i++) {
+            var files = $('[name="courseFile"]')[0].files[i]
+            form.append("file_obj", files)
+        }
+        form.append("section", Section)
+        form.append("X-CSRFToken", csrftoken)
+        $.ajax(params)
+        $.ajaxSuccess()
     }
+
+
+    $("#id_Course_Files").fileinput({     //文件上传
+        'language': 'zh',
+        allowedFileExtensions: ['mp4', 'mp3', 'pdf', 'png', 'jpg'],//接收的文件后缀
+    });
+
 
     $('#submit').click(submitForm)
 })

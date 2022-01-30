@@ -47,7 +47,9 @@ class Users(models.Model):
         verbose_name="*权限等级", max_length=16, choices=access, default="guest"
     )  # 权限级别
     # selected_course = models.CharField(verbose_name='已选课程',max_length=256,null=True,blank=True)  #已选课程
-    selected_courses = models.ManyToManyField("Course", related_name="students")  # 已选课程
+    selected_courses = models.ManyToManyField(
+        "Course", related_name="students", null=True, blank=True
+    )  # 已选课程
     sex = models.CharField(
         verbose_name="*性别", max_length=32, choices=gender, default="default"
     )  # 性别
