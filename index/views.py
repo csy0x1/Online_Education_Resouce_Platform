@@ -1,8 +1,10 @@
 from __future__ import print_function
 import email
+from itertools import count
 import json
 from email import message
 import os
+from turtle import title
 
 from django.contrib.auth import authenticate, hashers
 from django.contrib.auth.decorators import login_required
@@ -287,14 +289,17 @@ def courseSettingChapter(request, courseid):
 
     if request.method == "POST":
         file = request.FILES['input-CourseFiles']
-        chapter = request.POST.get('chapter')
         section = request.POST.get('section')
-        print(chapter,section)
-        file_path = "media/courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file.name
-        os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        with open(file_path,"wb") as f:
-            for chunk in file.chunks():
-                f.write(chunk)
+        # file_path = "courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file.name
+        # os.makedirs(os.path.dirname(file_path), exist_ok=True)
+        # with open(file_path,"wb") as f:
+        # for chunk in file.chunks():
+        #     file.write(chunk)
+        section_obj = models.Section.objects.get(sectionName=section)
+        instance = models.CourseFiles(sourceSection=section_obj,courseFile=file)
+        instance.save()
+        
+
         return JsonResponse({})
     return render(request, "index/courseSettingChapter.html", locals())
 
@@ -302,12 +307,11 @@ def courseSettingChapter(request, courseid):
 def postNotice(request, courseid):
     course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
-        noticeForm = forms.NoticeForm(request.POST)
-        if noticeForm.is_valid():
-            instance = noticeForm.save(commit=False)
-            instance.sourceCourse = course  # 将公告的源课程设置为当前课程
-            instance.save()
-    return HttpResponseRedirect(reverse("index:noticeSetting", args=(courseid,)))
+        title = request.POST['NoticeTitle']
+        content = request.POST['content']
+        instance = models.CourseNotice(sourceCourse=course,Title=title,Message=content)
+        instance.save()
+    return HttpResponse("succeed")
 
 
 def deleteNotice(request, courseid):
@@ -405,7 +409,9 @@ def GetSection(request, courseid):
 def GetContent(request, courseid):
     Section = request.GET.get("Section")
     Section = models.Section.objects.get(sectionName__startswith=Section)
-    FilesList = Section.sourceSection.all()
+    print("sec"+Section.sectionName)
+    FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
+    print(FilesList)
     data = {}
     for f in FilesList:
         filename = f.filename()

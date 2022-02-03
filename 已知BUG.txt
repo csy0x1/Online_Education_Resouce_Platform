@@ -4,3 +4,7 @@
 课程文件上传功能难以实现    /solved, 不使用django提供的自动表单生成，手动在html内设置表单
     参考文献https://blog.csdn.net/t8116189520/article/details/82015431
             https://blog.51cto.com/mbb97/2363772
+
+Markdown相关：
+    编辑器：SimpleMDE
+    渲染：https://github.com/agusmakmun/django-markdown-editor

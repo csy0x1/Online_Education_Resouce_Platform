@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
-from django.urls import path
+from django.urls import include, path
 from django.urls.conf import re_path
 
 from . import views
@@ -82,4 +82,6 @@ urlpatterns = [
     # path('course/<int:courseid>/Setting/<str:section>',views.courseSetting, name='courseSetting'),
     path("course/<int:courseid>/", views.courseInfo, name="courseInfo"),
     # path('test/test',views.index) http://*link*/test/test 也可访问index
+
+    path('martor/', include('martor.urls')),    #Markdown
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

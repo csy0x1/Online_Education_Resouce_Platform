@@ -11,9 +11,15 @@
     <title>{% block title %}章节管理 - {{courseDetail.Course_Name}} iMooc在线教育资源平台{% endblock title %}</title>
     {% block extrastatic %}
     {{ block.super }}
+    <!-- basic static -->
     <link rel="stylesheet" href="{% static 'index/css/courseSettingChapter.css' %}">
+
+    <!-- bootstrap-select -->
+    <link rel="stylesheet" href="{% static 'bootstrap-select/css/bootstrap-select.min.css' %}">
+
+    <!-- Bootstrap Fileinput -->
+    <link rel="stylesheet" type="text/css" href="{% static 'fileinput/css/fileinput.css' %}">
     {% endblock extrastatic %}
-</head>
 
 <body>
 
@@ -24,14 +30,14 @@
             <ul class="breadcrumb">
                 <li><a href="{% url 'index:Content' courseid %}">课件</a></li>
                 <li>
-                    <select class="ChapterSelector">
+                    <select id="ChapterSelector" class="ChapterSelector">
                         {% for Chapter in Chapters %}
                         <option>{{Chapter}}</option>
                         {% endfor %}
                     </select>
                 </li>
                 <li>
-                    <select class="SectionSelector">
+                    <select id="SectionSelector" class="SectionSelector">
                     </select>
                 </li>
             </ul>
@@ -42,20 +48,34 @@
                 <label id="currentSection" hidden>null</label>
                 <label for="{{FilesForm.courseFile.id_for_label}}" class="control-label col-sm-2">课程文件上传:</label>
                 <label class="control-label">文件支持mp3,mp4,pdf,png,jpg格式</label>
-                <button id="test">test</button>
                 <div class="file-loading">
                     <input id="input-CourseFiles" name="input-CourseFiles" multiple type="file">
                 </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2">
-                        <button type="button" class="btn btn-primary" id="submit">submit</button>
-                    </div>
-                </div>
             </form>
+        </div>
+        <div class="form-group">
+            <div class="fileList">
+                <table class="table table-hover fileTable">
+                    <tr>
+                        <th>课程资源</th>
+                    </tr>
+
+                </table>
+            </div>
         </div>
     </div>
 
+
+    
+    <!-- basic static -->
     <script src="{% static 'index/js/courseSettingChapter.js' %}"></script>
+
+    <!-- bootstrap-select -->
+    <script src="{% static 'bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+
+    <!-- Bootstrap Fileinput -->
+    <script src="{% static 'fileinput/js/fileinput.js' %}"></script>
+    <script src="{% static 'fileinput/js/locales/zh.js' %}"></script>
     {% endblock content %}
 
 </body>
