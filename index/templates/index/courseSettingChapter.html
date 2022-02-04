@@ -30,21 +30,31 @@
             <ul class="breadcrumb">
                 <li><a href="{% url 'index:Content' courseid %}">课件</a></li>
                 <li>
+<<<<<<< HEAD
                     <select id="ChapterSelector" class="ChapterSelector">
+=======
+                    <select id="ChapterSelector" class="selectpicker">
+>>>>>>> master
                         {% for Chapter in Chapters %}
                         <option>{{Chapter}}</option>
                         {% endfor %}
                     </select>
                 </li>
                 <li>
+<<<<<<< HEAD
                     <select id="SectionSelector" class="SectionSelector">
+=======
+                    <select id="SectionSelector" class="selectpicker">
+>>>>>>> master
                     </select>
                 </li>
             </ul>
         </div>
-        <div class="fileUploadForm">
-            <form action="" method="POST" enctype="multipart/form-data" class="form-horizontal" id="fileForm">
+
+        <div class="form-group">
+            <div class="item form-File">
                 {% csrf_token %}
+<<<<<<< HEAD
                 <label id="currentSection" hidden>null</label>
                 <label for="{{FilesForm.courseFile.id_for_label}}" class="control-label col-sm-2">课程文件上传:</label>
                 <label class="control-label">文件支持mp3,mp4,pdf,png,jpg格式</label>
@@ -67,6 +77,29 @@
 
 
     
+=======
+                <label for="{{FilesForm.courseFile.id_for_label}}" class="control-label col-sm-2">课程文件上传:</label>
+                <label class="control-label">文件支持mp3,mp4,pdf,png,jpg格式</label>
+                <div class="fileUpload">
+                    {{FilesForm.Course_Files}}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="fileList">
+                <table class="table table-hover fileTable">
+                    <tr>
+                        <th>课程资源</th>
+                    </tr>
+
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+>>>>>>> master
     <!-- basic static -->
     <script src="{% static 'index/js/courseSettingChapter.js' %}"></script>
 

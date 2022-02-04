@@ -6,6 +6,7 @@ $(function () {
         "class": "active",
     })
 
+
     function getCookie(name) {      //获取CSRF令牌
         let cookieValue = null;
         if (document.cookie && document.cookie !== '') {
@@ -35,11 +36,18 @@ $(function () {
                 var content = ''
                 $.each(response, function (i, item) {
                     content += '<option value=' + item + '>' + item + '</option>'
+                    // $('#SectionSelector').append(
+                    //     $("<option></option>").attr(
+                    //         "value", item).text(item)
+                    // )
                 })
                 $('#SectionSelector').empty()
                 $('#SectionSelector').html(content)
                 $('#SectionSelector').selectpicker('refresh')
+<<<<<<< HEAD
                 $('#currentSection').text($('#SectionSelector').find("option:selected").text())
+=======
+>>>>>>> master
                 //Section = $('#SectionSelector').val()
                 //console.log(Section)
                 getContent()
@@ -49,7 +57,10 @@ $(function () {
 
     function getContent() {
         var Section = $('#SectionSelector').val()
+<<<<<<< HEAD
         console.log("getcon"+Section)
+=======
+>>>>>>> master
         $.ajax({
             type: "GET",
             url: "Chapter/GetContent",
@@ -64,9 +75,14 @@ $(function () {
                 $.each(response, function (key, value) {
                     content += ' <tr > ' +
                         '<td class="File">' +
-                        '<a href="' + value + '">' + key + '</a>'
-                        + '</td>' +
+                        '<a href="' + value + '">' + key + '</a>' +
+                        '<div class="test">' +
+                        '<button class="buttontest">' +
+                        '测试</button>' +
+                        '</div>' +
+                        '</td>' +
                         ' </tr>'
+
                 })
                 tab.html(content)
                 $('select').selectpicker('refresh')
