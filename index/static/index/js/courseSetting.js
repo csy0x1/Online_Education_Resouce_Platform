@@ -1,15 +1,10 @@
 $(document).ready(function () {
 
-    var simpleMDE = []
-    $(".MarkdownEditor").each(function(i=0){
-        simpleMDE[i] = new SimpleMDE({element:this})
-    })
-
     $("[role='basicInfo']").attr({
         "class": "active",
     })
 
-    $("#CourseCategory").attr({ //初始化下拉选择框
+    $("#id_Course_Category").attr({ //初始化下拉选择框
         "class": "selectpicker",
         "data-live-search": "true",
         "data-width": "85%"
@@ -116,7 +111,6 @@ $(document).ready(function () {
             if (node.getLevel() < 2) {
                 node.editCreateNode("child", "");
             }
-            $.ui.fancytree.getTree("#tree").getRootNode().sortChildren(null, true);
         }
         if (e.shiftKey && e.keyCode == 113) {
             var node = $.ui.fancytree.getTree("#tree").getActiveNode();
@@ -124,12 +118,6 @@ $(document).ready(function () {
                 title: "Node title",
                 folder: true
             });
-            $.ui.fancytree.getTree("#tree").getRootNode().sortChildren(null, true);
-        }
-        if( e.shiftKey && e.keyCode ==46){
-            var node = $.ui.fancytree.getTree("#tree").getActiveNode();
-            node.remove()
-            $.ui.fancytree.getTree("#tree").getRootNode().sortChildren(null, true);
         }
         if (e.keyCode == 13) {
             var tree = $.ui.fancytree.getTree("#tree")

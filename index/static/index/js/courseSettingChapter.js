@@ -1,7 +1,5 @@
 $(function () {
 
-
-
     $("[role='chapterManagement']").attr({
         "class": "active",
     })
@@ -44,10 +42,6 @@ $(function () {
                 $('#SectionSelector').empty()
                 $('#SectionSelector').html(content)
                 $('#SectionSelector').selectpicker('refresh')
-<<<<<<< HEAD
-                $('#currentSection').text($('#SectionSelector').find("option:selected").text())
-=======
->>>>>>> master
                 //Section = $('#SectionSelector').val()
                 //console.log(Section)
                 getContent()
@@ -57,17 +51,12 @@ $(function () {
 
     function getContent() {
         var Section = $('#SectionSelector').val()
-<<<<<<< HEAD
-        console.log("getcon"+Section)
-=======
->>>>>>> master
         $.ajax({
             type: "GET",
             url: "Chapter/GetContent",
             dataType: "json",
             data: { "Section": Section },
             success: function (response) {
-                console.log(response)
                 var content = '<tr>' +
                     '<th>课程资源</th>' +
                     '</tr>'
@@ -88,48 +77,50 @@ $(function () {
                 $('select').selectpicker('refresh')
             }
         })
-        $('#input-CourseFiles').fileinput('clear')
-        return Section
     }
-
     $('#ChapterSelector').change(getSections)
     $('#SectionSelector').change(getContent)
 
-    // $(document).on('click', '.buttontest', function () {
-    //     var filename = $(this).parent().prev().text()
-    //     console.log("clicked test" + filename)
-    // })
+    $(document).on('click', '.buttontest', function () {
+        var filename = $(this).parent().prev().text()
+        console.log("clicked test" + filename)
+    })
+
 
     getSections()
 
-    $('#SectionSelector').on("changed.bs.select",
-        function (e,clickedIndex) {
-            $('#currentSection').text($('#SectionSelector').find("option:selected").text())
-        })
+    function submitForm(operation = 0, filename = "null") {
+        var Section = $('#SectionSelector').val()
+        var form = new FormData()
+        var f_obj = $('[name="courseFile"]')[0].files
+        var params =
+        {
+            type: "POST",
+            url: "Chapter",
+            dataType: "json",
+            headers: { 'X-CSRFToken': csrftoken },
+            data: form,
+            processData: false,
+            contentType: false,
+            operation: 0,
+        }
 
-    // $("#test").on("click",
-    //     function (e){
-    //         console.log("this.value"+$('#SectionSelector').find("option:selected").text())
-    //
-    //     })
+        for (i = 0; i < f_obj.length; i++) {
+            var files = $('[name="courseFile"]')[0].files[i]
+            form.append("file_obj", files)
+        }
+        form.append("section", Section)
+        form.append("X-CSRFToken", csrftoken)
+        $.ajax(params)
+        $.ajaxSuccess()
+    }
 
-    console.log("this.value"+$('#SectionSelector').find("option:selected").text())
 
-    $("#input-CourseFiles").fileinput({     //文件上传
+    $("#id_Course_Files").fileinput({     //文件上传
         'language': 'zh',
         allowedFileExtensions: ['mp4', 'mp3', 'pdf', 'png', 'jpg'],//接收的文件后缀
-        uploadUrl: 'Chapter',
-        uploadExtraData: function (){
-            return{
-                "chapter":$('#ChapterSelector').val(),
-                "section":$('#currentSection').text(),
-            }
-        },
-        ajaxSettings:{
-            'headers':{"X-CSRFToken":csrftoken}
-            //uploadExtraData:{'section':$('#SectionSelector').val()},
-        }
     });
 
 
+    $('#submit').click(submitForm)
 })

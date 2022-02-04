@@ -1,17 +1,12 @@
 $(function () {
-
-    //初始化MarkDown编辑器
-    var simplemde = new SimpleMDE({element:$("#NoticeTA")[0]})
-
-
     $("[role='annoucementManage']").attr({
         "class": "active",
     })
 
     function titleCount() {     //标题字数统计
-        $('#titleaddon').text($('#NoticeTitle').val().length + '/20');
+        $('#titleaddon').text($('input[name="Title"]').val().length + '/20');
     };
-    $('#NoticeTitle').bind('change blur keyup input', titleCount);
+    $('input[name="Title"]').bind('change blur keyup input', titleCount);
 
     titleCount()
 
@@ -32,22 +27,6 @@ $(function () {
     }
     const csrftoken = getCookie('csrftoken');
 
-    //发布公告部分
-    $("#submitNotice").on("click",function(){
-            $.ajax({
-                type: "POST",
-                url: "Notice",
-                contentType:"application/x-www-form-urlencoded",
-                headers: { 'X-CSRFToken': csrftoken },
-                data: $("#NoticeForm").serialize()+simplemde.value(),
-                success: function(response){
-                    console.log(response)
-                    window.parent.location.reload()
-                }
-            })
-    })
-
-    // 删除公告部分
     $(".remove").click(function () {
         var List = []
         $(".panel-heading").find("input[type='checkbox']").each(function () {
@@ -74,10 +53,8 @@ $(function () {
         })
     })
 
-
     $(".selectAll").click(function () {
         $(".panel-heading").find("input[type='checkbox']").prop("checked", $(this).prop("checked"))
         //全选按钮，令所有公告的复选框状态与全选复选框状态保持一致
     })
-
 })
