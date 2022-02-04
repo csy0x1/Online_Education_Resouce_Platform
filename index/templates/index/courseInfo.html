@@ -1,5 +1,6 @@
 {% extends 'index/index.html' %}
 {% load static %}
+{% load martortags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -114,7 +115,7 @@
             {% endfor %}
             {% endfor %}
             {% else %}
-            <span>{{value | linebreaks}}</span>
+            <span>{{value | safe_markdown | linebreaks}}</span>
             {% endif %}
         </div>
         {% endfor %}

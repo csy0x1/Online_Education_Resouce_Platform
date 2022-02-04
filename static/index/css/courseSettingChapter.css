@@ -1,0 +1,13 @@
+.mainContainer{
+    float:right;
+    width:80%;
+    background-color:white;
+}
+
+.fileUploadForm{
+    padding:15px;
+}
+
+.fileUploadForm input{
+    width:30%;
+}

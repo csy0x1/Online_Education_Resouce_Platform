@@ -1,2 +1,7 @@
 /nohup.out
 /packages.microsoft.gpg
+index/functions/__pycache__/
+index/migrations/__pycache__/
+index/__pycache__/
+OERP/__pycache__/
+media/courseFile/

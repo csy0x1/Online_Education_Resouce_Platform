@@ -26,6 +26,10 @@
     <!-- Bootstrap Datepicker-->
     <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
         rel="stylesheet">
+
+    <!-- SimpleMDE -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+
     {% endblock %}
 </head>
 
@@ -34,46 +38,57 @@
     <div>
         {{ block.super }}
         <div class="settingForm">
-            <form action="Setting" method="POST" enctype="multipart/form-data" class="form-horizontal">
+            <form enctype="multipart/form-data" class="form-horizontal">
                 {% csrf_token %}
                 <div class="form-group">
                     <div class="item form-Name">
-                        <label for="{{settingForm.Course_Name.id_for_label}}"
-                            class="control-label col-sm-2">课程名称:</label>
-                        {{settingForm.Course_Name}}
+                        <label for="Course_Name" class="control-label col-sm-2">课程名称:</label>
+                        <input class="form-control" id="CourseIdInput" placeholder="课程名称">
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="Course_Info" class="control-label col-sm-2">课程说明:</label>
                 </div>
                 <div class="form-group">
                     <div class="item form-Info">
-                        <label for="{{settingForm.Course_Info.id_for_label}}"
-                            class="control-label col-sm-2">课程说明:</label>
-                        {{settingForm.Course_Info}}
+                        <textarea name="CourseInfoTA" id="CourseInfoTA" class="MarkdownEditor form-control" rows="10"
+                            placeholder="通知内容"></textarea>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="CourseGoal" class="control-label col-sm-2">课程目标:</label>
                 </div>
                 <div class="form-group">
                     <div class="item form-Goal">
-                        <label for="{{settingForm.Course_Goal.id_for_label}}"
-                            class="control-label col-sm-2">课程目标:</label>
-                        {{settingForm.Course_Goal}}
+                        <textarea name="CourseGoalTA" id="CourseGoalTA" class="MarkdownEditor form-control" rows="10"
+                            placeholder="课程目标"></textarea>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="GradeRequirements" class="control-label col-sm-2">成绩要求:</label>
                 </div>
                 <div class="form-group">
                     <div class="item form-Grade">
-                        <label for="{{settingForm.Grade_Requirements.id_for_label}}"
-                            class="control-label col-sm-2">成绩要求:</label>
-                        {{settingForm.Grade_Requirements}}
+                        <textarea name="GradeRequirementsTA" id="GradeRequirementsTA"
+                            class="MarkdownEditor form-control" rows="10" placeholder="成绩要求"></textarea>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label for="Reference" class="control-label col-sm-2">参考资料:</label>
                 </div>
                 <div class="form-group">
                     <div class="item form-Refer">
-                        <label for="{{settingForm.Reference.id_for_label}}" class="control-label col-sm-2">参考资料:</label>
-                        {{settingForm.Reference}}
+                        <textarea name="ReferenceTA" id="ReferenceTA" class="MarkdownEditor form-control" rows="10"
+                            placeholder="参考资料"></textarea>
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="QA" class="control-label col-sm-2">常见问题:</label>
+                </div>
+                <div class="form-group">
                     <div class="item form-QA">
-                        <label for="{{settingForm.QA.id_for_label}}" class="control-label col-sm-2">常见问题:</label>
-                        {{settingForm.QA}}
+                        <textarea name="QATA" id="QATA" class="MarkdownEditor form-control" rows="10"
+                            placeholder="常见问题"></textarea>
                     </div>
                 </div>
 
@@ -95,9 +110,12 @@
                 </div>
                 <div class="form-group">
                     <div class="item form-Category">
-                        <label for="{{settingForm.Course_Category.id_for_label}}"
-                            class="control-label col-sm-2">课程分类:</label>
-                        {{settingForm.Course_Category}}
+                        <label for="CourseCategory" class="control-label col-sm-2">课程分类:</label>
+                        <select class="form-control" id="CourseCategory">
+                            {% for category in categories %}
+                            <option>{{category}}</option>
+                            {% endfor %}
+                        </select>
                     </div>
                 </div>
                 <div class="form-group">
@@ -121,6 +139,9 @@
 
     <!-- basic static -->
     <script src="{% static 'index/js/courseSetting.js' %}"></script>
+
+    <!-- SimpleMDE -->
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
 
     <!-- FancyTree -->
     <script src="//cdn.jsdelivr.net/npm/jquery.fancytree@2.38.0/dist/modules/jquery.fancytree.js"></script>

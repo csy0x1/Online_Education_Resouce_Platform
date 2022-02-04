@@ -1,0 +1,43 @@
+.breadcrumb{
+    margin:0px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+    border-radius: 4px;
+}
+
+.navSideBar{
+    background-color:white;
+    display:block;
+    float:left;
+    width:20%;
+    margin-right:10px;
+}
+
+.navSideBar img{
+    width:232px;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+    border-radius: 4px;
+    margin-bottom:10px;
+}
+
+.header{
+    background-color:#f5f5f5;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+    border-radius: 4px;
+    padding:5px;
+    margin:10px 0;
+}
+
+.header h4{
+    color:#000000cc;
+    margin:5px;
+}
+
+.header h5{
+    margin:5px;
+}
+
+.mainContainer{
+    display:block;
+    width:79%;
+    float:right;
+}
