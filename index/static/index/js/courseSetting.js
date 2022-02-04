@@ -1,10 +1,15 @@
 $(document).ready(function () {
 
+    var simpleMDE = []
+    $(".MarkdownEditor").each(function(i=0){
+        simpleMDE[i] = new SimpleMDE({element:this})
+    })
+
     $("[role='basicInfo']").attr({
         "class": "active",
     })
 
-    $("#id_Course_Category").attr({ //初始化下拉选择框
+    $("#CourseCategory").attr({ //初始化下拉选择框
         "class": "selectpicker",
         "data-live-search": "true",
         "data-width": "85%"

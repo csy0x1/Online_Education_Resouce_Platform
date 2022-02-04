@@ -231,6 +231,7 @@ def courseSetting(request, courseid):
             return render(request, "index/courseSettingError.html")
         courseDetail, _, _ = VF.Get_Course(courseid)
         course = models.Course.objects.get(id=courseid)
+        categories = models.CourseCategory.objects.all()
         img = course.Course_Img
         if request.method == "POST":
             settingForm = forms.CourseSettingForm(
@@ -246,7 +247,7 @@ def courseSetting(request, courseid):
         else:
             settingForm = forms.CourseSettingForm(instance=course)
 
-    return render(request, "index/courseSettingInfo.html", locals())
+    return render(request, "index/courseSettingInfoBackup.html", locals())
 
 
 def courseSettingStudent(request, courseid):

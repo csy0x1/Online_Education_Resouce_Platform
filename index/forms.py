@@ -57,6 +57,16 @@ class CourseSettingForm(ModelForm):
                         "data-browse-on-zone-click": "true",
                     }
                 )
+            elif field == "Course_Info":
+                self.fields[field].widget.attrs.update(
+                    {
+                        "id": "CourseInfo",
+                        "class":"MarkdownEditor form-control",
+                        "rows":"10",
+                        "placeholder":"课程信息",
+                    }
+                )
+
             else:
                 self.fields[field].widget.attrs.update(
                     {
