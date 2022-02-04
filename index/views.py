@@ -1,5 +1,6 @@
 from __future__ import print_function
 import email
+from http.client import HTTPResponse
 from itertools import count
 import json
 from email import message
@@ -260,8 +261,14 @@ def courseSettingStudent(request, courseid):
 def courseSettingNotice(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    noticeForm = forms.NoticeForm()
+    #noticeForm = forms.NoticeForm()
     historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
+    if request.method == "POST":
+        title = request.POST['NoticeTitle']
+        content = request.POST['NoticeContent']
+        instance = models.CourseNotice(sourceCourse=course,Title=title,Message=content)
+        instance.save()
+        return HttpResponse("succeed")
     return render(request, "index/courseSettingNotice.html", locals())
 
 

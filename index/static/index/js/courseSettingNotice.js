@@ -36,12 +36,13 @@ $(function () {
     $("#submitNotice").on("click",function(){
             $.ajax({
                 type: "POST",
-                url: "Notice/Post",
+                url: "Notice",
+                contentType:"application/x-www-form-urlencoded",
                 headers: { 'X-CSRFToken': csrftoken },
-                data: $("#NoticeForm").serialize()+"&content="+simplemde.value(),
+                data: $("#NoticeForm").serialize()+simplemde.value(),
                 success: function(response){
                     console.log(response)
-                    test.value("suc")
+                    window.parent.location.reload()
                 }
             })
     })

@@ -8,3 +8,8 @@
 Markdown相关：
     编辑器：SimpleMDE
     渲染：https://github.com/agusmakmun/django-markdown-editor
+
+课程公告部分提交表单发布公告会多出一个GET请求，且url会自动挂上参数()
+    https://blog.csdn.net/yu980219/article/details/114813267
+    1. Form表单不添加method的条件下，默认提交方式为 “get”，
+    2. 如果不给button添加type=“button”，点击button时会触发表单的submit事件，导致页面刷新，url请求会再次发送；(问题所在，提交按钮没有添加type)
