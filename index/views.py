@@ -248,7 +248,7 @@ def courseSetting(request, courseid):
         else:
             settingForm = forms.CourseSettingForm(instance=course)
 
-    return render(request, "index/courseSettingInfoBackup.html", locals())
+    return render(request, "index/courseSettingInfo.html", locals())
 
 
 def courseSettingStudent(request, courseid):

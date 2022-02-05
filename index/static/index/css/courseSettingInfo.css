@@ -50,3 +50,15 @@
     float:left;
     width:85%;
 }
+.CodeMirror, .CodeMirror-scroll {
+    box-sizing: content-box;
+	max-height: 200px;
+}
+
+.CodeMirror-fullscreen.CodeMirror {
+    max-height: none;
+}
+
+.CodeMirror-fullscreen .CodeMirror-scroll {
+    max-height: none;
+}

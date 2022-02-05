@@ -12,4 +12,8 @@ Markdown相关：
 课程公告部分提交表单发布公告会多出一个GET请求，且url会自动挂上参数()
     https://blog.csdn.net/yu980219/article/details/114813267
     1. Form表单不添加method的条件下，默认提交方式为 “get”，
-    2. 如果不给button添加type=“button”，点击button时会触发表单的submit事件，导致页面刷新，url请求会再次发送；(问题所在，提交按钮没有添加type)
+    2. 如果不给button添加type=“button”，点击button时会触发表单的submit事件，导致页面刷新，url请求会再次发送；(问题所在，提交按钮没有添加type)b
+
+Markdown编辑器设置最高高度，以及限定最高高度的情况下最后一行会被编辑器切断，显示不完整 /solved
+    https://github.com/sparksuite/simplemde-markdown-editor/issues/619
+    https://github.com/sparksuite/simplemde-markdown-editor/issues/205

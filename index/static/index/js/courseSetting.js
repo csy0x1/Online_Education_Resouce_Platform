@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     var simpleMDE = []
-    $(".MarkdownEditor").each(function(i=0){
+    $("TextArea").each(function(i=0){
         simpleMDE[i] = new SimpleMDE({element:this})
     })
 
@@ -46,7 +46,8 @@ $(document).ready(function () {
     }
     const csrftoken = getCookie('csrftoken');
 
-    $("#tree").fancytree({  //章节编辑TreeView        
+    var orgtitle
+    $("#tree").fancytree({  //章节编辑TreeView    
         extensions: ["edit"],
         edit: {
             triggerStart: ["mac+enter", "shift+click"],
@@ -54,11 +55,13 @@ $(document).ready(function () {
                 // Return false to prevent edit mode
             },
             edit: function (event, data) {
+                data.input.val(data.orgTitle.split(/ (.+)/)[1]) //标题去除索引数字再进行编辑
                 // Editor was opened (available as data.input)
             },
             beforeClose: function (event, data) {
                 // Return false to prevent cancel/save (data.input is available)
-                console.log(event.type, event, data);
+                // console.log(event.type, event, data);
+                orgtitle = data.input.val() //获取修改后的标题(不包含索引)
                 if (data.originalEvent.type === "mousedown") {
                     // We could prevent the mouse click from generating a blur event
                     // (which would then again close the editor) and return `false` to keep
@@ -98,8 +101,28 @@ $(document).ready(function () {
             },
             close: function (event, data) {
                 // Editor was removed
+                data.node.setTitle(data.node.getIndexHier() + " " + orgtitle)   //将当前的节点标题添加上索引号
                 if (data.save) {
-                    data.node.setTitle(data.node.getIndexHier() + " " + data.node.title);
+                    var children = $.ui.fancytree.getTree("#tree").getRootNode().children;
+                    console.log(children)
+                    children.forEach(function (value,Index){
+                        value.setTitle(value.title.split(/ (.+)/)[1])
+                        value.setTitle(value.getIndexHier() + " " + value.title);
+                        if(value.children!=null){
+                            value.children.forEach(function(cValue,cIndex){
+                                cValue.setTitle(cValue.title.split(/ (.+)/)[1])
+                                cValue.setTitle(cValue.getIndexHier() + " " + cValue.title);
+                            })
+                        }
+                    })
+                    // 以上几行实现修改节点后调整节点显示的索引
+                    $.ui.fancytree.getTree("#tree").getRootNode().sortChildren(function(a,b){
+                        var x = parseFloat(a.getIndexHier()),
+                        y = parseFloat(b.getIndexHier());
+                    // eslint-disable-next-line no-nested-ternary
+                        return x === y ? 0 : x > y ? 1 : -1;
+                        }, true);  
+                    // 完成编辑后对树以索引进行排序
 
                     // Since we started an async request, mark the node as preliminary
                     $(data.node.span).addClass("pending");
@@ -116,20 +139,14 @@ $(document).ready(function () {
             if (node.getLevel() < 2) {
                 node.editCreateNode("child", "");
             }
-            $.ui.fancytree.getTree("#tree").getRootNode().sortChildren(null, true);
         }
         if (e.shiftKey && e.keyCode == 113) {
             var node = $.ui.fancytree.getTree("#tree").getActiveNode();
-            node.editCreateNode("after", {
-                title: "Node title",
-                folder: true
-            });
-            $.ui.fancytree.getTree("#tree").getRootNode().sortChildren(null, true);
+            node.editCreateNode("after", "");      
         }
         if( e.shiftKey && e.keyCode ==46){
             var node = $.ui.fancytree.getTree("#tree").getActiveNode();
-            node.remove()
-            $.ui.fancytree.getTree("#tree").getRootNode().sortChildren(null, true);
+            node.remove()   
         }
         if (e.keyCode == 13) {
             var tree = $.ui.fancytree.getTree("#tree")
