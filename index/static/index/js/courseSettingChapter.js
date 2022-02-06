@@ -57,18 +57,19 @@ $(function () {
             data: { "Section": Section },
             success: function (response) {
                 console.log(response)
-                var content = '<tr>' +
-                    '<th>课程资源</th>' +
-                    '</tr>'
+                var content = ""
                 var tab = $(".fileTable>tbody")
                 $.each(response, function (key, value) {
-                    content += ' <tr > ' +
+                    content += ' <tr> ' +
+                        '<td>'+
+                        '<input type="checkbox" class="selectSingle">'+
+                        '</td>'+
                         '<td class="File">' +
-                        '<a href="' + value + '">' + key + '</a>'
-                        + '</td>' +
-                        ' </tr>'
+                        '<a href="' + value + '">' + key + '</a>'+
+                         '</td>' +
+                        '</tr>'
                 })
-                tab.html(content)
+                tab.append(content)
                 $('select').selectpicker('refresh')
             }
         })
@@ -107,13 +108,36 @@ $(function () {
             return{
                 "chapter":$('#ChapterSelector').val(),
                 "section":$('#currentSection').text(),
+                "operationType":'upload',
             }
         },
         ajaxSettings:{
             'headers':{"X-CSRFToken":csrftoken}
             //uploadExtraData:{'section':$('#SectionSelector').val()},
         }
+    })
+    .on("fileuploaded",function(){
+        window.setTimeout(getContent, 1500);
     });
 
 
+    $(".selectAll").on("change",function(){
+        if(this.checked){
+            $(".selectSingle").prop("checked", true)
+            $("#deleteButton").removeAttr("disabled")
+        }
+        else{
+            $(".selectSingle").prop("checked",false)
+            $("#deleteButton").attr("disabled","true")
+        }
+    })
+
+    $("table").on("change",".selectSingle",function(){  //动态元素绑定事件(事务委托)
+        if(this.checked){
+            $("#deleteButton").removeAttr("disabled")
+        }
+        else{
+            $("#deleteButton").attr("disabled","true")
+        }
+    })
 })

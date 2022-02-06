@@ -296,19 +296,22 @@ def courseSettingChapter(request, courseid):
     #     FilesForm = forms.CourseFilesForm()
 
     if request.method == "POST":
-        file = request.FILES['input-CourseFiles']
-        section = request.POST.get('section')
-        # file_path = "courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file.name
-        # os.makedirs(os.path.dirname(file_path), exist_ok=True)
-        # with open(file_path,"wb") as f:
-        # for chunk in file.chunks():
-        #     file.write(chunk)
-        section_obj = models.Section.objects.get(sectionName=section)
-        instance = models.CourseFiles(sourceSection=section_obj,courseFile=file)
-        instance.save()
-        
-
-        return JsonResponse({})
+        operationType = request.POST.get("operationType")
+        print(operationType)
+        if operationType == "upload":
+            file = request.FILES['input-CourseFiles']
+            section = request.POST.get('section')
+            # file_path = "courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file.name
+            # os.makedirs(os.path.dirname(file_path), exist_ok=True)
+            # with open(file_path,"wb") as f:
+            # for chunk in file.chunks():
+            #     file.write(chunk)
+            section_obj = models.Section.objects.get(sectionName=section)
+            instance = models.CourseFiles(sourceSection=section_obj,courseFile=file)
+            instance.save()
+            return JsonResponse({})
+        elif operationType == "remove":
+            pass
     return render(request, "index/courseSettingChapter.html", locals())
 
 

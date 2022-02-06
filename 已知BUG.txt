@@ -17,3 +17,10 @@ Markdown相关：
 Markdown编辑器设置最高高度，以及限定最高高度的情况下最后一行会被编辑器切断，显示不完整 /solved
     https://github.com/sparksuite/simplemde-markdown-editor/issues/619
     https://github.com/sparksuite/simplemde-markdown-editor/issues/205
+
+Settimeout没有延迟 /solved ，setTimeout的第一个参数必须是需要编译的代码或者是一个函数方法
+    https://blog.csdn.net/u014805893/article/details/77072832
+
+课程文件复选框如何设置全选/单选，以及根据是否有复选框选中的状态来控制删除按钮的状态 /solved
+    https://blog.csdn.net/aiolos1111/article/details/52047380
+    https://stackoverflow.com/questions/203198/event-binding-on-dynamically-created-elements
