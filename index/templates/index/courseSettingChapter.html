@@ -56,16 +56,19 @@
         <div class="form-group">
             <div class="fileList">
                 <div class="toolBar" id="fileToolBar">
-                    <button type="button" id="deleteButton" class="btn btn-danger" disabled>删除文件</button>
+                    <button type="button" id="deleteFilesButton" class="btn btn-danger" disabled>删除文件</button>
                 </div>
                 <div class="fileDisplayList" id="fileDisplayList">
                     <table class="table table-hover fileTable">
-                        <tr>
-                            <th>
-                                <input type="checkbox" class="selectAll">
-                            </th>
-                            <th>课程资源</th>
-                        </tr>
+                        <thead>
+                            <tr id="fileTableHeader">
+                                <th>
+                                    <input type="checkbox" class="selectAll">
+                                </th>
+                                <th>课程资源</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
                     </table>
                 </div>
             </div>

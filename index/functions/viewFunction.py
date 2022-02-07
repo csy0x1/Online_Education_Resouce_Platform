@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.db.models.base import Model
 
@@ -139,6 +140,14 @@ def save_Chapter(chapterDict, courseid):  # 存储章节结构
                 sourceChapter=chapterdb, sectionName=Section[i]
             )
 
-
+def delete_Files(filepath):
+    if os.path.exists(filepath):
+        try:
+            os.remove(filepath)
+        except Exception as e:
+            print(e)
+            raise e
+    else:
+        raise FileNotFoundError("文件不存在")
 # def test(Chapter):
 #     course = models.Course.objects.create(Course_Name='1',Course_Teacher='1',Course_Info='1',Stu_Count=1,Course_Chapter=Chapter,View_Count=1,Ending_Time=datetime.datetime.now())

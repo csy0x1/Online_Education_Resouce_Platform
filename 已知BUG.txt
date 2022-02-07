@@ -24,3 +24,6 @@ Settimeout没有延迟 /solved ，setTimeout的第一个参数必须是需要编
 课程文件复选框如何设置全选/单选，以及根据是否有复选框选中的状态来控制删除按钮的状态 /solved
     https://blog.csdn.net/aiolos1111/article/details/52047380
     https://stackoverflow.com/questions/203198/event-binding-on-dynamically-created-elements
+
+删除课程文件后动态刷新表格 /solved, 用thead标签定义表头，tbody标签定义表格内容
+https://www.runoob.com/html/html-tables.html

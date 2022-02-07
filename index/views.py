@@ -1,6 +1,8 @@
 from __future__ import print_function
 import email
+from fileinput import filename
 from http.client import HTTPResponse
+from importlib.metadata import files
 from itertools import count
 import json
 from email import message
@@ -297,7 +299,6 @@ def courseSettingChapter(request, courseid):
 
     if request.method == "POST":
         operationType = request.POST.get("operationType")
-        print(operationType)
         if operationType == "upload":
             file = request.FILES['input-CourseFiles']
             section = request.POST.get('section')
@@ -310,8 +311,20 @@ def courseSettingChapter(request, courseid):
             instance = models.CourseFiles(sourceSection=section_obj,courseFile=file)
             instance.save()
             return JsonResponse({})
-        elif operationType == "remove":
-            pass
+        elif operationType == "delete":
+            files = request.POST.getlist("files[]")
+            chapter = request.POST.get('chapter')
+            section = request.POST.get('section')
+            for file in files:
+                file_path = "courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file
+                file_obj = models.CourseFiles.objects.filter(courseFile=file_path)
+                for f in file_obj:
+                    try:
+                        VF.delete_Files(f.courseFile.path)
+                        f.delete()
+                    except(FileNotFoundError, Exception) as e:
+                        return JsonResponse({'status':'error'})
+            return JsonResponse({"status":"success"})
     return render(request, "index/courseSettingChapter.html", locals())
 
 
@@ -420,9 +433,7 @@ def GetSection(request, courseid):
 def GetContent(request, courseid):
     Section = request.GET.get("Section")
     Section = models.Section.objects.get(sectionName__startswith=Section)
-    print("sec"+Section.sectionName)
     FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
-    print(FilesList)
     data = {}
     for f in FilesList:
         filename = f.filename()

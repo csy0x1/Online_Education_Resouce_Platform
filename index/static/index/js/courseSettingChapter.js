@@ -58,6 +58,7 @@ $(function () {
             success: function (response) {
                 console.log(response)
                 var content = ""
+                console.log(content)
                 var tab = $(".fileTable>tbody")
                 $.each(response, function (key, value) {
                     content += ' <tr> ' +
@@ -69,7 +70,7 @@ $(function () {
                          '</td>' +
                         '</tr>'
                 })
-                tab.append(content)
+                tab.html(content)
                 $('select').selectpicker('refresh')
             }
         })
@@ -102,7 +103,7 @@ $(function () {
 
     $("#input-CourseFiles").fileinput({     //文件上传
         'language': 'zh',
-        allowedFileExtensions: ['mp4', 'mp3', 'pdf', 'png', 'jpg'],//接收的文件后缀
+        allowedFileExtensions: ['mp4', 'mp3', 'pdf', 'png', 'jpg','bmp'],//接收的文件后缀
         uploadUrl: 'Chapter',
         uploadExtraData: function (){
             return{
@@ -124,20 +125,43 @@ $(function () {
     $(".selectAll").on("change",function(){
         if(this.checked){
             $(".selectSingle").prop("checked", true)
-            $("#deleteButton").removeAttr("disabled")
+            $("#deleteFilesButton").removeAttr("disabled")
         }
         else{
             $(".selectSingle").prop("checked",false)
-            $("#deleteButton").attr("disabled","true")
+            $("#deleteFilesButton").attr("disabled","true")
         }
     })
 
     $("table").on("change",".selectSingle",function(){  //动态元素绑定事件(事务委托)
         if(this.checked){
-            $("#deleteButton").removeAttr("disabled")
+            $("#deleteFilesButton").removeAttr("disabled")
         }
         else{
-            $("#deleteButton").attr("disabled","true")
+            $("#deleteFilesButton").attr("disabled","true")
         }
+    })
+
+    $("#deleteFilesButton").on("click",function(){
+        var files = []
+        $(".selectSingle:checked").each(function(){
+            files.push($(this).parent().next().text())
+        })
+        $.ajax({
+            type:"POST",
+            url:"Chapter",
+            dataType:"json",
+            headers:{"X-CSRFToken":csrftoken},
+            data:{
+                "chapter":$('#ChapterSelector').val(),
+                "section":$('#currentSection').text(),
+                "operationType":'delete',
+                "files":files,
+            },
+            success:function(response){
+                console.log(response)
+                getContent()
+            }
+        })
     })
 })
