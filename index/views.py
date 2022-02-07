@@ -1,29 +1,12 @@
 from __future__ import print_function
-import email
-from fileinput import filename
-from http.client import HTTPResponse
-from importlib.metadata import files
-from itertools import count
-import json
-from email import message
-import os
-from turtle import title
 
-from django.contrib.auth import authenticate, hashers
-from django.contrib.auth.decorators import login_required
-from django.core import serializers
-from django.core.checks import messages
+from django.contrib.auth import hashers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F
-from django.dispatch.dispatcher import receiver
-from django.forms.forms import Form
-from django.http import HttpResponseRedirect, response
-from django.http.request import HttpRequest
+from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, JsonResponse
-from django.shortcuts import redirect, render, resolve_url
+from django.shortcuts import redirect, render
 from django.urls import reverse
-from django.urls.base import resolve
-from django.views.decorators.clickjacking import xframe_options_exempt
 
 from . import forms, models
 from .functions import viewFunction as VF
@@ -310,7 +293,7 @@ def courseSettingChapter(request, courseid):
             section_obj = models.Section.objects.get(sectionName=section)
             instance = models.CourseFiles(sourceSection=section_obj,courseFile=file)
             instance.save()
-            return JsonResponse({})
+            return JsonResponse({'status':'success'})
         elif operationType == "delete":
             files = request.POST.getlist("files[]")
             chapter = request.POST.get('chapter')

@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    $(".user-dropdown").mouseover(function () {   //用户头像下拉菜单
-        $('.dropdown-toggle').dropdown('toggle')
-    })
 
     $('#indexCarousel').carousel({  //轮播间隔
         interval: 3000

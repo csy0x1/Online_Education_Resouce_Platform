@@ -49,16 +49,13 @@ $(function () {
 
     function getContent() {
         var Section = $('#SectionSelector').val()
-        console.log("getcon"+Section)
         $.ajax({
             type: "GET",
             url: "Chapter/GetContent",
             dataType: "json",
             data: { "Section": Section },
             success: function (response) {
-                console.log(response)
                 var content = ""
-                console.log(content)
                 var tab = $(".fileTable>tbody")
                 $.each(response, function (key, value) {
                     content += ' <tr> ' +
@@ -99,7 +96,6 @@ $(function () {
     //
     //     })
 
-    console.log("this.value"+$('#SectionSelector').find("option:selected").text())
 
     $("#input-CourseFiles").fileinput({     //文件上传
         'language': 'zh',
