@@ -1,23 +1,29 @@
 .infoHeader{
     background-color: #fff;
     overflow:hidden;
-    height:auto;
+    height:400px;
     box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
 }
 
 .infoHeader-left-img{
-    display:flex;
+    display:inline-block;
     float:left;
-    margin: 20px;
+    height:250px;
+    width:500px;
+    margin:50px 0 50px 30px;
+    overflow:hidden;
 }
 .infoHeader-left-img img{
-    height:300px;
+    max-width:600px;
+    max-height:250px;
 }
 
 .infoHeader-right-info{
     display:inline-block;
-    height:inherit;
-    margin: 20px;
+    float:right;
+    height:auto;
+    padding-right:100px;
+    margin: 30px;
 }
 
 .info-courseName{

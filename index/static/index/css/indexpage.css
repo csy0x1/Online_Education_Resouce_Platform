@@ -159,6 +159,12 @@
 .MPContent{
     margin:10px;
     cursor: pointer;
+    overflow:hidden;
+}
+
+.MPContent img{
+    max-width:100px;
+    max-height:60px;
 }
 
 .RankNumber{

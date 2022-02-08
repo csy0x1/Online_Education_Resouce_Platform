@@ -35,4 +35,5 @@
     >  solved, 用 thead 标签定义表头，tbody 标签定义表格内容
       https://www.runoob.com/html/html-tables.html
 
-- [ ] **//TODO 课程图片的大小会对课程信息界面的页面排版有影响**
+- [x] **~~课程图片的大小会对课程信息界面的页面排版有影响~~**
+    > 暂时修复，待后期CSS重新排版测试
