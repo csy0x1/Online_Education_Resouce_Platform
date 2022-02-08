@@ -99,7 +99,7 @@ $(function () {
 
     $("#input-CourseFiles").fileinput({     //文件上传
         'language': 'zh',
-        allowedFileExtensions: ['mp4', 'mp3', 'pdf', 'png', 'jpg','bmp'],//接收的文件后缀
+        allowedFileType:['image','video','audio','text'],
         uploadUrl: 'Chapter',
         uploadExtraData: function (){
             return{

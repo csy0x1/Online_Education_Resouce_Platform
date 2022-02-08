@@ -1,5 +1,6 @@
 from __future__ import print_function
-
+from datetime import datetime
+from pyexpat import model
 from django.contrib.auth import hashers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F
@@ -7,6 +8,9 @@ from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+
+import pytz
+from pytz import timezone
 
 from . import forms, models
 from .functions import viewFunction as VF
@@ -220,18 +224,35 @@ def courseSetting(request, courseid):
         categories = models.CourseCategory.objects.all()
         img = course.Course_Img
         if request.method == "POST":
-            settingForm = forms.CourseSettingForm(
-                request.POST, request.FILES, instance=course
-            )
-            if settingForm.is_valid():
-                instance = settingForm.save(commit=False)
-                instance.save()
-                return HttpResponseRedirect(
-                    reverse("index:courseSetting", args=(courseid,))
-                )
-                # 反向解析URL https://www.liujiangblog.com/course/django/136
-        else:
-            settingForm = forms.CourseSettingForm(instance=course)
+            operationType = request.POST.get("operationType")
+            if operationType == "uploadImage":
+                file = request.FILES.get("input-CourseImage")
+                try:
+                    course.Course_Img = file
+                    course.save()
+                except Exception as e:
+                    print(e)
+                    return JsonResponse({"status": "error"})
+                return JsonResponse({"status": "success"})
+            if operationType == "submitForm":
+                formData = request.POST.getlist("form[]")
+                try:
+                    course.Course_Name = formData[0]
+                    course.Course_Info = formData[1]
+                    course.Course_Goal = formData[2]
+                    course.Grade_Requirements = formData[3]
+                    course.Reference = formData[4]
+                    course.QA = formData[5]
+                    category_obj = models.CourseCategory.objects.get(CategoryName=formData[6])
+                    course.Course_Category = category_obj
+                    timezone=pytz.timezone('Asia/Shanghai')
+                    dateTime = datetime.strptime(formData[7], '%Y-%m-%d %H:%M')
+                    course.Ending_Time = timezone.localize(dateTime)
+                    course.save()
+                    return JsonResponse({"status": "success"})
+                except Exception as e:
+                    return JsonResponse({"status": "error"})
+                    print(e)
 
     return render(request, "index/courseSettingInfo.html", locals())
 

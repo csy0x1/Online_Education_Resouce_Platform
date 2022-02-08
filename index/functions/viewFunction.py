@@ -55,6 +55,8 @@ def Get_Course(courseid):  # 获取课程信息
                 "Grade_Requirements",
                 "Reference",
                 "QA",
+                "Starting_Time",
+                "Ending_Time",
             ]
 
     courseDetail = CourseDetailSerializer(object).data
@@ -79,10 +81,10 @@ def Get_Course(courseid):  # 获取课程信息
     # https://stackoverflow.com/questions/13182075/how-to-convert-a-timezone-aware-string-to-datetime-in-python-without-dateutil
     courseDetail["Starting_Time"] = datetime.fromisoformat(
         courseDetail["Starting_Time"]
-    ).strftime("%Y年%m月%d日")
+    ).strftime("%Y年%m月%d日 %H:%M")
     courseDetail["Ending_Time"] = datetime.fromisoformat(
         courseDetail["Ending_Time"]
-    ).strftime("%Y年%m月%d日")
+    ).strftime("%Y年%m月%d日 %H:%M")
 
     return courseDetail, courseInfo, teacher
 

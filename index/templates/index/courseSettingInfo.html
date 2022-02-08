@@ -43,7 +43,7 @@
                 <div class="form-group">
                     <div class="item form-Name">
                         <label for="Course_Name" class="control-label col-sm-2">课程名称:</label>
-                        <input class="form-control" id="CourseIdInput" placeholder="课程名称">
+                        <input class="form-control" id="CourseIdInput" placeholder="课程名称" value="{{course.Course_Name}}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -52,7 +52,7 @@
                 <div class="form-group">
                     <div class="item form-Info">
                         <textarea name="CourseInfoTA" id="CourseInfoTA" class="MarkdownEditor form-control" rows="10"
-                            placeholder="通知内容"></textarea>
+                            placeholder="课程说明">{{ courseDetail.Course_Info }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -61,7 +61,7 @@
                 <div class="form-group">
                     <div class="item form-Goal">
                         <textarea name="CourseGoalTA" id="CourseGoalTA" class="MarkdownEditor form-control" rows="10"
-                            placeholder="课程目标"></textarea>
+                            placeholder="课程目标">{{ courseDetail.Course_Goal }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -70,7 +70,7 @@
                 <div class="form-group">
                     <div class="item form-Grade">
                         <textarea name="GradeRequirementsTA" id="GradeRequirementsTA"
-                            class="MarkdownEditor form-control" rows="10" placeholder="成绩要求"></textarea>
+                            class="MarkdownEditor form-control" rows="10" placeholder="成绩要求">{{courseDetail.Grade_Requirements}}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -79,7 +79,7 @@
                 <div class="form-group">
                     <div class="item form-Refer">
                         <textarea name="ReferenceTA" id="ReferenceTA" class="MarkdownEditor form-control" rows="10"
-                            placeholder="参考资料"></textarea>
+                            placeholder="参考资料">{{ courseDetail.Reference }}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -88,7 +88,7 @@
                 <div class="form-group">
                     <div class="item form-QA">
                         <textarea name="QATA" id="QATA" class="MarkdownEditor form-control" rows="10"
-                            placeholder="常见问题"></textarea>
+                            placeholder="常见问题">{{ courseDetail.QA }}</textarea>
                     </div>
                 </div>
 
@@ -99,7 +99,9 @@
                             <p>当前课程图片</p>
                             <img src="{{img.url}}">
                             <p>设置新的课程图片</p>
-                            {{settingForm.Course_Img}}
+                            <div class="image-uploading">
+                                <input id="input-CourseImage" name="input-CourseImage" type="file">
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -128,7 +130,7 @@
                         <label for="{{settingForm.Ending_Time.id_for_label}}"
                             class="control-label col-sm-2">结课时间:</label>
                         <div class='input-group date' id='datetimepicker1'>
-                            {{settingForm.Ending_Time}}
+                            <input type="datetime" id="Ending_Time" class="dateTimeselector form-control col-sm-10" value="{{courseDetail.Ending_Time}}">  
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -136,7 +138,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-primary">保存</button>
+                    <button id="submitForms" type="button" class="btn btn-primary">保存</button>
                 </div>
             </form>
         </div>

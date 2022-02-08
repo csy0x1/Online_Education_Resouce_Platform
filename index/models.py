@@ -117,7 +117,7 @@ class Course(models.Model):
         verbose_name="课程状态", max_length=16, choices=status, default="1"
     )
     Starting_Time = models.DateTimeField(verbose_name="开课时间", auto_now_add=True)
-    Ending_Time = models.DateTimeField(verbose_name="结课时间")
+    Ending_Time = models.DateTimeField(verbose_name="结课时间",null=True,blank=True)
 
     def __str__(self) -> str:
         return self.Course_Name

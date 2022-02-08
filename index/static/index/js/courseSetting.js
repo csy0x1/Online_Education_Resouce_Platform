@@ -19,12 +19,7 @@ $(document).ready(function () {
         var today = new Date()
         $('#datetimepicker1').datetimepicker({
             format: 'YYYY-MM-DD HH:mm',
-            locale: moment.locale('zh-tw'),
-            minDate: today
-        });
-        $('#id_Ending_Time').datetimepicker({
-            format: 'YYYY-MM-DD HH:mm',
-            locale: moment.locale('zh-tw'),
+            locale: moment.locale('zh-cn'),
             minDate: today
         });
     });
@@ -177,8 +172,18 @@ $(document).ready(function () {
         }
     });
 
-    $("#updateImg").fileinput({     //文件上传
-        'language': 'zh'
+    $("#input-CourseImage").fileinput({     //文件上传
+        'language': 'zh',
+        allowFileType:['image'],
+        uploadUrl:'Setting',
+        uploadExtraData:function(){
+            return{
+                "operationType": "uploadImage",
+            }
+        },
+        ajaxSettings: {
+            'headers':{"X-CSRFToken": csrftoken}
+        }
     });
 
     function unique(arr) {
@@ -191,5 +196,27 @@ $(document).ready(function () {
         }
         return result;
     }
+
+    $("#submitForms").on("click", function () {
+        var MDEdata = []
+        MDEdata.push($("#CourseIdInput").val())
+        $.each(simpleMDE,function(i=0){
+            MDEdata.push(simpleMDE[i].value())
+        })
+        MDEdata.push($("#CourseCategory").val())
+        MDEdata.push($("#Ending_Time").val())
+        $.ajax({
+            type: "POST",
+            url: "Setting",
+            headers: { 'X-CSRFToken': csrftoken },
+            data: {
+                operationType: "submitForm",
+                form: MDEdata,
+            },
+            success: function (response) {
+                window.setTimeout(window.location.reload(),1500)
+            }
+        })
+    })
 
 });
