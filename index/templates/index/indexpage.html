@@ -11,7 +11,6 @@
     <title>{% block title %}iMooc 在线教育资源平台{% endblock %}</title>
     {% block extrastatic %}
     <link rel="stylesheet" type="text/css" href="{% static 'index/css/indexpage.css' %}">
-    <script src="{% static 'index/js/indexpage.js' %}"></script>
     {% endblock %}
 </head>
 
@@ -22,9 +21,9 @@
             <div id="category-container">
                 {% for root,ChildCategory in dict.items %}
                 <div class="content">
-                    <a class="header" href="#">{{root}}</a>
+                    <a class="header ParentCategory" href="{% url 'index:category' root.CategoryID %}">{{root}}</a>
                     {% for child in ChildCategory %}
-                    <a class="item" href="#">{{child}}</a>
+                    <a class="item ChildCategory" href="{% url 'index:category' root.CategoryID %}" id="{{child.CategoryID}}">{{child}}</a>
                     {% if not forloop.last %}
                     <p>/</p>
                     {% endif %}

@@ -83,5 +83,7 @@ urlpatterns = [
     path("course/<int:courseid>/", views.courseInfo, name="courseInfo"),
     # path('test/test',views.index) http://*link*/test/test 也可访问index
 
+    path("category/<int:categoryID>", views.categoryPage, name="category"),
+
     path('martor/', include('martor.urls')),    #Markdown
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

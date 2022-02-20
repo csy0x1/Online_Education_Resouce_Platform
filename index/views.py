@@ -1,13 +1,15 @@
 from __future__ import print_function
 from datetime import datetime
+from http.client import HTTPResponse
 from pyexpat import model
 from django.contrib.auth import hashers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
-from django.db.models import F
+from django.db.models import F, Q
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+
 
 import pytz
 from pytz import timezone
@@ -251,8 +253,8 @@ def courseSetting(request, courseid):
                     course.save()
                     return JsonResponse({"status": "success"})
                 except Exception as e:
-                    return JsonResponse({"status": "error"})
                     print(e)
+                    return JsonResponse({"status": "error"})
 
     return render(request, "index/courseSettingInfo.html", locals())
 
@@ -444,3 +446,14 @@ def GetContent(request, courseid):
         data[filename] = f.courseFile.url
     # print(data)
     return JsonResponse(data, safe=False)
+
+def categoryPage(request,categoryID):
+    category = models.CourseCategory.objects.get(CategoryID=categoryID)
+    subCategories = models.CourseCategory.objects.filter(ParentID=categoryID)
+    if request.method == "GET":
+        cateID = request.GET.get("subcategory")
+        if cateID == None:
+            courses = VF.get_Courses_By_Category(categoryID)
+        else:
+            courses = VF.get_Courses_By_Category(cateID)
+    return render(request, "index/courseCategory/courseCategoryIndex.html", locals())

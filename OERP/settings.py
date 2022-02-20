@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'captcha',
     'rest_framework',
     'martor',
+    'django_extensions',
 ]
 
 SITE_ID=1

@@ -8,6 +8,7 @@ from rest_framework import serializers
 from datetime import datetime
 from notifications.signals import notify
 from django.contrib.auth.models import User
+from django.db.models import Q
 
 import index, json
 
@@ -22,9 +23,9 @@ def Get_Category():  # 获取分类信息
         ).order_by("DisplayOrder")
         ChildCategory = []
         for j in range(Child.count()):
-            ChildCategory.append(str(Child[j]))
-        rootlist.append(str(root[i]))
-        dict[str(root[i])] = ChildCategory
+            ChildCategory.append(Child[j])
+        rootlist.append(root[i])
+        dict[root[i]] = ChildCategory
     return rootlist, dict
 
 
@@ -153,3 +154,8 @@ def delete_Files(filepath):
         raise FileNotFoundError("文件不存在")
 # def test(Chapter):
 #     course = models.Course.objects.create(Course_Name='1',Course_Teacher='1',Course_Info='1',Stu_Count=1,Course_Chapter=Chapter,View_Count=1,Ending_Time=datetime.datetime.now())
+
+def get_Courses_By_Category(CategoryID):
+    Categories_Queryset = models.CourseCategory.objects.filter(Q(CategoryID=CategoryID) | Q(ParentID=CategoryID))
+    Course_Queryset = models.Course.objects.filter(Course_Category__in = Categories_Queryset)
+    return Course_Queryset

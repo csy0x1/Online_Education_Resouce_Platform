@@ -37,3 +37,16 @@
 
 - [x] **~~课程图片的大小会对课程信息界面的页面排版有影响~~**
     > 暂时修复，待后期CSS重新排版测试
+- [x] ~~**课程分类选择应区分根分类和子分类**~~
+- [ ] **课程学习中的公告未被渲染成Markdown格式**
+- [ ] **课程学习中课件未显示文件列表**
+- [x] ~~**每个分类都有自己的分类ID，子分类通过外键连接到父分类，在此情况下需要实现查询某个父分类下的所有课程(如查询计算机分类下的课程，即需要显示包括C++/Python/JAVA等子分类下的所有课程)**~~
+    > 可以通过Q对象实现或的逻辑，传入一个分类ID，获取所有ID为这个ID或者父分类ID为此ID的查询集(QuerySet，这个查询集包含该分类及其所有子分类)。再通过这个查询集在课程的数据表中进行查询，返回结果
+    [查询集查询交集](https://stackoverflow.com/questions/10473149/django-filter-on-queryset-intersection)
+    [Q对象](https://www.liujiangblog.com/course/django/129)
+- [x] ~~**一段Javascript代码被执行了两次**~~
+    > Javascript脚本在页面加载时被载入了两次
+- [x] ~~**通过URL向后端传入当前浏览的分类的ID，通过参数来传子分类ID(category/<父分类ID>?subcategory=<子分类ID>)**~~
+    > [通过JS获取地址栏参数](https://www.cnblogs.com/jinshuo/p/8074052.html)
+
+    

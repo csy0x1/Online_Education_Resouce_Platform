@@ -58,4 +58,10 @@ $(document).ready(function () {
         var href = '/course/' + courseID
         $(location).attr('href', href)
     })
+
+    $(".ChildCategory").each(function(){
+        var $this = $(this)
+        var categoryID = $this.attr('id')
+        $this.attr("href",$this.attr("href")+"?subcategory="+categoryID)
+    })
 })
