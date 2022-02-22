@@ -11,6 +11,8 @@
     <title>{% block title %} 基础设置 - {{courseDetail.Course_Name}} iMooc在线教育资源平台 {% endblock %}</title>
     {% block extrastatic %}
     {{ block.super }}
+    <!-- cropperjs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- basic static -->
     <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSettingInfo.css' %}">
     <!-- FancyTree -->
@@ -37,6 +39,14 @@
     {% block content %}
     <div>
         {{ block.super }}
+        <div class="modal fade" tabindex="-1"  role="dialog" aria-labelledby="ImageCropper"
+         id="ImageCropperModal" data-backdrop="static" data-keyboard="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <img id="ImageCropper">
+                </div>
+            </div>
+        </div>
         <div class="settingForm">
             <form enctype="multipart/form-data" class="form-horizontal">
                 {% csrf_token %}
@@ -143,6 +153,9 @@
             </form>
         </div>
     </div>
+
+    <!-- cropperjs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- basic static -->
     <script src="{% static 'index/js/courseSetting.js' %}"></script>

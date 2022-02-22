@@ -5,21 +5,18 @@
     box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
 }
 
-.infoHeader-left-img{
-    display:inline-block;
-    float:left;
-    height:250px;
-    width:500px;
-    margin:50px 0 50px 30px;
-    overflow:hidden;
+.infoHeader-left-img {
+    float: left;
+    height: 300px;
+    width: 500px;
+    margin: 15px 0 50px 30px;
+    overflow: hidden;
 }
 .infoHeader-left-img img{
-    max-width:600px;
-    max-height:250px;
+    width:100%;
 }
 
 .infoHeader-right-info{
-    display:inline-block;
     float:right;
     height:auto;
     padding-right:100px;

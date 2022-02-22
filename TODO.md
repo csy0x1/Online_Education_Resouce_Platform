@@ -48,5 +48,5 @@
     > Javascript脚本在页面加载时被载入了两次
 - [x] ~~**通过URL向后端传入当前浏览的分类的ID，通过参数来传子分类ID(category/<父分类ID>?subcategory=<子分类ID>)**~~
     > [通过JS获取地址栏参数](https://www.cnblogs.com/jinshuo/p/8074052.html)
-
+- [ ] **在图片上传前提供图片裁剪编辑功能，方便保证各种图片上传后的显示尺寸比例正确(如课程封面图片)**
     

@@ -172,7 +172,32 @@ $(document).ready(function () {
         }
     });
 
-    $("#input-CourseImage").fileinput({     //文件上传
+    function ImageCrop(image){
+        $("#ImageCropperModal").modal("show")
+        $("#ImageCropper").replaceWith(image)
+        $("#ImageCropperModal").on("shown.bs.modal",function(){
+            const img = $("#ImageCropperModal").find("img")
+            const cropper = new Cropper(img[0],{
+                aspectRatio: 16 / 9,
+                crop(event) {
+                  console.log(event.detail.x);
+                  console.log(event.detail.y);
+                  console.log(event.detail.width);
+                  console.log(event.detail.height);
+                  console.log(event.detail.rotate);
+                  console.log(event.detail.scaleX);
+                  console.log(event.detail.scaleY);
+                },
+              });
+        })
+    }
+
+    $("#input-CourseImage")
+    .on("fileimageloaded",function(event, previewId){
+        console.log(previewId)
+        ImageCrop($(".file-preview-image")[1])
+    })
+    .fileinput({     //文件上传
         'language': 'zh',
         allowFileType:['image'],
         uploadUrl:'Setting',

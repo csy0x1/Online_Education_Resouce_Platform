@@ -97,7 +97,9 @@
             {% for course in recommendCourses %}
             <div class="MPContent">
                 <span class="Rank{{forloop.counter}} RankNumber">{{forloop.counter}}</span>
-                <img src="{{course.Course_Img.url}}" height="60px" class="courseImage">
+                <div class="CourseCover">
+                    <img src="{{course.Course_Img.url}}" height="60px" class="courseImage">
+                </div>
                 <div class="RankCourseInfo">
                     <span class="courseID" hidden>{{course.id}}</span>
                     <p class="courseName">{{course.Course_Name}}</p>
