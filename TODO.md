@@ -48,5 +48,11 @@
     > Javascript脚本在页面加载时被载入了两次
 - [x] ~~**通过URL向后端传入当前浏览的分类的ID，通过参数来传子分类ID(category/<父分类ID>?subcategory=<子分类ID>)**~~
     > [通过JS获取地址栏参数](https://www.cnblogs.com/jinshuo/p/8074052.html)
-- [ ] **在图片上传前提供图片裁剪编辑功能，方便保证各种图片上传后的显示尺寸比例正确(如课程封面图片)**
+- [x] ~~**在图片上传前提供图片裁剪编辑功能，方便保证各种图片上传后的显示尺寸比例正确(如课程封面图片)**~~
+    > 前端原计划是保持使用bootstrap file-input插件，在每次从文件选择器选择图片时捕获事件，将图片交由[CropperJS插件](https://github.com/fengyuanchen/cropperjs)进行裁剪，再使用返回的结果。但尝试多次以后仍然没有找到办法能够在对图片进行裁剪操作以后将其加入到file-input的上传列表中，可能与[Javascript的安全策略](https://stackoverflow.com/questions/29720794/jquery-select-input-file-and-also-set-it-to-another-input)有关，不能通过代码改变"input=file"的值，或许可以采用[DataTransfer API](https://stackoverflow.com/questions/5632629/how-to-change-a-file-inputs-filelist-programmatically)来实现，但经过多次尝试也没能成功运行。最后转向直接使用CropperJS提供的toDataURL方法将裁剪后的[图片转为BASE64编码](https://www.cnblogs.com/wangqj1996/p/10193030.html)的格式，最后与其余表单数据一起通过ajax的方式提交。
+    >前端还遇到的比较大的问题就是希望实现一个用户可以随意上传、编辑图片的功能，当用户上传了一个图片后，图片会在一个模态框中被加载并可以被裁剪，进行了裁剪以后，如果感觉不满意，可以重新上传一张图片再进行裁剪操作。在实现这个功能时遇到的问题就是当用户载入了一张图片A后，如果重新载入图片B，图片C，图片D这样一次或多次载入后，整个CropperJS提供的裁剪功能会变得不正常，包括但不限于后面载入的图片裁剪状态无法保存、同时出现多个裁剪框等情况。最后通过参考插件[在github上给出的文档例子](https://github.com/fengyuanchen/cropperjs/blob/main/docs/examples/cropper-in-modal.html)，对相关的Javascript代码进行修改修复。
+
+    > 后端要做的事则是如何将前端传过来的BASE64编码重新转换为图片并保存。需要注意的一点就是前端传过来的BASE64包含前缀"data:image/jpeg;base64,"需去除。在实现的时候遇到的问题包括在指定的目录并没有找到本应该保存的图片文件以及保存的图片文件无法打开，提示格式无法读取，由于在测试的时候比较没有头绪，对于代码的修改调整比较杂乱没有顺序，因此具体的原因不能绝对确定。但根据各种线索推测问题的原因很有可能是以下两种:  
+    >    1.对于前者，可能是文件路径的编写有问题，导致文件实际被存放到了项目的根目录，而当时并没有检查根目录，因此以为是文件没有被保存。第二天在根目录下找到了本应保存的图片文件，且文件的创建时间也可以印证这一点。在通过从项目设置里引用文件保存路径以取代硬编码路径后问题得到解决。  
+    >   2.对于后者，应该是BASE64的前缀没有去除，导致文件不可读。原本应该负责这部分的代码在前面的各种杂乱的测试中可能不小心被移除了，最后通过重新添加这一句代码后解决。
     

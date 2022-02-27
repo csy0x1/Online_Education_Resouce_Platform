@@ -1,6 +1,7 @@
 from __future__ import print_function
 from datetime import datetime
 from http.client import HTTPResponse
+import os
 from pyexpat import model
 from django.contrib.auth import hashers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
@@ -9,9 +10,10 @@ from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+import OERP.settings
 
 
-import pytz
+import pytz,base64
 from pytz import timezone
 
 from . import forms, models
@@ -227,15 +229,17 @@ def courseSetting(request, courseid):
         img = course.Course_Img
         if request.method == "POST":
             operationType = request.POST.get("operationType")
-            if operationType == "uploadImage":
-                file = request.FILES.get("input-CourseImage")
-                try:
-                    course.Course_Img = file
-                    course.save()
-                except Exception as e:
-                    print(e)
-                    return JsonResponse({"status": "error"})
-                return JsonResponse({"status": "success"})
+            # if operationType == "uploadImage":
+            #     file = request.FILES.get("input-CourseImage")
+            #     print("file is : ")
+            #     print(file)
+            #     try:
+            #         course.Course_Img = file
+            #         course.save()
+            #     except Exception as e:
+            #         print(e)
+            #         return JsonResponse({"status": "error"})
+            #     return JsonResponse({"status": "success"})
             if operationType == "submitForm":
                 formData = request.POST.getlist("form[]")
                 try:
@@ -245,6 +249,19 @@ def courseSetting(request, courseid):
                     course.Grade_Requirements = formData[3]
                     course.Reference = formData[4]
                     course.QA = formData[5]
+                    image = request.POST.get("image")
+                    if(image!=None):
+                        f_obj = image.split(",")[1] # 前端传过来BASE64编码的图片，需去掉"data:image/jpeg;base64,"
+                        decodedimg = base64.b64decode(f_obj)    # 将BASE64编码的图片解码
+                        filepath = OERP.settings.MEDIA_ROOT+"/course_img/"+course.Course_Name+str(courseid)+".jpg"
+                        with open(filepath,"wb") as f:
+                            f.write(decodedimg)
+                        try:
+                            course.Course_Img = filepath
+                            course.save()
+                        except Exception as e:
+                            print(e)
+                            return JsonResponse({"status": "error"})
                     category_obj = models.CourseCategory.objects.get(CategoryName=formData[6])
                     course.Course_Category = category_obj
                     timezone=pytz.timezone('Asia/Shanghai')

@@ -43,12 +43,30 @@
          id="ImageCropperModal" data-backdrop="static" data-keyboard="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
-                    <img id="ImageCropper">
+                    <div class="CropModalTitle">
+                        <h3>课程封面</h3>
+                    </div>
+                    <div class="EditArea">
+                        <div class="ImageCropDiv">
+                            <img id="ImageCropper" src="">
+                            <p class="ImageResolution"></p>
+                        </div>
+                        <div class="PreviewArea">
+                            <p>课程封面预览</p>
+                            <div class="Preview">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="ModalButtons">
+                        <button class="ConfirmCrop btn btn-primary">确定</button>
+                        <button class="CancelCrop btn btn-default">取消</button>
+                    </div>
                 </div>
             </div>
         </div>
         <div class="settingForm">
-            <form enctype="multipart/form-data" class="form-horizontal">
+            <form enctype="multipart/form-data" class="form-horizontal" id="InfoForm">
                 {% csrf_token %}
                 <div class="form-group">
                     <div class="item form-Name">
@@ -106,10 +124,17 @@
                     <div class="item form-Img">
                         <label for="Course_Img" class="control-label col-sm-2">课程图片:</label>
                         <div class="imgUpload">
-                            <p>当前课程图片</p>
-                            <img src="{{img.url}}">
-                            <p>设置新的课程图片</p>
+                            <div class="currentCover">
+                                <p>当前课程图片</p>
+                                <img src="{{img.url}}" id="CurrentCourseImage">
+                            </div>
                             <div class="image-uploading">
+                                <p>设置新的课程图片</p>
+                                <img id="UploadedImage" src="/media/material/SM-placeholder.png">
+                                <div class="ImageToolbar">
+                                    <span id="uploadspan">上传封面</span>
+                                    <span id="editspan">编辑封面</span>
+                                </div>
                                 <input id="input-CourseImage" name="input-CourseImage" type="file">
                             </div>
                         </div>

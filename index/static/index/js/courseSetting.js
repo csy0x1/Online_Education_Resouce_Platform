@@ -1,5 +1,20 @@
 $(document).ready(function () {
 
+    // function dataURLtoFile(dataurl, filename) {
+ 
+    //     var arr = dataurl.split(','),
+    //         mime = arr[0].match(/:(.*?);/)[1],
+    //         bstr = atob(arr[1]), 
+    //         n = bstr.length, 
+    //         u8arr = new Uint8Array(n);
+            
+    //     while(n--){
+    //         u8arr[n] = bstr.charCodeAt(n);
+    //     }
+        
+    //     return new File([u8arr], filename, {type:mime});
+    // }
+
     var simpleMDE = []
     $("TextArea").each(function(i=0){
         simpleMDE[i] = new SimpleMDE({element:this})
@@ -172,44 +187,100 @@ $(document).ready(function () {
         }
     });
 
+    $("#uploadspan").on("click", function () {
+        $("#input-CourseImage").trigger("click");
+    })
+
+    $("#editspan").on("click", function () {
+        var img = $("#UploadedImage").attr("src")
+        ImageCrop(img)
+    })
+
     function ImageCrop(image){
+        var img = $("#ImageCropper")
+        var cropper
+        var cropBoxData
+        var canvasData
+        var imgURL
+        $("#ImageCropper").attr("src",image)
         $("#ImageCropperModal").modal("show")
-        $("#ImageCropper").replaceWith(image)
         $("#ImageCropperModal").on("shown.bs.modal",function(){
-            const img = $("#ImageCropperModal").find("img")
-            const cropper = new Cropper(img[0],{
+            cropper = new Cropper(img[0],{
                 aspectRatio: 16 / 9,
+                modal: true,
+                viewMode:1,
+                zoomable:false,
+                preview:".Preview",
                 crop(event) {
-                  console.log(event.detail.x);
-                  console.log(event.detail.y);
-                  console.log(event.detail.width);
-                  console.log(event.detail.height);
-                  console.log(event.detail.rotate);
-                  console.log(event.detail.scaleX);
-                  console.log(event.detail.scaleY);
+                    $(".ImageResolution").text("当前图片尺寸 "+Math.round(event.detail.width) + "*" + Math.round(event.detail.height))
+                    // console.log(event.detail.x);
+                    // console.log(event.detail.y);
+                    // console.log(event.detail.width);
+                    // console.log(event.detail.height);
+                    // console.log(event.detail.rotate);
+                    // console.log(event.detail.scaleX);
+                    // console.log(event.detail.scaleY);
                 },
-              });
+                ready:function(){
+                    //cropper.setCropBoxData(cropBoxData).setCanvasData(canvasData);
+                }
+            });
+            console.log(cropper)
+            $(".CancelCrop").on("click",function(){
+                $("#ImageCropperModal").modal("hide")
+            })
+            $(".ConfirmCrop").on("click",function(){
+                imgURL = cropper.getCroppedCanvas().toDataURL("image/jpeg")
+                $("#UploadedImage").attr("src",imgURL)
+                $("#ImageCropperModal").modal("hide")
+                // var container = new DataTransfer()
+                // container.items.clear()
+                // container.items.add(dataURLtoFile(imgURL,name))
+                // $("#input-CourseImage")[0].files = container.files
+                // cropper.getCroppedCanvas().toBlob((blob)=>{
+                //     console.log(blob)
+
+                // },"image/jpeg")
+                // var file = dataURLtoFile(cropper.getCroppedCanvas().toDataURL("image/jpeg"))
+                // return file
+            })
+        })
+        .on("hidden.bs.modal",function(){
+            cropBoxData = cropper.getCropBoxData();
+            canvasData = cropper.getCanvasData();
+            //imgURL = cropper.getCroppedCanvas().toDataURL("image/jpeg")
+            cropper.destroy();           
         })
     }
 
-    $("#input-CourseImage")
-    .on("fileimageloaded",function(event, previewId){
-        console.log(previewId)
-        ImageCrop($(".file-preview-image")[1])
+    // $("#input-CourseImage")
+    // .on("change",function(event){
+    //     console.log(event)
+    //     console.log(event.target.files[0])
+    // })
+    // .on("fileimageloaded",function(event, previewId,file){
+    //     console.log(file)
+    //     //ImageCrop($("#CurrentCourseImage").attr("src"))
+    // })
+    // .fileinput({     //文件上传
+    //     'language': 'zh',
+    //     allowFileType:['image'],
+    //     uploadUrl:'Setting',
+    //     autoReplace:true,
+    //     uploadExtraData:function(){
+    //         return{
+    //             "operationType": "uploadImage",
+    //         }
+    //     },
+    //     ajaxSettings: {
+    //         'headers':{"X-CSRFToken": csrftoken}
+    //     }
+    // });
+
+    $("#input-CourseImage").on("change",function(event){
+        //$("#UploadedImage").attr("src",URL.createObjectURL(event.target.files[0]))
+        ImageCrop(URL.createObjectURL(event.target.files[0]))
     })
-    .fileinput({     //文件上传
-        'language': 'zh',
-        allowFileType:['image'],
-        uploadUrl:'Setting',
-        uploadExtraData:function(){
-            return{
-                "operationType": "uploadImage",
-            }
-        },
-        ajaxSettings: {
-            'headers':{"X-CSRFToken": csrftoken}
-        }
-    });
 
     function unique(arr) {
         var result = [], hash = {};
@@ -230,6 +301,7 @@ $(document).ready(function () {
         })
         MDEdata.push($("#CourseCategory").val())
         MDEdata.push($("#Ending_Time").val())
+        file = $("#UploadedImage").attr("src")
         $.ajax({
             type: "POST",
             url: "Setting",
@@ -237,6 +309,7 @@ $(document).ready(function () {
             data: {
                 operationType: "submitForm",
                 form: MDEdata,
+                image:file,
             },
             success: function (response) {
                 window.setTimeout(window.location.reload(),1500)
