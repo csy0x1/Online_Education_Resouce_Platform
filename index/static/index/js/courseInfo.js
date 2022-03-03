@@ -1,4 +1,7 @@
 $(document).ready(function () {
+    
+    var categoryID = $(".Category").attr("id")
+    $(".Category").attr("href",$(".Category").attr("href")+"?subcategory="+categoryID)
 
     function getCookie(name) {      //获取CSRF令牌
         let cookieValue = null;

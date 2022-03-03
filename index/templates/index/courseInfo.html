@@ -21,9 +21,9 @@
     <div class="infoHeader">
         <div>
             <ul class="breadcrumb">
-                <li><a href="/index/">主页</a></li>
-                <li><a href="#">{{courseDetail.Course_Category}}</a></li>
-                <li class="active"><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+                <li><a class="Index" href="/index/">主页</a></li>
+                <li><a class="Category" href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}" id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
+                <li class="active"><a class="Course" href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
                     </a>
                 </li>
             </ul>

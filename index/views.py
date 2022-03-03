@@ -403,7 +403,10 @@ def courseLearnNotice(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
-    newestNotice = historyNotices.order_by("-createTime")[:1][0]
+    if(len(historyNotices)==0):
+        pass
+    else:
+        newestNotice = historyNotices.order_by("-createTime")[:1][0]
     paginator = Paginator(historyNotices, 5)  # 分页功能
     if request.method == "GET":
         page = request.GET.get("page")

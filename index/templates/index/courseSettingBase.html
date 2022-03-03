@@ -17,9 +17,9 @@
     {% block content %}
     <div>
         <ul class="breadcrumb">
-            <li><a href="/index/">主页</a></li>
-            <li><a href="#">{{courseDetail.Course_Category}}</a></li>
-            <li><a href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+            <li><a class="Index" href="/index/">主页</a></li>
+            <li><a class="Category" href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}" id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
+            <li><a class="Course" href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
                 </a>
             </li>
             <li class="active"><a href="{% url 'index:courseSetting' courseid %}">课程设置
@@ -35,6 +35,8 @@
             <li role="chapterManagement"><a href="{% url 'index:chapterSetting' courseid %}">章节管理</a></li>
         </ul>
     </div>
+
+    <script src="{% static 'index/js/setBreadcrumbHref.js' %}"></script>
     {% endblock %}
 </body>
 
