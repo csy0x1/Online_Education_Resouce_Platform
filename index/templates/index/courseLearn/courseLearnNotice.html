@@ -1,5 +1,6 @@
 {% extends 'index/courseLearn/courseLearnBase.html' %}
 {% load static %}
+{% load martortags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -23,7 +24,7 @@
                 <h1> {{newestNotice.Title}} </h1>
             </div>
             <div class="noticeContent">
-                {{newestNotice.Message | linebreaks}}
+                {{newestNotice.Message | safe_markdown |linebreaks}}
             </div>
             <div class="noticePostTime">
                 <h5> {{newestNotice.createTime}} </h5>
@@ -76,7 +77,7 @@
                 <h4>{{Notice.Title }}</h4>
             </div>
             <div class="HnoticeContent">
-                {{Notice.Message | linebreaks}}
+                {{Notice.Message | safe_markdown |linebreaks}}
             </div>
             <br />
             <div class="HnoticePostTime">

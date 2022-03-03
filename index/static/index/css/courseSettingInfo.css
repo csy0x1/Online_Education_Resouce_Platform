@@ -52,6 +52,7 @@ input#input-CourseImage {
     color: white;
     position: relative;
     bottom: 20px;
+    visibility: hidden;
 }
 
 .ImageToolbar span {

@@ -95,7 +95,7 @@
                     <div id="collapse{{forloop.counter}}" class="panel-collapse collapse" role="tabpanel"
                         aria-labelledby="heading{{forloop.counter}}" aria-expanded="false">
                         <div class="panel-body">
-                            {{ Notice.Message|safe_markdown }}
+                            {{ Notice.Message|safe_markdown| linebreaks }}
                         </div>
                         <div class="postTime">
                             <span>发布日期: </span>

@@ -191,6 +191,10 @@ $(document).ready(function () {
         $("#input-CourseImage").trigger("click");
     })
 
+    $("#UploadedImage").on("click",function(){
+        $("#input-CourseImage").trigger("click");
+    })
+
     $("#editspan").on("click", function () {
         var img = $("#UploadedImage").attr("src")
         ImageCrop(img)
@@ -233,6 +237,7 @@ $(document).ready(function () {
                 imgURL = cropper.getCroppedCanvas().toDataURL("image/jpeg")
                 $("#UploadedImage").attr("src",imgURL)
                 $("#ImageCropperModal").modal("hide")
+                $(".ImageToolbar").css("visibility","unset")
                 // var container = new DataTransfer()
                 // container.items.clear()
                 // container.items.add(dataURLtoFile(imgURL,name))
