@@ -6,7 +6,7 @@ $(function () {
 
     // 根据所选章获取相应的内容
     function getSections() {
-        var Chapter = $('.ChapterSelector').val()
+        var Chapter = $('#ChapterSelector').val()
         $.ajax({
             type: "GET",
             url: "Content/GetSection",
@@ -17,16 +17,20 @@ $(function () {
                 $.each(response, function (i, item) {
                     content += '<option value=' + item + '>' + item + '</option>'
                 })
-                $('.SectionSelector').html(content)
-                Section = $('.SectionSelector').val()
-                console.log(Section)
+                // $('.SectionSelector').html(content)
+                // Section = $('.SectionSelector').val()
+                // console.log(Section)
+                $('#SectionSelector').empty()
+                $('#SectionSelector').html(content)
+                $('#SectionSelector').selectpicker('refresh')
+                $('#currentSection').text($('#SectionSelector').find("option:selected").text())
                 getContent()
             }
         })
     }
 
     function getContent() {
-        var Section = $('.SectionSelector').val()
+        var Section = $('#SectionSelector').val()
         $.ajax({
             type: "GET",
             url: "Content/GetContent",
@@ -45,6 +49,7 @@ $(function () {
                         ' </tr>'
                 })
                 tab.html(content)
+                $('select').selectpicker('refresh')
             }
         })
     }

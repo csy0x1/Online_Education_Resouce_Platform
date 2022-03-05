@@ -29,15 +29,17 @@
         </li>
     </ul>
     <div class="header">
-        <div class="courseName">
-            <a href="{% url 'index:courseInfo' courseid %}">
-                <h4>{{courseDetail.Course_Name}}</h4>
-            </a>
-        </div>
-        <div class="teachers">
-            <a href="#">
-                <h5>{{courseDetail.Course_Teacher}}</h5>
-            </a>
+        <div class="courseInfo">
+            <div class="courseName">
+                <a href="{% url 'index:courseInfo' courseid %}">
+                    <h4>{{courseDetail.Course_Name}}</h4>
+                </a>
+            </div>
+            <div class="teachers">
+                <a href="#">
+                    <h5>{{courseDetail.Course_Teacher}}</h5>
+                </a>
+            </div>
         </div>
     </div>
     <div class="navSideBar">

@@ -36,6 +36,10 @@
     margin:5px;
 }
 
+.courseInfo {
+    width: fit-content;
+}
+
 .mainContainer{
     display:block;
     width:79%;
