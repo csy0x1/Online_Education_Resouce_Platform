@@ -242,6 +242,7 @@ def courseSetting(request, courseid):
             #     return JsonResponse({"status": "success"})
             if operationType == "submitForm":
                 formData = request.POST.getlist("form[]")
+                print(len(formData))
                 try:
                     course.Course_Name = formData[0]
                     course.Course_Info = formData[1]
@@ -250,13 +251,13 @@ def courseSetting(request, courseid):
                     course.Reference = formData[4]
                     course.QA = formData[5]
                     image = request.POST.get("image")
-                    if(image!=None):
-                        f_obj = image.split(",")[1] # 前端传过来BASE64编码的图片，需去掉"data:image/jpeg;base64,"
-                        decodedimg = base64.b64decode(f_obj)    # 将BASE64编码的图片解码
-                        filepath = OERP.settings.MEDIA_ROOT+"/course_img/"+course.Course_Name+str(courseid)+".jpg"
-                        with open(filepath,"wb") as f:
-                            f.write(decodedimg)
+                    if(len(image) != 0):
                         try:
+                            f_obj = image.split(",")[1] # 前端传过来BASE64编码的图片，需去掉"data:image/jpeg;base64,"
+                            decodedimg = base64.b64decode(f_obj)    # 将BASE64编码的图片解码
+                            filepath = OERP.settings.MEDIA_ROOT+"/course_img/"+course.Course_Name+str(courseid)+".jpg"
+                            with open(filepath,"wb") as f:
+                                f.write(decodedimg)
                             course.Course_Img = filepath
                             course.save()
                         except Exception as e:
@@ -404,7 +405,7 @@ def courseLearnNotice(request, courseid):
     course = models.Course.objects.get(id=courseid)
     historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
     if(len(historyNotices)==0):
-        pass
+        newestNotice = models.CourseNotice.objects.get(sourceCourse=None)
     else:
         newestNotice = historyNotices.order_by("-createTime")[:1][0]
     paginator = Paginator(historyNotices, 5)  # 分页功能

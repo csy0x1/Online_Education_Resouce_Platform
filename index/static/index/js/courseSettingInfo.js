@@ -14,7 +14,7 @@ $(document).ready(function () {
         
     //     return new File([u8arr], filename, {type:mime});
     // }
-
+    var imageLoaded = false
     var simpleMDE = []
     $("TextArea").each(function(i=0){
         simpleMDE[i] = new SimpleMDE({element:this})
@@ -196,8 +196,8 @@ $(document).ready(function () {
     })
 
     $("#editspan").on("click", function () {
-        var img = $("#UploadedImage").attr("src")
-        ImageCrop(img)
+        var imge = $("#UploadedImage").attr("src")
+        ImageCrop(imge)
     })
 
     function ImageCrop(image){
@@ -238,6 +238,7 @@ $(document).ready(function () {
                 $("#UploadedImage").attr("src",imgURL)
                 $("#ImageCropperModal").modal("hide")
                 $(".ImageToolbar").css("visibility","unset")
+                imageLoaded = true
                 // var container = new DataTransfer()
                 // container.items.clear()
                 // container.items.add(dataURLtoFile(imgURL,name))
@@ -306,7 +307,11 @@ $(document).ready(function () {
         })
         MDEdata.push($("#CourseCategory").val())
         MDEdata.push($("#Ending_Time").val())
-        file = $("#UploadedImage").attr("src")
+        if(imageLoaded){
+            file = $("#UploadedImage").attr("src")
+        } else{
+            file = null
+        }
         $.ajax({
             type: "POST",
             url: "Setting",
