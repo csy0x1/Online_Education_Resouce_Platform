@@ -64,4 +64,9 @@
     >   解决方法为 1.在前端设置标识符，如果没有上传图片，标识符为false，则图片表单项的数据不加入到传输数据中(done, 数据置空传输) 2. 后端try catch(TODO)
 - [ ] **对部分页面(如课程分类)采用局部刷新更新内容，减少页面刷新的频率**
     > [Django使用模板进行动态局部刷新](https://www.cnblogs.com/mandaren/p/3963286.html)
+    > [使用ajax更新django模板中局部内容的方法](https://my.oschina.net/u/2396236/blog/3122849)
+- [ ] **在课程学习课件页面中，如果文件是视频文件，则使用video.js(或其他同类的库)载入并提供在线播放；若为其他文件，则提供下载链接(同现在的功能)**
+    > [video.js](https://github.com/videojs/video.js)
+- [ ] **可以在设置中对课程文件进行排序，影响课程学习中课程文件的显示顺序**
+    > [Sortable](https://github.com/SortableJS/Sortable)
     

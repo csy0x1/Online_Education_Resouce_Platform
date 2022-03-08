@@ -50,9 +50,10 @@ $(function () {
     function getContent() {
         var Section = $('#SectionSelector').val()
         $.ajax({
-            type: "GET",
+            type: "POST",
             url: "Chapter/GetContent",
             dataType: "json",
+            headers: {"X-CSRFToken":csrftoken},
             data: { "Section": Section },
             success: function (response) {
                 var content = ""

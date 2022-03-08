@@ -12,6 +12,9 @@
     {{ block.super }}
     <!-- bootstrap-select -->
     <link rel="stylesheet" href="{% static 'bootstrap-select/css/bootstrap-select.min.css' %}">
+
+    <!-- video.js -->
+    <link href="//vjs.zencdn.net/7.17.0/video-js.min.css" rel="stylesheet">
     {% endblock extrastatic %}
 </head>
 
@@ -36,12 +39,7 @@
     </div>
 
     <div class="fileList">
-        <table class="table table-hover fileTable">
-            <tr>
-                <th>课程资源</th>
-            </tr>
-
-        </table>
+        {% include 'index/AjaxTemplate/CourseFilePreview.html' %}
     </div>
 
     <!-- basic js -->
@@ -50,6 +48,8 @@
     <!-- bootstrap-select -->
     <script src="{% static 'bootstrap-select/js/bootstrap-select.min.js' %}"></script>
 
+    <!-- video.js -->
+    <script src="//vjs.zencdn.net/7.17.0/video.min.js"></script>
     {% endblock learnContent %}
 
 </body>

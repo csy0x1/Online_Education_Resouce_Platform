@@ -1,8 +1,10 @@
 from __future__ import print_function
 from datetime import datetime
+from distutils.filelist import FileList
 from http.client import HTTPResponse
 import os
 from pyexpat import model
+import tempfile
 from django.contrib.auth import hashers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.db.models import F, Q
@@ -10,10 +12,11 @@ from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.template.loader import render_to_string
 import OERP.settings
 
 
-import pytz,base64
+import pytz,base64,magic
 from pytz import timezone
 
 from . import forms, models
@@ -325,6 +328,11 @@ def courseSettingChapter(request, courseid):
         operationType = request.POST.get("operationType")
         if operationType == "upload":
             file = request.FILES['input-CourseFiles']
+            tmpfile = tempfile.NamedTemporaryFile(delete=False)
+            with tmpfile as tmp:
+                for chunk in file.chunks():
+                    tmp.write(chunk)
+                print(magic.from_file(tmp.name, mime=True))
             section = request.POST.get('section')
             # file_path = "courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file.name
             # os.makedirs(os.path.dirname(file_path), exist_ok=True)
@@ -430,6 +438,9 @@ def courseLearnContent(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     Chapters = models.Chapter.objects.filter(sourceCourse=course)
+    page = request.GET.get("page")
+    print("pageis")
+    print(page)
     # Section = models.Section.objects.get(sectionName="1.1 sb Bot2")
     # FilesForm = forms.CourseFilesForm()
     # FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
@@ -458,15 +469,36 @@ def GetSection(request, courseid):
 
 
 def GetContent(request, courseid):
-    Section = request.GET.get("Section")
+    Section = request.POST.get("Section")
+    operation = request.POST.get("Operation")
+    previewFile = request.POST.get("file")
     Section = models.Section.objects.get(sectionName__startswith=Section)
     FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
     data = {}
+    videos = []
+    html = ""
     for f in FilesList:
         filename = f.filename()
-        data[filename] = f.courseFile.url
-    # print(data)
-    return JsonResponse(data, safe=False)
+        tmpfile = tempfile.NamedTemporaryFile(delete=False)
+        with tmpfile as tmp:
+            for chunk in f.courseFile.open('rb').chunks():
+                tmp.write(chunk)
+            if magic.from_file(tmp.name, mime=True).split("/")[0] == "video":
+                videos.append(f)
+                data[filename] = f.courseFile.url
+            else:
+                data[filename] = f.courseFile.url
+    if previewFile != None and FileList != None:
+        video = videos[int(previewFile)]
+    elif len(videos) == 0:
+        video = None
+    else:
+        video = videos[0]
+    html = render_to_string("index/AjaxTemplate/CourseFilePreview.html", locals())
+    if(operation == "Preview"): #课程学习界面的文件列表
+        return JsonResponse(html, safe=False)
+    else:   #课程设置界面的文件列表
+        return JsonResponse(data, safe=False)
 
 def categoryPage(request,categoryID):
     category = models.CourseCategory.objects.get(CategoryID=categoryID)
