@@ -10,11 +10,12 @@
     <title>{{courseDetail.Course_Name}} - iMooc在线教育资源平台</title>
     {% block extrastatic %}
     {{ block.super }}
+    <!-- courseFilePreview -->
+    <link rel="stylesheet" href="{% static 'index/css/courseFilePreview.css' %}">
+
     <!-- bootstrap-select -->
     <link rel="stylesheet" href="{% static 'bootstrap-select/css/bootstrap-select.min.css' %}">
 
-    <!-- video.js -->
-    <link href="//vjs.zencdn.net/7.17.0/video-js.min.css" rel="stylesheet">
     {% endblock extrastatic %}
 </head>
 
@@ -48,8 +49,6 @@
     <!-- bootstrap-select -->
     <script src="{% static 'bootstrap-select/js/bootstrap-select.min.js' %}"></script>
 
-    <!-- video.js -->
-    <script src="//vjs.zencdn.net/7.17.0/video.min.js"></script>
     {% endblock learnContent %}
 
 </body>

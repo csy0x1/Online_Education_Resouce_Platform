@@ -104,10 +104,9 @@ $(function () {
         GetPreview(file)
     })
 
-    $(".list-group-item").on("click",function(){
-
+    $(".fileList").on("click","video",function(){
+        console.log("loaded")
     })
-
 
     getSections()
 })
