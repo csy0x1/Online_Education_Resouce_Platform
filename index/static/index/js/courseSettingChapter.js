@@ -63,9 +63,12 @@ $(function () {
                         '<td>'+
                         '<input type="checkbox" class="selectSingle">'+
                         '</td>'+
-                        '<td class="File">' +
-                        '<a href="' + value + '">' + key + '</a>'+
-                         '</td>' +
+                        '<td class="FileName">' +
+                        '<p>' + key + '</p>'+
+                        '</td>' +
+                        '<td class="Download">' +
+                            '<a href="' + value + '">' + "下载" + '</a>'+
+                        '</td>' +
                         '</tr>'
                 })
                 tab.html(content)

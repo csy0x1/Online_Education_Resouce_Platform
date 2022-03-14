@@ -45,14 +45,18 @@
 <table class="table table-hover fileTable">
   <thead>
     <tr>
-      <th>课程资源</th>
+      <th>课件名称</th>
+      <th>下载课件</th>
     </tr>
   </thead>
   <tbody>
     {% for key,value in data.items %}
     <tr>
       <td>
-        <a href="{{value}}">{{key}}</a>
+        <p>{{key}}</p>
+      </td>
+      <td>
+        <a href="{{value}}">下载</a>
       </td>
     </tr>
     {% endfor %}

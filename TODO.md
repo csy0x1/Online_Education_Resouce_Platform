@@ -69,4 +69,9 @@
     > [video.js](https://github.com/videojs/video.js)
 - [ ] **可以在设置中对课程文件进行排序，影响课程学习中课程文件的显示顺序**
     > [Sortable](https://github.com/SortableJS/Sortable)
-    
+- [ ] **章节设置课程文件中选中了多个文件时，如果取消选择一个文件，即使仍有文件被选中，删除按钮也会被禁用**
+- [x] ~~**可以自定义课件名称**~~
+    > [点击文本变成输入框](https://www.cnblogs.com/maxiag/p/13673838.html)
+    > 暂时撤销需求，需求重要性不高但代码修改量较大，需要整理具体需要实现的功能
+- [ ] **开设课程的功能**
+    > 

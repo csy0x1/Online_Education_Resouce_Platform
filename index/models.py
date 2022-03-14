@@ -238,6 +238,7 @@ class CourseFiles(models.Model):
         blank=True,
         null=True,
     )
+    fileName = CharField(verbose_name="课件名称", max_length=100,default="新课件")
     courseFile = FileField(upload_to=Upload_File_Path, blank=True, null=True)
 
     def __str__(self) -> str:
@@ -248,5 +249,5 @@ class CourseFiles(models.Model):
 
     class Meta:
         ordering = ["sourceSection"]
-        verbose_name = "文件名"
-        verbose_name_plural = "文件名"
+        verbose_name = "课程文件"
+        verbose_name_plural = "课程文件"

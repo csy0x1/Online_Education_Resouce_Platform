@@ -28,3 +28,10 @@
     height:700px;
 }
 
+.panel-group {
+    width: 190px;
+}
+
+.panel-group a,li{
+    cursor: pointer;
+}
