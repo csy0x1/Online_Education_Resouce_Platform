@@ -1,10 +1,13 @@
 import os
+from tabnanny import verbose
+
 from django.db import models
 from django.db.models.deletion import CASCADE, SET_NULL
 from django.db.models.fields import CharField, DateTimeField, TextField
 from django.db.models.fields.files import FileField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.lookups import IsNull
+from django.forms import BooleanField
 
 # Create your models here.
 
@@ -251,3 +254,101 @@ class CourseFiles(models.Model):
         ordering = ["sourceSection"]
         verbose_name = "课程文件"
         verbose_name_plural = "课程文件"
+
+#题库问题表
+class QuestionBank(models.Model):
+    sourceCourse = ForeignKey(
+        "Course",
+        verbose_name="所属课程",
+        on_delete=CASCADE,
+        related_name="questionSourceCourse",
+    )
+    QuestionName = CharField(verbose_name="题目名称", max_length=200)
+    QuestionType = CharField(verbose_name="题目类型", max_length=20)
+    QuestionScore = models.PositiveIntegerField(verbose_name="题目分值",default=0)
+    ReferenceCount = models.PositiveIntegerField(verbose_name="引用次数",default=0)
+    PublicRelease = models.BooleanField(verbose_name="是否公开",default=False)
+
+    def __str__(self) -> str:
+        return self.QuestionName
+
+    class Meta:
+        verbose_name = "题库"
+        verbose_name_plural = "题库"
+
+#题库选项表
+class QuestionOption(models.Model):
+    sourceQuestion = ForeignKey(
+        "QuestionBank",
+        verbose_name="所属题目",
+        on_delete=CASCADE,
+        related_name="optionSourceQuestion",
+    )
+    OptionName = CharField(verbose_name="选项", max_length=100)
+
+    class Meta:
+        verbose_name="题目选项"
+        verbose_name_plural="题目选项"
+
+
+#题库答案表
+class QuestionAnswer(models.Model):
+    sourceOption = ForeignKey(
+        "QuestionOption",
+        verbose_name="所属选项",
+        on_delete=CASCADE,
+        related_name="answerSourceOption",
+    )
+    Answer = CharField(verbose_name="答案", max_length=500)
+
+    class Meta:
+        verbose_name="答案"
+        verbose_name_plural="答案"
+
+#试卷表
+class Paper(models.Model):
+    sourceCourse = ForeignKey(
+        "Course",
+        verbose_name="所属课程",
+        on_delete=CASCADE,
+        related_name="paperSourceCourse",
+    )
+    includedQuestion = ForeignKey(
+        "QuestionBank",
+        verbose_name="包含题目",
+        on_delete=CASCADE,
+        related_name="paperIncludedQuestion",
+    )
+    
+    PaperName = CharField(verbose_name="试卷名称", max_length=100)
+    PaperType = CharField(verbose_name="试卷类型", max_length=20)
+    QuestionCount = models.PositiveIntegerField(verbose_name="题目数量",default=0)
+    ExaminationTime = models.TimeField(verbose_name="考试时间")
+    QuestionTotalScore = models.PositiveIntegerField(verbose_name="试卷总分",default=0)
+    StartTime = models.DateTimeField(verbose_name="开始时间", auto_now_add=True)
+    EndTime = models.DateTimeField(verbose_name="结束时间")
+
+
+    def __str__(self) -> str:
+        return self.PaperName
+
+    class Meta:
+        verbose_name = "试卷"
+        verbose_name_plural = "试卷"
+
+#已作答试卷表
+class AnsweredPaper(models.Model):
+    sourcePaper = ForeignKey(
+        "Paper",
+        verbose_name="所属试卷",
+        on_delete=CASCADE,
+        related_name="answeredPaperSourcePaper",
+    )
+    candidates = models.ForeignKey(
+    "Users",
+    verbose_name="考生",
+    on_delete=CASCADE,
+    related_name="paperCandidates",
+    null=True,
+    blank=True,
+    )

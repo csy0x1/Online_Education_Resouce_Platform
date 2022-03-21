@@ -1,0 +1,54 @@
+{% extends 'index/courseSettingBase.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}题库维护 - {{courseDetail.Course_Name}} iMooc在线教育资源平台{% endblock title %}</title>
+    {% block extrastatic %}
+    {{ block.super }}
+    <!-- datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap.min.css">
+
+    <!-- basic static -->
+    <link rel="stylesheet" href="{% static 'index/css/questionBank.css' %}">
+
+    {% endblock extrastatic %}
+
+</head>
+<body>
+    {% block content %}
+    {{ block.super }}
+    <div class="mainContainer">
+        <div class="CreatorArea">
+            <div class="Creator">
+                <button id="addRow">Add new row</button>
+                <button id="submit" type="button">Submit</button>
+                    <table id="QuestionBankTable" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>题目名称</th>
+                                <th>题目类型</th>
+                                <th>题目分数</th>
+                                <th>是否公开</th>
+                            </tr>
+                        </thead>
+                    </table>
+            </div>
+        </div>
+        <div class="QuestionBankTable"></div>
+    </div>
+    <!-- datatables -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- basic static -->
+    <script src="{% static 'index/js/questionBank.js' %}"></script>
+    {% endblock %}
+    <br/>
+</body>
+</html>
+

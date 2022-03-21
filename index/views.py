@@ -2,6 +2,7 @@ from __future__ import print_function
 from datetime import datetime
 from distutils.filelist import FileList
 from http.client import HTTPResponse
+import json
 import os
 from pyexpat import model
 import tempfile
@@ -510,3 +511,19 @@ def categoryPage(request,categoryID):
         else:
             courses = VF.get_Courses_By_Category(cateID)
     return render(request, "index/courseCategory/courseCategoryIndex.html", locals())
+
+def courseSettingQuestionBank(request,courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    if(request.method == "POST"):
+        data = request.POST.get("data")
+        options = request.POST.get("options")
+        data = json.loads(data) #loads将json字符串转换成python数据结构，dumps是将python数据结构转换成json字符串
+        options = json.loads(options)
+        for cIndex,cValue in data.items():
+            instance = VF.createQuestion(course, cValue)
+            for oIndex,oValue in options[cIndex].items():
+                VF.createOptions(instance, oIndex,oValue)
+
+    return render(request,'index/ExaminationPages/questionBankManagement.html',locals())
+

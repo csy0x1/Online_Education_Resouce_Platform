@@ -56,6 +56,8 @@ urlpatterns = [
         views.deleteNotice,
         name="noticeDelete",
     ),
+    path("course/<int:courseid>/Setting/QuestionBank",views.courseSettingQuestionBank,name="questionBank"),
+
     # 课程学习相关url
     path(
         "course/<int:courseid>/learn/Notice",

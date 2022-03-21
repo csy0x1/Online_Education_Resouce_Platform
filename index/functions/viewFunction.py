@@ -1,5 +1,6 @@
 import datetime
 import os
+from click import option
 
 from django.db.models.base import Model
 
@@ -159,3 +160,57 @@ def get_Courses_By_Category(CategoryID):
     Categories_Queryset = models.CourseCategory.objects.filter(Q(CategoryID=CategoryID) | Q(ParentID=CategoryID))
     Course_Queryset = models.Course.objects.filter(Course_Category__in = Categories_Queryset)
     return Course_Queryset
+
+def createQuestion(course, value):
+    value = value[1:]
+    try:
+        if(value[3]=="公开"):
+            value[3] = True
+        else:
+            value[3] = False
+
+        instance = models.QuestionBank(
+                sourceCourse = course,
+                QuestionName = value[0],
+                QuestionType = value[1],
+                QuestionScore = value[2],
+                PublicRelease = value[3],
+                )
+        print(instance)
+        return instance
+            #instance.save()
+    except Exception as e:
+        print(e)
+        return False
+
+def createAnswer(instance, option):
+    try:
+        answerInstance = models.QuestionAnswer(
+            sourceOption = instance,
+            Answer = option,
+        )
+        return answerInstance
+    except Exception as e:
+        print(e)
+        return False
+
+def createOptions(instance,Index,Value):
+    #options = {'0': {'asd': False, 'eewe': False, 'ssd': False, 'd': False}, '1': {'': False}, '2': {'': False}}
+    try:
+        optionInstance = models.QuestionOption(
+            sourceQuestion = instance,
+            OptionName = Index,
+        )
+        if(Value==True):
+            answerInstance = createAnswer(optionInstance, Index)
+            instance.save()
+            optionInstance.save()
+            answerInstance.save()
+        else:
+            instance.save()
+            optionInstance.save()
+        return True
+    except Exception as e:
+        print(e)
+        return False
+
