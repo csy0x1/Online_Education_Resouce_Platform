@@ -32,10 +32,16 @@ $(function () {
                 "defaultContent": '',
 				title:"",
             },  //展开收起按钮
-            {title:"题目名称", "className":"editable QName"}, //题目名称
+            {title:"题目内容", "className":"editable QName"}, //题目内容
             {title:"题目类型", "className":"editable QType"}, //题目类型
             {title:"题目分值", "className":"editable QScore"}, //题目分值
             {title:"是否公开", "className":"editable QPublic"}, //是否公开
+			{
+				title:"删除",
+				"orderable":      false,
+				"defaultContent": '<span class="glyphicon glyphicon-remove remove"></span>',
+				"className":"QDelete"
+			},	//删除
 
         ],
 	});
@@ -48,12 +54,19 @@ $(function () {
             "单选",
             "10",
             "公开",
+			null
         ] ).draw( false );
 		var index = counter-1
-		table.row(index).child(format(table.row(index).index())).show();	//增加行时同时创建选项子表
+		table.row(index).child(format(table.row(index).index(),table.row(index).data()[1])).show();	//增加行时同时创建选项子表
 
 		counter++;
 	});
+
+	$(".mainContainer").on("click",".remove",function(){
+		console.log("remove")
+		table.row( $(this).parents('td') ).remove().draw();
+		counter--
+	})
 
 	$("#submit").on("click", function () {
 		console.log("clicked")
@@ -96,20 +109,22 @@ $(function () {
 		//console.log(jsonData);
 	});
 
-	function format(d) {	//子表
-		console.log("d",d)
+	function format(d,question) {	//子表
 		var subtable='    <div class="Options">';
+			subtable+='		<div class="questionDiv">';
+			subtable+='			<input type="text" id="SubtableQuestion" placeholder="题目内容" value='+question+'>'
+			subtable+='		</div>';
 			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="checkbox" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'">';
+			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
 			subtable+='        </div>';
 			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="checkbox" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'">';
+			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
 			subtable+='        </div>';
 			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="checkbox" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'">';
+			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
 			subtable+='        </div>';
 			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="checkbox" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'">';
+			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
 			subtable+='        </div>';
 			subtable+='    </div>';
 		return subtable;
@@ -140,7 +155,7 @@ $(function () {
 	$("#QuestionBankTable>tbody").on("click", "tr > .editable", function () {
 		var td = $(this)
 		var text = td.text().trim()
-		var select='                <select class="QType">';
+		var select='                <select id="QTypeInput">';
 			select+='                    <option value="single">单选</option>';
 			select+='                    <option value="multi">多选</option>';
 			select+='                </select>';
@@ -149,27 +164,34 @@ $(function () {
 			td.html(input)
 		}
 		else if(td.hasClass("QPublic")){
-			var select='                <select class="QPublic">';
+			var select='                <select id="QPublicInput">';
 				select+='                    <option value="public">公开</option>';
 				select+='                    <option value="private">内部</option>';
 				select+='                </select>';
 			var input = $(select)
 			td.html(input)
 		}
-		else{
-			var input = $('<input type="text" value="' + text + '">')
+		else if(td.hasClass("QName")){
+			var input = $('<input type="text" value="' + text + '" id="QNameInput">')
+			td.html(input)
+		}
+		else if(td.hasClass("QScore")){
+			var input = $('<input type="text" value="' + text + '" id="QScoreInput">')
 			td.html(input)
 		}
 
 		input.on("click",function(){return false})
 		input.trigger("focus")
 		input.on("blur",function(){
-			console.log(this)
 			var newtext = $(this).find("option:selected").text()
 			if(newtext==""){
 				newtext = $(this).val()
+				if($(this).attr("id")=="QNameInput"){	//主表中题目内容与子表中的同步
+					var subQuestion = table.row($(this).parent()).child().find("#SubtableQuestion")
+					$(subQuestion).val(newtext)
+				}
 			}
-			else if($(this).attr("class")=="QType"){
+			else if($(this).attr("id")=="QTypeInput"){	//根据选择的题目类型，改变子表
 				if($(this).find("option:selected").text()=="单选"){
 					var subtable = table.row(td).child()
 					$.each(subtable.find("input"),function(i){
@@ -178,7 +200,7 @@ $(function () {
 						}
 					})
 				}
-				else{
+				else if($(this).find("option:selected").text()=="多选"){
 					var subtable = table.row(td).child()
 					$.each(subtable.find("input"),function(i){
 						if($(this).attr("type")=="radio"){
@@ -190,5 +212,11 @@ $(function () {
 			//td.html(newtext)
 			table.cell(td).data(newtext).draw()
 		})
+	})
+
+	$(".mainContainer").on("change","#SubtableQuestion",function(){		//子表中题目内容与主表中的同步
+		var newtext = $(this).val()
+		var QuestionHeader = $($(this).closest("tr").prev()[0]).children()[1]
+		table.cell($(QuestionHeader)).data(newtext).draw()
 	})
 });

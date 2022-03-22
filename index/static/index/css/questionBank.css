@@ -3,3 +3,7 @@
     width:80%;
     background-color:white;
 }
+
+.remove{
+    cursor: pointer;
+}
