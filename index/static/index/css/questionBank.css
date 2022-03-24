@@ -7,3 +7,19 @@
 .remove{
     cursor: pointer;
 }
+
+td.AnswerTd {
+    width: 10%;
+}
+
+input.Option.form-control {
+    width: 100%;
+}
+
+input#SubtableQuestion {
+    width: 100%;
+}
+
+.questionLabel{
+    padding-left: 8px;
+}

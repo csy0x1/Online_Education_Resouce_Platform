@@ -22,6 +22,7 @@ $(function () {
 	});
 
 	var table = $("#QuestionBankTable").DataTable({
+		"lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "全部"]],
 		language: {
 			url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
 		},
@@ -46,7 +47,7 @@ $(function () {
         ],
 	});
 	var counter = 1;
-
+	var index = counter-1
 	$("#addRow").on("click", function () {
 		table.row.add( [
 			null,
@@ -56,16 +57,17 @@ $(function () {
             "公开",
 			null
         ] ).draw( false );
-		var index = counter-1
 		table.row(index).child(format(table.row(index).index(),table.row(index).data()[1])).show();	//增加行时同时创建选项子表
+		table.row(index-1).child.hide()
 
 		counter++;
+		index++;
 	});
 
 	$(".mainContainer").on("click",".remove",function(){
 		console.log("remove")
 		table.row( $(this).parents('td') ).remove().draw();
-		counter--
+		index--
 	})
 
 	$("#submit").on("click", function () {
@@ -75,7 +77,7 @@ $(function () {
 
 		$.each(table.rows().data(),function(index){
 			$.each(table.row(index).child(),function(key,value){
-				var key = $(value).find(".optionDiv")
+				var key = $(value).find(".optionTr")
 				var temp = {}
 				$.each(key,function(i,j){
 					var Answer = $(j).find(".Answer").is(':checked')
@@ -110,24 +112,37 @@ $(function () {
 	});
 
 	function format(d,question) {	//子表
-		var subtable='    <div class="Options">';
-			subtable+='		<div class="questionDiv">';
-			subtable+='			<input type="text" id="SubtableQuestion" placeholder="题目内容" value='+question+'>'
-			subtable+='		</div>';
-			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
-			subtable+='        </div>';
-			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
-			subtable+='        </div>';
-			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
-			subtable+='        </div>';
-			subtable+='        <div class="optionDiv"> ';
-			subtable+='            <input type="radio" class="Answer" name="Answer_'+d+'"><input type="text" class="Option" name="Option_'+d+'" placeholder="选项">';
-			subtable+='        </div>';
-			subtable+='    </div>';
-		return subtable;
+		var td = '                <tr class="optionTr">';
+			td+='                    <td class="AnswerTd">';
+			td+='                        <input type="radio" class="Answer" name="answer_'+d+'" value="1">';
+			td+='                    </td>';
+			td+='                    <td class="OptionTd">';
+			td+='                        <input type="text" class="Option form-control" name="Option_'+d+'" placeholder="选项">';
+			td+='                    </td>';
+			td+='                </tr>';
+
+		var sb='';
+			sb+='    <div class="Options">';
+			sb+='        <div class="questionDiv">';
+			sb+='            <label class="questionLabel">题目内容</label>';
+			sb+='            <input type="text" class="form-control" id="SubtableQuestion" placeholder="题目内容" value="'+question+'">';
+			sb+='        </div>';
+			sb+='        <table class="table table-striped table-hover">';
+			sb+='            <thead>';
+			sb+='                <tr>';
+			sb+='                    <th>正确答案</th>';
+			sb+='                    <th>选项内容</th>';
+			sb+='                </tr>';
+			sb+='            </thead>';
+			sb+='            <tbody>';
+			sb+=td;
+			sb+=td;
+			sb+=td;
+			sb+=td;
+			sb+='            </tbody>';
+			sb+='        </table>';
+			sb+='    </div>';
+		return sb;
 	}
 
     $('#QuestionBankTable tbody').on('click', 'td.dt-control', function () {

@@ -515,7 +515,7 @@ def categoryPage(request,categoryID):
 def courseSettingQuestionBank(request,courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    if(request.method == "POST"):
+    if(request.method == "POST"):   #保存题库
         data = request.POST.get("data")
         options = request.POST.get("options")
         data = json.loads(data) #loads将json字符串转换成python数据结构，dumps是将python数据结构转换成json字符串
