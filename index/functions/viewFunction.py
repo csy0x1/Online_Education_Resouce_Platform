@@ -2,7 +2,6 @@ import datetime
 from lib2to3.pgen2.token import OP
 from optparse import Option
 import os
-from click import option
 
 from django.db.models.base import Model
 
@@ -248,6 +247,7 @@ def get_QuestionBank(course):
     for question in Question_Queryset:
         questionData = {}
         optionsData = {}
+        questionData["QuestionID"] = question.id
         questionData["QuestionName"] = question.QuestionName
         questionData["QuestionType"] = question.QuestionType
         questionData["QuestionScore"] = question.QuestionScore

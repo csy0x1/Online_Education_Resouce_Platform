@@ -1,3 +1,5 @@
+.venv
+.vscode
 /nohup.out
 /packages.microsoft.gpg
 index/functions/__pycache__/

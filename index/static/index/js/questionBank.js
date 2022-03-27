@@ -65,7 +65,6 @@ $(function () {
 	});
 
 	$(".mainContainer").on("click",".remove",function(){
-		console.log("remove")
 		creatorTable.row( $(this).parents('td') ).remove().draw();
 		index--
 	})
@@ -259,13 +258,91 @@ $(function () {
             {title:"题目类型", "className":"QType","data":"QuestionType"}, //题目类型
             {title:"题目分值", "className":"QScore","data":"QuestionScore"}, //题目分值
             {title:"是否公开", "className":"QPublic","data":"PublicRelease"}, //是否公开
+			{title:"引用次数", "className":"QReference","data":"ReferenceCount"}, //引用次数
 			{
 				title:"删除",
 				"orderable":      false,
-				"defaultContent": '<span class="glyphicon glyphicon-remove remove"></span>',
+				"defaultContent": '<span class="glyphicon glyphicon-remove delete"></span>',
 				"className":"QDelete"
 			},	//删除
 
         ],
 	})
+
+	$(".mainContainer").on("click",".delete",function(){
+		var $this = $(this).parent('td')
+		$.ajax({
+			type:"POST",
+			url:"QuestionBank/getQuestionBank",
+			headers: { "X-CSRFToken": csrftoken },
+			dataType:"json",
+			data:{
+				"operationType":"delete",
+				"deleteRow":JSON.stringify(previewTable.row($this).data())
+			},
+			success:function(response){
+				console.log(response)
+				previewTable.row($this).remove().draw();
+			}
+		})
+	})
+
+	function previewFormat(d){
+		var tr = ''
+		$.each(d.Option,function(key,value){
+			tr+='                <tr>';
+			tr+='                    <td class="AnswerBody">'
+			if(value==true){
+				tr+='                        <input type="checkbox" class="PreviewAnswer" name="answer_'+d.QuestionID+'" checked>';
+			}
+			else{
+				tr+='                        <input type="checkbox" class="PreviewAnswer" name="answer_'+d.QuestionID+'" >';
+			}
+			tr+='					</td>';
+			tr+='                    <td class="OptionBody">'+key+'</td>';
+			tr+='                </tr>';			
+		})
+
+		var sb='    <div class="PreviewOptions">';
+			sb+='        <label>题目ID: </label>';
+			sb+='        <span>'+d.QuestionID+'</span>';
+			sb+='        <table class="table table-striped table-hover">';
+			sb+='            <thead>';
+			sb+='                <tr>';
+			sb+='                    <th class="AnswerHeader">正确答案</th>';
+			sb+='                    <th class="OptionHeader">选项内容</th>';
+			sb+='                </tr>';
+			sb+='            </thead>';
+			sb+='            <tbody>';
+			sb+= tr;
+			sb+='            </tbody>';
+			sb+='        </table>';
+			sb+='    </div>';
+		return sb
+	}
+
+	$('#QuestionPreviewTable tbody').on('click', 'td.dt-control', function () {
+        var tr = $(this).closest('tr');
+        var row = previewTable.row( tr );
+ 
+        if ( row.child.isShown() ) {
+            // This row is already open - close it
+            row.child.hide();
+            tr.removeClass('shown');
+        }
+        else {
+            // Open this row
+			if(row.child() && row.child().length)
+			{
+				row.child.show();
+			}
+			else {
+				row.child( previewFormat(row.data()) ).show();
+			}
+			tr.addClass('shown');
+        }
+		$(".PreviewAnswer").on("click",false)	//禁止修改预览题库子表中正确答案的复选框
+    } );
+
+
 });

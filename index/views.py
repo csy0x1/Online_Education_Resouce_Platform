@@ -515,6 +515,17 @@ def categoryPage(request,categoryID):
 def getQuestionBank(request,courseid):
     course = models.Course.objects.get(id=courseid)
     QuestionBankData = VF.get_QuestionBank(course)
+    if(request.method == "POST"):
+        operationType = request.POST.get("operationType")
+        if(operationType == "delete"):
+            deleteRow = json.loads(request.POST.get("deleteRow"))
+            try:
+                deleteQuestion = models.QuestionBank.objects.get(id=deleteRow['QuestionID'])
+                #deleteQuestion.delete()
+            except Exception as e:
+                print(e)
+                return JsonResponse("failed",safe=False)
+            return JsonResponse("success", safe=False)
     return JsonResponse(QuestionBankData, safe=False)
 
 def courseSettingQuestionBank(request,courseid):
