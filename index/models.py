@@ -293,13 +293,19 @@ class QuestionOption(models.Model):
 
 #题库答案表
 class QuestionAnswer(models.Model):
-    sourceOption = ForeignKey(
+    sourceQuestion = ForeignKey(
+        "QuestionBank",
+        verbose_name="所属题目",
+        on_delete=CASCADE,
+        related_name="answerSourceQuestion",
+    )
+    Answer = ForeignKey(
         "QuestionOption",
         verbose_name="所属选项",
         on_delete=CASCADE,
-        related_name="answerSourceOption",
+        related_name="answer",
     )
-    Answer = CharField(verbose_name="答案", max_length=500)
+    # Answer = CharField(verbose_name="答案", max_length=500)
 
     class Meta:
         verbose_name="答案"

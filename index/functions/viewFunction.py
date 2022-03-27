@@ -1,4 +1,6 @@
 import datetime
+from lib2to3.pgen2.token import OP
+from optparse import Option
 import os
 from click import option
 
@@ -183,11 +185,11 @@ def createQuestion(course, value):
         print(e)
         return False
 
-def createAnswer(instance, option):
+def createAnswer(instance, optionInstance):
     try:
         answerInstance = models.QuestionAnswer(
-            sourceOption = instance,
-            Answer = option,
+            sourceQuestion = instance,
+            Answer = optionInstance,
         )
         return answerInstance
     except Exception as e:
@@ -202,7 +204,7 @@ def createOptions(instance,Index,Value):
             OptionName = Index,
         )
         if(Value==True):
-            answerInstance = createAnswer(optionInstance, Index)
+            answerInstance = createAnswer(instance,optionInstance)
             instance.save()
             optionInstance.save()
             answerInstance.save()
@@ -214,3 +216,54 @@ def createOptions(instance,Index,Value):
         print(e)
         return False
 
+def questionBankImport(request,course): #导入题库
+    data = request.POST.get("data")
+    options = request.POST.get("options")
+    data = json.loads(data) #loads将json字符串转换成python数据结构，dumps是将python数据结构转换成json字符串
+    options = json.loads(options)
+    for cIndex,cValue in data.items():
+        instance = createQuestion(course, cValue)
+        for oIndex,oValue in options[cIndex].items():
+            createOptions(instance, oIndex,oValue)
+
+'''
+{
+    "name":
+    "type":
+    "score":
+    "refercount":
+    "publicrelease":
+    "sourcecourse":
+    "option":{
+        "answer":"option"
+    }
+
+
+}
+'''
+
+def get_QuestionBank(course):
+    QuestionBankData = []
+    Question_Queryset = models.QuestionBank.objects.filter(Q(sourceCourse=course)|Q(PublicRelease=True))
+    for question in Question_Queryset:
+        questionData = {}
+        optionsData = {}
+        questionData["QuestionName"] = question.QuestionName
+        questionData["QuestionType"] = question.QuestionType
+        questionData["QuestionScore"] = question.QuestionScore
+        questionData["PublicRelease"] = question.PublicRelease
+        questionData["ReferenceCount"] = question.ReferenceCount
+        Options = question.optionSourceQuestion.all()
+        Answers = question.answerSourceQuestion.all()
+        for option in Options:
+            for answer in Answers:
+                if(answer.Answer == option):
+                    optionsData[option.OptionName] = True
+                    break
+                else:
+                    optionsData[option.OptionName] = False
+        questionData["Option"] = optionsData
+        QuestionBankData.append(questionData)
+        data = {}
+        data["data"] = QuestionBankData
+    return data

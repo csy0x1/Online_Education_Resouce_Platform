@@ -76,6 +76,7 @@
 - [ ] **开设课程的功能**
 - [ ] **测验/作业/考试的功能**
     > 需要新增一个题库表，教师可以新增、修改、删除题目；每个题目具有ID、题目内容、题目选项、正确选项、题目出现次数(可选)等字段。
+    > [datatables文档](https://datatables.net/examples/index)
 - [ ] **公告提交时需校验，防止发布标题和内容都为空的公告**
 - [ ] **题库维护新增题目时，使用ajax提交表单无法使用原生required属性来限制字段必填**
     > [解决form表单通过ajax时，required失效问题](https://www.cnblogs.com/PMXGG/p/14261440.html)

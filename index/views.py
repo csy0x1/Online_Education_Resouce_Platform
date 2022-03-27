@@ -512,18 +512,21 @@ def categoryPage(request,categoryID):
             courses = VF.get_Courses_By_Category(cateID)
     return render(request, "index/courseCategory/courseCategoryIndex.html", locals())
 
+def getQuestionBank(request,courseid):
+    course = models.Course.objects.get(id=courseid)
+    QuestionBankData = VF.get_QuestionBank(course)
+    return JsonResponse(QuestionBankData, safe=False)
+
 def courseSettingQuestionBank(request,courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
+    VF.get_QuestionBank(course)
     if(request.method == "POST"):   #保存题库
-        data = request.POST.get("data")
-        options = request.POST.get("options")
-        data = json.loads(data) #loads将json字符串转换成python数据结构，dumps是将python数据结构转换成json字符串
-        options = json.loads(options)
-        for cIndex,cValue in data.items():
-            instance = VF.createQuestion(course, cValue)
-            for oIndex,oValue in options[cIndex].items():
-                VF.createOptions(instance, oIndex,oValue)
+        operationType = request.POST.get("operationType")
+        if(operationType=="create"):
+            VF.questionBankImport(request,course)
+        elif(operationType=="preview"):
+            QuestionBankData = VF.get_QuestionBank(course)
+            return JsonResponse(QuestionBankData, safe=False)
 
     return render(request,'index/ExaminationPages/questionBankManagement.html',locals())
-

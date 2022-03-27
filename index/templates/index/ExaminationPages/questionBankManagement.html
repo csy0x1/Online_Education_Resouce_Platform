@@ -26,7 +26,7 @@
             <div class="Creator">
                 <button id="addRow">Add new row</button>
                 <button id="submit" type="button">Submit</button>
-                    <table id="QuestionBankTable" class="table table-striped table-bordered">
+                    <table id="CreatorTable" class="table table-striped table-bordered">
                         <thead>
                             <tr>
                                 <th></th>
@@ -40,7 +40,21 @@
                     </table>
             </div>
         </div>
-        <div class="QuestionBankTable"></div>
+        <div class="QuestionBankTable">
+            <table id="QuestionPreviewTable" class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th>题目内容</th>
+                        <th>题目类型</th>
+                        <th>题目分数</th>
+                        <th>是否公开</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
     </div>
     <!-- datatables -->
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>

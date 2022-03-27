@@ -21,7 +21,7 @@ $(function () {
 		class: "active",
 	});
 
-	var table = $("#QuestionBankTable").DataTable({
+	var creatorTable = $("#CreatorTable").DataTable({
 		"lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "全部"]],
 		language: {
 			url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
@@ -49,7 +49,7 @@ $(function () {
 	var counter = 1;
 	var index = counter-1
 	$("#addRow").on("click", function () {
-		table.row.add( [
+		creatorTable.row.add( [
 			null,
             counter +'.1',
             "单选",
@@ -57,8 +57,8 @@ $(function () {
             "公开",
 			null
         ] ).draw( false );
-		table.row(index).child(format(table.row(index).index(),table.row(index).data()[1])).show();	//增加行时同时创建选项子表
-		table.row(index-1).child.hide()
+		creatorTable.row(index).child(format(creatorTable.row(index).index(),creatorTable.row(index).data()[1])).show();	//增加行时同时创建选项子表
+		creatorTable.row(index-1).child.hide()
 
 		counter++;
 		index++;
@@ -66,7 +66,7 @@ $(function () {
 
 	$(".mainContainer").on("click",".remove",function(){
 		console.log("remove")
-		table.row( $(this).parents('td') ).remove().draw();
+		creatorTable.row( $(this).parents('td') ).remove().draw();
 		index--
 	})
 
@@ -75,8 +75,8 @@ $(function () {
 		var data = {}
 		var options = {}
 
-		$.each(table.rows().data(),function(index){
-			$.each(table.row(index).child(),function(key,value){
+		$.each(creatorTable.rows().data(),function(index){
+			$.each(creatorTable.row(index).child(),function(key,value){
 				var key = $(value).find(".optionTr")
 				var temp = {}
 				$.each(key,function(i,j){
@@ -89,7 +89,7 @@ $(function () {
 		})
 		var jsonOptions = JSON.stringify(options)
 
-		$.each(table.rows().data(), function (index, value) {
+		$.each(creatorTable.rows().data(), function (index, value) {
 			data[index] = value
 		});
 		var jsonData = JSON.stringify(data);
@@ -102,10 +102,11 @@ $(function () {
 			data: {
 				 data: jsonData ,
 				 options: jsonOptions,
+				 operationType: "create"
 			},
 			success:function (response) {
 				console.log(response);
-				table.clear().draw(true);
+				creatorTable.clear().draw(true);
 				}
 		});
 		//console.log(jsonData);
@@ -145,9 +146,9 @@ $(function () {
 		return sb;
 	}
 
-    $('#QuestionBankTable tbody').on('click', 'td.dt-control', function () {
+    $('#CreatorTable tbody').on('click', 'td.dt-control', function () {
         var tr = $(this).closest('tr');
-        var row = table.row( tr );
+        var row = creatorTable.row( tr );
  
         if ( row.child.isShown() ) {
             // This row is already open - close it
@@ -167,7 +168,7 @@ $(function () {
         }
     } );
 
-	$("#QuestionBankTable>tbody").on("click", "tr > .editable", function () {
+	$("#CreatorTable>tbody").on("click", "tr > .editable", function () {
 		var td = $(this)
 		var text = td.text().trim()
 		var select='                <select id="QTypeInput">';
@@ -202,13 +203,13 @@ $(function () {
 			if(newtext==""){
 				newtext = $(this).val()
 				if($(this).attr("id")=="QNameInput"){	//主表中题目内容与子表中的同步
-					var subQuestion = table.row($(this).parent()).child().find("#SubtableQuestion")
+					var subQuestion = creatorTable.row($(this).parent()).child().find("#SubtableQuestion")
 					$(subQuestion).val(newtext)
 				}
 			}
 			else if($(this).attr("id")=="QTypeInput"){	//根据选择的题目类型，改变子表
 				if($(this).find("option:selected").text()=="单选"){
-					var subtable = table.row(td).child()
+					var subtable = creatorTable.row(td).child()
 					$.each(subtable.find("input"),function(i){
 						if($(this).attr("type")=="checkbox"){
 							$(this).attr("type","radio")
@@ -216,7 +217,7 @@ $(function () {
 					})
 				}
 				else if($(this).find("option:selected").text()=="多选"){
-					var subtable = table.row(td).child()
+					var subtable = creatorTable.row(td).child()
 					$.each(subtable.find("input"),function(i){
 						if($(this).attr("type")=="radio"){
 							$(this).attr("type","checkbox")
@@ -225,13 +226,46 @@ $(function () {
 				}
 			}
 			//td.html(newtext)
-			table.cell(td).data(newtext).draw()
+			creatorTable.cell(td).data(newtext).draw()
 		})
 	})
 
 	$(".mainContainer").on("change","#SubtableQuestion",function(){		//子表中题目内容与主表中的同步
 		var newtext = $(this).val()
 		var QuestionHeader = $($(this).closest("tr").prev()[0]).children()[1]
-		table.cell($(QuestionHeader)).data(newtext).draw()
+		creatorTable.cell($(QuestionHeader)).data(newtext).draw()
+	})
+
+	var previewTable = $('#QuestionPreviewTable').DataTable({
+		"processing": true,
+		language: {
+			url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
+		},
+		ajax: "QuestionBank/getQuestionBank",
+		"columns": [
+			{
+				"className":      'selector',
+				"orderable":      false,
+				"defaultContent": '',
+				"title":'',
+			},
+            {
+                "className":      'dt-control',
+                "orderable":      false,
+                "defaultContent": '',
+				title:"",
+            },  //展开收起按钮
+            {title:"题目内容", "className":"QName", "data":"QuestionName"}, //题目内容
+            {title:"题目类型", "className":"QType","data":"QuestionType"}, //题目类型
+            {title:"题目分值", "className":"QScore","data":"QuestionScore"}, //题目分值
+            {title:"是否公开", "className":"QPublic","data":"PublicRelease"}, //是否公开
+			{
+				title:"删除",
+				"orderable":      false,
+				"defaultContent": '<span class="glyphicon glyphicon-remove remove"></span>',
+				"className":"QDelete"
+			},	//删除
+
+        ],
 	})
 });
