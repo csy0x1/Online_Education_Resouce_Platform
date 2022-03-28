@@ -27,3 +27,7 @@ input#SubtableQuestion {
 th.AnswerHeader {
     width: 10%;
 }
+
+.QuestionID {
+    padding-left: 10px;
+}

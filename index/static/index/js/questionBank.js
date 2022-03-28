@@ -304,19 +304,23 @@ $(function () {
 		})
 
 		var sb='    <div class="PreviewOptions">';
-			sb+='        <label>题目ID: </label>';
-			sb+='        <span>'+d.QuestionID+'</span>';
-			sb+='        <table class="table table-striped table-hover">';
-			sb+='            <thead>';
-			sb+='                <tr>';
-			sb+='                    <th class="AnswerHeader">正确答案</th>';
-			sb+='                    <th class="OptionHeader">选项内容</th>';
-			sb+='                </tr>';
-			sb+='            </thead>';
-			sb+='            <tbody>';
+			sb+='		<div class="QuestionID">'
+			sb+='        	<label>题目ID: </label>';
+			sb+='        	<span>'+d.QuestionID+'</span>';
+			sb+='		</div>'
+			sb+='		<div class="PreviewTable">'
+			sb+='        	<table class="table table-striped table-hover">';
+			sb+='            	<thead>';
+			sb+='                	<tr>';
+			sb+='                    	<th class="AnswerHeader">正确答案</th>';
+			sb+='                    	<th class="OptionHeader">选项内容</th>';
+			sb+='                	</tr>';
+			sb+='            	</thead>';
+			sb+='            	<tbody>';
 			sb+= tr;
-			sb+='            </tbody>';
-			sb+='        </table>';
+			sb+='            	</tbody>';
+			sb+='        	</table>';
+			sb+='		</div>'
 			sb+='    </div>';
 		return sb
 	}
