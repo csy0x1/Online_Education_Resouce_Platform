@@ -1,0 +1,43 @@
+{% extends 'index/courseSettingBase.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}试卷管理 - {{courseDetail.Course_Name}} iMooc在线教育资源平台{% endblock title %}</title>
+    
+    {% block extrastatic %}
+    {{ block.super }}
+    <!-- datatables -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap.min.css">
+
+    <!-- basic static -->
+    <link rel="stylesheet" href="{% static 'index/css/paperManagement.css' %}">
+    {% endblock extrastatic %}
+        
+
+</head>
+<body>
+    {% block content %}
+    {{ block.super }}
+    <div class="mainContainer">
+        <div class="toolBar">
+            <button>新增</button>
+        </div>
+        <div class="paperOverview">
+            {{html}}
+        </div>
+
+    </div>
+
+    <!-- datatables -->
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap.min.js"></script>
+
+    <!-- basic static -->
+    <script src="{% static 'index/js/paperManagement.js' %}"></script>
+    {% endblock content %}  
+</body>
+</html>

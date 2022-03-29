@@ -31,3 +31,10 @@ th.AnswerHeader {
 .QuestionID {
     padding-left: 10px;
 }
+
+textarea#SubtableQuestion {
+    width: 100%;
+    resize: vertical;
+    height: 100px;
+    min-height: 50px;
+}

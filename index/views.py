@@ -541,3 +541,26 @@ def courseSettingQuestionBank(request,courseid):
             return JsonResponse(QuestionBankData, safe=False)
 
     return render(request,'index/ExaminationPages/questionBankManagement.html',locals())
+
+def courseSettingCreatePaper(request,courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)    
+    course = models.Course.objects.get(id=courseid)
+    html = render_to_string('index/AjaxTemplate/PaperOverview.html')
+    return JsonResponse(html,safe=False)
+
+def courseSettingPaperManagement(request,courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)    
+    course = models.Course.objects.get(id=courseid)
+    # if(request.method == "POST"):
+    #     operationType = request.POST.get("operationType")
+    #     if(operationType == "delete"):
+    #         deleteRow = json.loads(request.POST.get("deleteRow"))
+    #         try:
+    #             deleteQuestion = models.Paper.objects.get(id=deleteRow['PaperID'])
+    #             #deleteQuestion.delete()
+    #         except Exception as e:
+    #             print(e)
+    #             return JsonResponse("failed",safe=False)
+    #         return JsonResponse("success", safe=False)
+    html = render_to_string('index/AjaxTemplate/PaperOverview.html')
+    return render(request,'index/ExaminationPages/paperManagement.html',locals())

@@ -59,6 +59,8 @@ urlpatterns = [
     path("course/<int:courseid>/Setting/QuestionBank",views.courseSettingQuestionBank,name="questionBank"),
     path("course/<int:courseid>/Setting/QuestionBank/getQuestionBank",views.getQuestionBank,name="getQuestionBank"),
 
+    path("course/<int:courseid>/Setting/PaperManagement",views.courseSettingPaperManagement,name="paperManagement"),
+    path("course/<int:courseid>/Setting/PaperManagement/createPaper",views.courseSettingCreatePaper,name="createPaper"),
     # 课程学习相关url
     path(
         "course/<int:courseid>/learn/Notice",

@@ -34,7 +34,7 @@
             <li role="annoucementManage"><a href="{% url 'index:noticeSetting' courseid %}">公告管理</a></li>
             <li role="chapterManagement"><a href="{% url 'index:chapterSetting' courseid %}">章节管理</a></li>
             <li role="QuestionBankManagement"><a href="{% url 'index:questionBank' courseid %}">题库维护</a></li>
-            <li role="PaperManagement"><a href="#">试卷管理</a></li>
+            <li role="PaperManagement"><a href="{% url 'index:paperManagement' courseid %}">试卷管理</a></li>
 
         </ul>
     </div>

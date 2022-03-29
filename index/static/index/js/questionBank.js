@@ -23,6 +23,7 @@ $(function () {
 
 	var creatorTable = $("#CreatorTable").DataTable({
 		"lengthMenu": [[5, 10, 25, -1], [5, 10, 25, "全部"]],
+		"order": [[1, "asc"]],
 		language: {
 			url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
 		},
@@ -125,7 +126,7 @@ $(function () {
 			sb+='    <div class="Options">';
 			sb+='        <div class="questionDiv">';
 			sb+='            <label class="questionLabel">题目内容</label>';
-			sb+='            <input type="text" class="form-control" id="SubtableQuestion" placeholder="题目内容" value="'+question+'">';
+			sb+='            <textarea class="form-control" id="SubtableQuestion" placeholder="题目内容" value="'+question+'"></textarea>';
 			sb+='        </div>';
 			sb+='        <table class="table table-striped table-hover">';
 			sb+='            <thead>';
@@ -237,6 +238,7 @@ $(function () {
 
 	var previewTable = $('#QuestionPreviewTable').DataTable({
 		"processing": true,
+		"order": [[2, "asc"]],
 		language: {
 			url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
 		},
