@@ -1,0 +1,15 @@
+.mainContainer{
+    float:right;
+    width:80%;
+    background-color:white;
+}
+
+.Return{
+    display: none;
+}
+
+.WideScreen{
+    display: block;
+    float: right;
+    width:100%;
+}

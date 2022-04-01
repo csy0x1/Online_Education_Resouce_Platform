@@ -82,12 +82,16 @@ def Get_Course(courseid):  # 获取课程信息
     courseInfo["常见问题"] = courseInfo.pop("QA")
     # 将时间格式从TZ格式(2021-04-26T22:55:09.695785+08:00)转换成datetime对象再转换成字符串格式输出
     # https://stackoverflow.com/questions/13182075/how-to-convert-a-timezone-aware-string-to-datetime-in-python-without-dateutil
-    courseDetail["Starting_Time"] = datetime.fromisoformat(
-        courseDetail["Starting_Time"]
-    ).strftime("%Y{y}%m{m}%d{d} %H:%M").format(y="年", m="月", d="日")
-    courseDetail["Ending_Time"] = datetime.fromisoformat(
-        courseDetail["Ending_Time"]
-    ).strftime("%Y{y}%m{m}%d{d} %H:%M").format(y="年", m="月", d="日")
+    courseDetail["Starting_Time"] = (
+        datetime.fromisoformat(courseDetail["Starting_Time"])
+        .strftime("%Y{y}%m{m}%d{d} %H:%M")
+        .format(y="年", m="月", d="日")
+    )
+    courseDetail["Ending_Time"] = (
+        datetime.fromisoformat(courseDetail["Ending_Time"])
+        .strftime("%Y{y}%m{m}%d{d} %H:%M")
+        .format(y="年", m="月", d="日")
+    )
 
     return courseDetail, courseInfo, teacher
 
@@ -145,6 +149,7 @@ def save_Chapter(chapterDict, courseid):  # 存储章节结构
                 sourceChapter=chapterdb, sectionName=Section[i]
             )
 
+
 def delete_Files(filepath):
     if os.path.exists(filepath):
         try:
@@ -154,56 +159,66 @@ def delete_Files(filepath):
             raise e
     else:
         raise FileNotFoundError("文件不存在")
+
+
 # def test(Chapter):
 #     course = models.Course.objects.create(Course_Name='1',Course_Teacher='1',Course_Info='1',Stu_Count=1,Course_Chapter=Chapter,View_Count=1,Ending_Time=datetime.datetime.now())
 
+
 def get_Courses_By_Category(CategoryID):
-    Categories_Queryset = models.CourseCategory.objects.filter(Q(CategoryID=CategoryID) | Q(ParentID=CategoryID))
-    Course_Queryset = models.Course.objects.filter(Course_Category__in = Categories_Queryset)
+    Categories_Queryset = models.CourseCategory.objects.filter(
+        Q(CategoryID=CategoryID) | Q(ParentID=CategoryID)
+    )
+    Course_Queryset = models.Course.objects.filter(
+        Course_Category__in=Categories_Queryset
+    )
     return Course_Queryset
+
 
 def createQuestion(course, value):
     value = value[1:]
     try:
-        if(value[3]=="公开"):
+        if value[3] == "公开":
             value[3] = True
         else:
             value[3] = False
 
         instance = models.QuestionBank(
-                sourceCourse = course,
-                QuestionName = value[0],
-                QuestionType = value[1],
-                QuestionScore = value[2],
-                PublicRelease = value[3],
-                )
+            sourceCourse=course,
+            QuestionName=value[0],
+            QuestionType=value[1],
+            QuestionScore=value[2],
+            PublicRelease=value[3],
+        )
         print(instance)
         return instance
-            #instance.save()
+        # instance.save()
     except Exception as e:
         print(e)
         return False
 
+
 def createAnswer(instance, optionInstance):
     try:
         answerInstance = models.QuestionAnswer(
-            sourceQuestion = instance,
-            Answer = optionInstance,
+            sourceQuestion=instance,
+            Answer=optionInstance,
         )
         return answerInstance
     except Exception as e:
         print(e)
         return False
 
-def createOptions(instance,Index,Value):
-    #options = {'0': {'asd': False, 'eewe': False, 'ssd': False, 'd': False}, '1': {'': False}, '2': {'': False}}
+
+def createOptions(instance, Index, Value):
+    # options = {'0': {'asd': False, 'eewe': False, 'ssd': False, 'd': False}, '1': {'': False}, '2': {'': False}}
     try:
         optionInstance = models.QuestionOption(
-            sourceQuestion = instance,
-            OptionName = Index,
+            sourceQuestion=instance,
+            OptionName=Index,
         )
-        if(Value==True):
-            answerInstance = createAnswer(instance,optionInstance)
+        if Value == True:
+            answerInstance = createAnswer(instance, optionInstance)
             instance.save()
             optionInstance.save()
             answerInstance.save()
@@ -215,17 +230,19 @@ def createOptions(instance,Index,Value):
         print(e)
         return False
 
-def questionBankImport(request,course): #导入题库
+
+def questionBankImport(request, course):  # 导入题库
     data = request.POST.get("data")
     options = request.POST.get("options")
-    data = json.loads(data) #loads将json字符串转换成python数据结构，dumps是将python数据结构转换成json字符串
+    data = json.loads(data)  # loads将json字符串转换成python数据结构，dumps是将python数据结构转换成json字符串
     options = json.loads(options)
-    for cIndex,cValue in data.items():
+    for cIndex, cValue in data.items():
         instance = createQuestion(course, cValue)
-        for oIndex,oValue in options[cIndex].items():
-            createOptions(instance, oIndex,oValue)
+        for oIndex, oValue in options[cIndex].items():
+            createOptions(instance, oIndex, oValue)
 
-'''
+
+"""
 {
     "name":
     "type":
@@ -239,14 +256,20 @@ def questionBankImport(request,course): #导入题库
 
 
 }
-'''
+"""
+
 
 def get_QuestionBank(course):
     QuestionBankData = []
-    Question_Queryset = models.QuestionBank.objects.filter(Q(sourceCourse=course)|Q(PublicRelease=True))
+    Question_Queryset = models.QuestionBank.objects.filter(
+        Q(sourceCourse=course) | Q(PublicRelease=True)
+    )
+    counter = 0
     for question in Question_Queryset:
+        counter = counter + 1
         questionData = {}
         optionsData = {}
+        questionData["Index"] = counter
         questionData["QuestionID"] = question.id
         questionData["QuestionName"] = question.QuestionName
         questionData["QuestionType"] = question.QuestionType
@@ -257,7 +280,7 @@ def get_QuestionBank(course):
         Answers = question.answerSourceQuestion.all()
         for option in Options:
             for answer in Answers:
-                if(answer.Answer == option):
+                if answer.Answer == option:
                     optionsData[option.OptionName] = True
                     break
                 else:

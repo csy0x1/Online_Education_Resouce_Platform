@@ -50,7 +50,9 @@ class Users(models.Model):
         verbose_name="*权限等级", max_length=16, choices=access, default="guest"
     )  # 权限级别
     # selected_course = models.CharField(verbose_name='已选课程',max_length=256,null=True,blank=True)  #已选课程
-    selected_courses = models.ManyToManyField("Course", related_name="students",null=True,blank=True)  # 已选课程
+    selected_courses = models.ManyToManyField(
+        "Course", related_name="students", null=True, blank=True
+    )  # 已选课程
     sex = models.CharField(
         verbose_name="*性别", max_length=32, choices=gender, default="default"
     )  # 性别
@@ -120,7 +122,7 @@ class Course(models.Model):
         verbose_name="课程状态", max_length=16, choices=status, default="1"
     )
     Starting_Time = models.DateTimeField(verbose_name="开课时间", auto_now_add=True)
-    Ending_Time = models.DateTimeField(verbose_name="结课时间",null=True,blank=True)
+    Ending_Time = models.DateTimeField(verbose_name="结课时间", null=True, blank=True)
 
     def __str__(self) -> str:
         return self.Course_Name
@@ -213,7 +215,7 @@ def Upload_File_Path(instance, filename):  # 文件上传目录回调函数
         instance.sourceSection.sourceChapter.sourceCourse,
         instance.sourceSection.sourceChapter,
         instance.sourceSection,
-        filename
+        filename,
     )
 
 
@@ -241,7 +243,7 @@ class CourseFiles(models.Model):
         blank=True,
         null=True,
     )
-    fileName = CharField(verbose_name="课件名称", max_length=100,default="新课件")
+    fileName = CharField(verbose_name="课件名称", max_length=100, default="新课件")
     courseFile = FileField(upload_to=Upload_File_Path, blank=True, null=True)
 
     def __str__(self) -> str:
@@ -255,7 +257,8 @@ class CourseFiles(models.Model):
         verbose_name = "课程文件"
         verbose_name_plural = "课程文件"
 
-#题库问题表
+
+# 题库问题表
 class QuestionBank(models.Model):
     sourceCourse = ForeignKey(
         "Course",
@@ -265,9 +268,9 @@ class QuestionBank(models.Model):
     )
     QuestionName = CharField(verbose_name="题目名称", max_length=200)
     QuestionType = CharField(verbose_name="题目类型", max_length=20)
-    QuestionScore = models.PositiveIntegerField(verbose_name="题目分值",default=0)
-    ReferenceCount = models.PositiveIntegerField(verbose_name="引用次数",default=0)
-    PublicRelease = models.BooleanField(verbose_name="是否公开",default=False)
+    QuestionScore = models.PositiveIntegerField(verbose_name="题目分值", default=0)
+    ReferenceCount = models.PositiveIntegerField(verbose_name="引用次数", default=0)
+    PublicRelease = models.BooleanField(verbose_name="是否公开", default=False)
 
     def __str__(self) -> str:
         return self.QuestionName
@@ -276,7 +279,8 @@ class QuestionBank(models.Model):
         verbose_name = "题库"
         verbose_name_plural = "题库"
 
-#题库选项表
+
+# 题库选项表
 class QuestionOption(models.Model):
     sourceQuestion = ForeignKey(
         "QuestionBank",
@@ -287,11 +291,11 @@ class QuestionOption(models.Model):
     OptionName = CharField(verbose_name="选项", max_length=100)
 
     class Meta:
-        verbose_name="题目选项"
-        verbose_name_plural="题目选项"
+        verbose_name = "题目选项"
+        verbose_name_plural = "题目选项"
 
 
-#题库答案表
+# 题库答案表
 class QuestionAnswer(models.Model):
     sourceQuestion = ForeignKey(
         "QuestionBank",
@@ -308,10 +312,11 @@ class QuestionAnswer(models.Model):
     # Answer = CharField(verbose_name="答案", max_length=500)
 
     class Meta:
-        verbose_name="答案"
-        verbose_name_plural="答案"
+        verbose_name = "答案"
+        verbose_name_plural = "答案"
 
-#试卷表
+
+# 试卷表
 class Paper(models.Model):
     sourceCourse = ForeignKey(
         "Course",
@@ -319,21 +324,19 @@ class Paper(models.Model):
         on_delete=CASCADE,
         related_name="paperSourceCourse",
     )
-    includedQuestion = ForeignKey(
+    includedQuestions = models.ManyToManyField(
         "QuestionBank",
         verbose_name="包含题目",
-        on_delete=CASCADE,
         related_name="paperIncludedQuestion",
     )
-    
+
     PaperName = CharField(verbose_name="试卷名称", max_length=100)
     PaperType = CharField(verbose_name="试卷类型", max_length=20)
-    QuestionCount = models.PositiveIntegerField(verbose_name="题目数量",default=0)
+    QuestionCount = models.PositiveIntegerField(verbose_name="题目数量", default=0)
     ExaminationTime = models.TimeField(verbose_name="考试时间")
-    QuestionTotalScore = models.PositiveIntegerField(verbose_name="试卷总分",default=0)
+    QuestionTotalScore = models.PositiveIntegerField(verbose_name="试卷总分", default=0)
     StartTime = models.DateTimeField(verbose_name="开始时间", auto_now_add=True)
     EndTime = models.DateTimeField(verbose_name="结束时间")
-
 
     def __str__(self) -> str:
         return self.PaperName
@@ -342,7 +345,8 @@ class Paper(models.Model):
         verbose_name = "试卷"
         verbose_name_plural = "试卷"
 
-#已作答试卷表
+
+# 已作答试卷表
 class AnsweredPaper(models.Model):
     sourcePaper = ForeignKey(
         "Paper",
@@ -351,10 +355,16 @@ class AnsweredPaper(models.Model):
         related_name="answeredPaperSourcePaper",
     )
     candidates = models.ForeignKey(
-    "Users",
-    verbose_name="考生",
-    on_delete=CASCADE,
-    related_name="paperCandidates",
-    null=True,
-    blank=True,
+        "Users",
+        verbose_name="考生",
+        on_delete=CASCADE,
+        related_name="paperCandidates",
+        null=True,
+        blank=True,
     )
+
+
+class PaperQuestionsInformation(models.Model):
+    sourcePaper = ForeignKey(Paper, on_delete=CASCADE)
+    sourceQuestion = ForeignKey(QuestionBank, on_delete=CASCADE)
+    questionScore = models.PositiveIntegerField(verbose_name="题目分值", default=0)

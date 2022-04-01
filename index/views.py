@@ -17,7 +17,7 @@ from django.template.loader import render_to_string
 import OERP.settings
 
 
-import pytz,base64,magic
+import pytz, base64, magic
 from pytz import timezone
 
 from . import forms, models
@@ -255,22 +255,32 @@ def courseSetting(request, courseid):
                     course.Reference = formData[4]
                     course.QA = formData[5]
                     image = request.POST.get("image")
-                    if(len(image) != 0):
+                    if len(image) != 0:
                         try:
-                            f_obj = image.split(",")[1] # 前端传过来BASE64编码的图片，需去掉"data:image/jpeg;base64,"
-                            decodedimg = base64.b64decode(f_obj)    # 将BASE64编码的图片解码
-                            filepath = OERP.settings.MEDIA_ROOT+"/course_img/"+course.Course_Name+str(courseid)+".jpg"
-                            with open(filepath,"wb") as f:
+                            f_obj = image.split(",")[
+                                1
+                            ]  # 前端传过来BASE64编码的图片，需去掉"data:image/jpeg;base64,"
+                            decodedimg = base64.b64decode(f_obj)  # 将BASE64编码的图片解码
+                            filepath = (
+                                OERP.settings.MEDIA_ROOT
+                                + "/course_img/"
+                                + course.Course_Name
+                                + str(courseid)
+                                + ".jpg"
+                            )
+                            with open(filepath, "wb") as f:
                                 f.write(decodedimg)
                             course.Course_Img = filepath
                             course.save()
                         except Exception as e:
                             print(e)
                             return JsonResponse({"status": "error"})
-                    category_obj = models.CourseCategory.objects.get(CategoryName=formData[6])
+                    category_obj = models.CourseCategory.objects.get(
+                        CategoryName=formData[6]
+                    )
                     course.Course_Category = category_obj
-                    timezone=pytz.timezone('Asia/Shanghai')
-                    dateTime = datetime.strptime(formData[7], '%Y-%m-%d %H:%M')
+                    timezone = pytz.timezone("Asia/Shanghai")
+                    dateTime = datetime.strptime(formData[7], "%Y-%m-%d %H:%M")
                     course.Ending_Time = timezone.localize(dateTime)
                     course.save()
                     return JsonResponse({"status": "success"})
@@ -291,12 +301,14 @@ def courseSettingStudent(request, courseid):
 def courseSettingNotice(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    #noticeForm = forms.NoticeForm()
+    # noticeForm = forms.NoticeForm()
     historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
     if request.method == "POST":
-        title = request.POST['NoticeTitle']
-        content = request.POST['NoticeContent']
-        instance = models.CourseNotice(sourceCourse=course,Title=title,Message=content)
+        title = request.POST["NoticeTitle"]
+        content = request.POST["NoticeContent"]
+        instance = models.CourseNotice(
+            sourceCourse=course, Title=title, Message=content
+        )
         instance.save()
         return HttpResponse("succeed")
     return render(request, "index/courseSettingNotice.html", locals())
@@ -328,45 +340,56 @@ def courseSettingChapter(request, courseid):
     if request.method == "POST":
         operationType = request.POST.get("operationType")
         if operationType == "upload":
-            file = request.FILES['input-CourseFiles']
+            file = request.FILES["input-CourseFiles"]
             tmpfile = tempfile.NamedTemporaryFile(delete=False)
             with tmpfile as tmp:
                 for chunk in file.chunks():
                     tmp.write(chunk)
                 print(magic.from_file(tmp.name, mime=True))
-            section = request.POST.get('section')
+            section = request.POST.get("section")
             # file_path = "courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file.name
             # os.makedirs(os.path.dirname(file_path), exist_ok=True)
             # with open(file_path,"wb") as f:
             # for chunk in file.chunks():
             #     file.write(chunk)
             section_obj = models.Section.objects.get(sectionName=section)
-            instance = models.CourseFiles(sourceSection=section_obj,courseFile=file)
+            instance = models.CourseFiles(sourceSection=section_obj, courseFile=file)
             instance.save()
-            return JsonResponse({'status':'success'})
+            return JsonResponse({"status": "success"})
         elif operationType == "delete":
             files = request.POST.getlist("files[]")
-            chapter = request.POST.get('chapter')
-            section = request.POST.get('section')
+            chapter = request.POST.get("chapter")
+            section = request.POST.get("section")
             for file in files:
-                file_path = "courseFile/"+course.Course_Name+"/"+chapter+"/"+section+"/"+file
+                file_path = (
+                    "courseFile/"
+                    + course.Course_Name
+                    + "/"
+                    + chapter
+                    + "/"
+                    + section
+                    + "/"
+                    + file
+                )
                 file_obj = models.CourseFiles.objects.filter(courseFile=file_path)
                 for f in file_obj:
                     try:
                         VF.delete_Files(f.courseFile.path)
                         f.delete()
-                    except(FileNotFoundError, Exception) as e:
-                        return JsonResponse({'status':'error'})
-            return JsonResponse({"status":"success"})
+                    except (FileNotFoundError, Exception) as e:
+                        return JsonResponse({"status": "error"})
+            return JsonResponse({"status": "success"})
     return render(request, "index/courseSettingChapter.html", locals())
 
 
 def postNotice(request, courseid):
     course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
-        title = request.POST['NoticeTitle']
-        content = request.POST['content']
-        instance = models.CourseNotice(sourceCourse=course,Title=title,Message=content)
+        title = request.POST["NoticeTitle"]
+        content = request.POST["content"]
+        instance = models.CourseNotice(
+            sourceCourse=course, Title=title, Message=content
+        )
         instance.save()
     return HttpResponse("succeed")
 
@@ -413,7 +436,7 @@ def courseLearnNotice(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
-    if(len(historyNotices)==0):
+    if len(historyNotices) == 0:
         newestNotice = models.CourseNotice.objects.get(sourceCourse=None)
     else:
         newestNotice = historyNotices.order_by("-createTime")[:1][0]
@@ -482,7 +505,7 @@ def GetContent(request, courseid):
         filename = f.filename()
         tmpfile = tempfile.NamedTemporaryFile(delete=False)
         with tmpfile as tmp:
-            for chunk in f.courseFile.open('rb').chunks():
+            for chunk in f.courseFile.open("rb").chunks():
                 tmp.write(chunk)
             if magic.from_file(tmp.name, mime=True).split("/")[0] == "video":
                 videos.append(f)
@@ -496,12 +519,13 @@ def GetContent(request, courseid):
     else:
         video = videos[0]
     html = render_to_string("index/AjaxTemplate/CourseFilePreview.html", locals())
-    if(operation == "Preview"): #课程学习界面的文件列表
+    if operation == "Preview":  # 课程学习界面的文件列表
         return JsonResponse(html, safe=False)
-    else:   #课程设置界面的文件列表
+    else:  # 课程设置界面的文件列表
         return JsonResponse(data, safe=False)
 
-def categoryPage(request,categoryID):
+
+def categoryPage(request, categoryID):
     category = models.CourseCategory.objects.get(CategoryID=categoryID)
     subCategories = models.CourseCategory.objects.filter(ParentID=categoryID)
     if request.method == "GET":
@@ -512,44 +536,52 @@ def categoryPage(request,categoryID):
             courses = VF.get_Courses_By_Category(cateID)
     return render(request, "index/courseCategory/courseCategoryIndex.html", locals())
 
-def getQuestionBank(request,courseid):
+
+def getQuestionBank(request, courseid):
     course = models.Course.objects.get(id=courseid)
     QuestionBankData = VF.get_QuestionBank(course)
-    if(request.method == "POST"):
+    if request.method == "POST":
         operationType = request.POST.get("operationType")
-        if(operationType == "delete"):
+        if operationType == "delete":
             deleteRow = json.loads(request.POST.get("deleteRow"))
             try:
-                deleteQuestion = models.QuestionBank.objects.get(id=deleteRow['QuestionID'])
-                #deleteQuestion.delete()
+                deleteQuestion = models.QuestionBank.objects.get(
+                    id=deleteRow["QuestionID"]
+                )
+                # deleteQuestion.delete()
             except Exception as e:
                 print(e)
-                return JsonResponse("failed",safe=False)
+                return JsonResponse("failed", safe=False)
             return JsonResponse("success", safe=False)
     return JsonResponse(QuestionBankData, safe=False)
 
-def courseSettingQuestionBank(request,courseid):
+
+def courseSettingQuestionBank(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     VF.get_QuestionBank(course)
-    if(request.method == "POST"):   #保存题库
+    if request.method == "POST":  # 保存题库
         operationType = request.POST.get("operationType")
-        if(operationType=="create"):
-            VF.questionBankImport(request,course)
-        elif(operationType=="preview"):
+        if operationType == "create":
+            VF.questionBankImport(request, course)
+        elif operationType == "preview":
             QuestionBankData = VF.get_QuestionBank(course)
             return JsonResponse(QuestionBankData, safe=False)
 
-    return render(request,'index/ExaminationPages/questionBankManagement.html',locals())
+    return render(
+        request, "index/ExaminationPages/questionBankManagement.html", locals()
+    )
 
-def courseSettingCreatePaper(request,courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)    
+
+def courseSettingCreatePaper(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    html = render_to_string('index/AjaxTemplate/PaperOverview.html')
-    return JsonResponse(html,safe=False)
+    html = render_to_string("index/AjaxTemplate/CreatePaper.html")
+    return JsonResponse(html, safe=False)
 
-def courseSettingPaperManagement(request,courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)    
+
+def courseSettingPaperManagement(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     # if(request.method == "POST"):
     #     operationType = request.POST.get("operationType")
@@ -562,5 +594,5 @@ def courseSettingPaperManagement(request,courseid):
     #             print(e)
     #             return JsonResponse("failed",safe=False)
     #         return JsonResponse("success", safe=False)
-    html = render_to_string('index/AjaxTemplate/PaperOverview.html')
-    return render(request,'index/ExaminationPages/paperManagement.html',locals())
+    html = render_to_string("index/AjaxTemplate/PaperOverview.html")
+    return render(request, "index/ExaminationPages/paperManagement.html", locals())
