@@ -1,5 +1,50 @@
 {% load static %}
 <div class="CreatorContainer">
+    <div class="PaperInfo">
+        <table id="PaperInfoTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>试卷名称</th>
+                    <th>试卷类型</th>
+                    <th>考试时长</th>
+                    <th>开始时间</th>
+                    <th>结束时间</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input id="PaperName" type="text" maxlength="30" class="form-control paperInfoInput"></td>
+                    <td>
+                        <select id="PaperType" class="form-control paperInfoInput">
+                            <option>开卷</option>
+                            <option>闭卷</option>
+                        </select>
+                    </td>
+                    <td>
+                        <div class="TimeSelector">
+                            <input id="Duration" type="time" class="form-control paperInfoInput">
+                        </div>
+                    </td>
+                    <td>
+                        <div class="TimeSelector date input-group" id="StartTimeSelector">
+                            <input id="StartTime" type="datetime" class="form-control paperInfoInput">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="TimeSelector date input-group" id="EndTimeSelector">
+                            <input id="EndTime" type="datetime" class="form-control paperInfoInput">
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div class="Creator">
         <div class="QuestionBankOverview">
             <table id="QuestionOverviewTable" class="table table-striped table-bordered">
@@ -33,5 +78,8 @@
                 </thead>
             </table>
         </div>
+    </div>
+    <div>
+        <button type="button" class="submit">提交</button>
     </div>
 </div>

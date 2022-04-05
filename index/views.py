@@ -577,6 +577,25 @@ def courseSettingCreatePaper(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     html = render_to_string("index/AjaxTemplate/CreatePaper.html")
+    if request.method == "POST":
+        PaperInfo = json.loads(request.POST.get("PaperInfo"))
+        SelectedQuestion = json.loads(request.POST.get("SelectedQuestion"))
+        print(PaperInfo)
+        print(SelectedQuestion)
+        instance_Paper = models.Paper(
+            sourceCourse=course,
+            PaperName=PaperInfo["PaperName"],
+            PaperType=PaperInfo["PaperType"],
+            ExaminationTime=PaperInfo["Duration"],
+            StartTime=PaperInfo["StartTime"],
+            EndTime=PaperInfo["EndTime"],
+        )
+        instance_Paper.save()
+        for key, value in SelectedQuestion.items():
+            instance_Paper.includedQuestions.add(
+                models.QuestionBank.objects.get(id=key),
+                through_defaults={"questionScore": value},
+            )
     return JsonResponse(html, safe=False)
 
 

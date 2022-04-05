@@ -13,3 +13,11 @@
     float: right;
     width:100%;
 }
+
+td {
+    position: relative;
+}
+
+.TimeSelector {
+    display: flex;
+}

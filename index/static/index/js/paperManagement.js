@@ -22,7 +22,7 @@ $(function () {
 	});
 
 	var PaperInfoCard = $(".PaperInfoCard").html();
-	var previewTable, SelectedTable;
+	var previewTable, SelectedTable, PaperInfoTable;
 	$(".CreatePaper").on("click", function () {
 		$.ajax({
 			type: "GET",
@@ -32,7 +32,12 @@ $(function () {
 				$(".CreatePaper").slideToggle(1);
 				$(".Return").slideToggle(1);
 				$(".mainContainer").toggleClass("WideScreen");
-				$(".paperOverview").html(response);
+				$(".paperOverview").html(response).trigger("test");
+				PaperInfoTable = $("#PaperInfoTable").DataTable({
+					language: {
+						url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
+					},
+				});
 				previewTable = $("#QuestionOverviewTable").DataTable({
 					//题库表初始化
 					processing: true,
@@ -90,7 +95,12 @@ $(function () {
 						}, //展开收起按钮
 						{ title: "题目内容", className: "QName", data: "QuestionName", orderable: false }, //题目内容
 						{ title: "题目类型", className: "QType", data: "QuestionType", orderable: false }, //题目类型
-						{ title: "题目分值", className: "QScore", data: "QuestionScore", orderable: false }, //题目分值
+						{
+							title: "题目分值",
+							className: "QScore editable",
+							data: "QuestionScore",
+							orderable: false,
+						}, //题目分值
 						{ title: "是否公开", className: "QPublic", data: "PublicRelease", orderable: false }, //是否公开
 						{
 							title: "引用次数",
@@ -101,8 +111,8 @@ $(function () {
 						{
 							title: "移除",
 							orderable: false,
-							defaultContent: '<span class="glyphicon glyphicon-remove select"></span>',
-							className: "QSelect",
+							defaultContent: '<span class="glyphicon glyphicon-remove remove"></span>',
+							className: "QRemove",
 						}, //删除
 					],
 				});
@@ -122,20 +132,8 @@ $(function () {
 	$(".mainContainer").on("click", ".remove", function () {
 		//从题库中删除题目
 		var $this = $(this).parent("td");
-		$.ajax({
-			type: "POST",
-			url: "QuestionBank/getQuestionBank",
-			headers: { "X-CSRFToken": csrftoken },
-			dataType: "json",
-			data: {
-				operationType: "delete",
-				deleteRow: JSON.stringify(previewTable.row($this).data()),
-			},
-			success: function (response) {
-				console.log(response);
-				previewTable.row($this).remove().draw();
-			},
-		});
+		previewTable.row.add(SelectedTable.row($this).data()).draw(false);
+		SelectedTable.row($this).remove().draw();
 	});
 
 	$(".mainContainer").on("click", ".select", function () {
@@ -232,5 +230,75 @@ $(function () {
 			tr.addClass("shown");
 		}
 		$(".PreviewAnswer").on("click", false); //禁止修改预览题库子表中正确答案的复选框
+	});
+
+	$(".mainContainer").on("click", ".editable", function () {
+		var td = $(this);
+		var text = td.text().trim();
+		var input = $(
+			'<input type="number" min="1" value="' + text + '" id="QScoreInput" class="form-control">'
+		);
+		td.html(input);
+
+		input.on("click", function () {
+			return false;
+		});
+		input.trigger("focus");
+		input.on("blur", function () {
+			newtext = $(this).val();
+			if (newtext < 1) {
+				newtext = 1;
+			}
+			SelectedTable.cell(td).data(newtext).draw();
+		});
+	});
+
+	$(".mainContainer").on("click", ".submit", function () {
+		var PaperInfo = {};
+		var SelectedQuestion = {};
+		$(".paperInfoInput").each(function () {
+			PaperInfo[$(this).attr("id")] = $(this).val();
+		});
+		$.each(SelectedTable.rows().data(), function (index) {
+			// console.log(SelectedTable.row(index).data());
+			var QuestionID = SelectedTable.row(index).data()["QuestionID"];
+			var QuestionScore = SelectedTable.row(index).data()["QuestionScore"];
+			SelectedQuestion[QuestionID] = QuestionScore;
+		});
+		console.log(PaperInfo);
+		console.log(SelectedQuestion);
+
+		$.ajax({
+			type: "POST",
+			url: "PaperManagement/createPaper",
+			headers: { "X-CSRFToken": csrftoken },
+			dataType: "json",
+			data: {
+				PaperInfo: JSON.stringify(PaperInfo),
+				SelectedQuestion: JSON.stringify(SelectedQuestion),
+			},
+			success: function (response) {
+				console.log(response);
+			},
+		});
+	});
+
+	$(".mainContainer").on("test", function () {
+		//初始化日期选择器
+		var today = new Date();
+		$("#StartTimeSelector").datetimepicker({
+			format: "YYYY-MM-DD HH:mm",
+			locale: moment.locale("zh-cn"),
+			minDate: today,
+			//inline: true,
+			sideBySide: true,
+		});
+		$("#EndTimeSelector").datetimepicker({
+			format: "YYYY-MM-DD HH:mm",
+			locale: moment.locale("zh-cn"),
+			minDate: today,
+			//inline: true,
+			sideBySide: true,
+		});
 	});
 });

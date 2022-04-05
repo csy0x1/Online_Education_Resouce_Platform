@@ -328,6 +328,7 @@ class Paper(models.Model):
         "QuestionBank",
         verbose_name="包含题目",
         related_name="paperIncludedQuestion",
+        through="PaperQuestionsInformation",
     )
 
     PaperName = CharField(verbose_name="试卷名称", max_length=100)
