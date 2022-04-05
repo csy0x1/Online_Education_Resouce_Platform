@@ -336,7 +336,7 @@ class Paper(models.Model):
     QuestionCount = models.PositiveIntegerField(verbose_name="题目数量", default=0)
     ExaminationTime = models.TimeField(verbose_name="考试时间")
     QuestionTotalScore = models.PositiveIntegerField(verbose_name="试卷总分", default=0)
-    StartTime = models.DateTimeField(verbose_name="开始时间", auto_now_add=True)
+    StartTime = models.DateTimeField(verbose_name="开始时间")
     EndTime = models.DateTimeField(verbose_name="结束时间")
 
     def __str__(self) -> str:

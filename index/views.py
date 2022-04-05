@@ -578,40 +578,44 @@ def courseSettingCreatePaper(request, courseid):
     course = models.Course.objects.get(id=courseid)
     html = render_to_string("index/AjaxTemplate/CreatePaper.html")
     if request.method == "POST":
-        PaperInfo = json.loads(request.POST.get("PaperInfo"))
-        SelectedQuestion = json.loads(request.POST.get("SelectedQuestion"))
-        print(PaperInfo)
-        print(SelectedQuestion)
-        instance_Paper = models.Paper(
-            sourceCourse=course,
-            PaperName=PaperInfo["PaperName"],
-            PaperType=PaperInfo["PaperType"],
-            ExaminationTime=PaperInfo["Duration"],
-            StartTime=PaperInfo["StartTime"],
-            EndTime=PaperInfo["EndTime"],
-        )
-        instance_Paper.save()
-        for key, value in SelectedQuestion.items():
-            instance_Paper.includedQuestions.add(
-                models.QuestionBank.objects.get(id=key),
-                through_defaults={"questionScore": value},
+        try:
+            PaperInfo = json.loads(request.POST.get("PaperInfo"))
+            SelectedQuestion = json.loads(request.POST.get("SelectedQuestion"))
+
+            timezone = pytz.timezone("Asia/Shanghai")
+
+            dateTime = datetime.strptime(PaperInfo["StartTime"], "%Y-%m-%d %H:%M")
+            StartTime = timezone.localize(dateTime)
+
+            dateTime = datetime.strptime(PaperInfo["EndTime"], "%Y-%m-%d %H:%M")
+            EndTime = timezone.localize(dateTime)
+
+            instance_Paper = models.Paper(
+                sourceCourse=course,
+                PaperName=PaperInfo["PaperName"],
+                PaperType=PaperInfo["PaperType"],
+                ExaminationTime=PaperInfo["Duration"],
+                StartTime=StartTime,
+                EndTime=EndTime,
             )
+            instance_Paper.save()
+            for key, value in SelectedQuestion.items():
+                instance_Paper.includedQuestions.add(
+                    models.QuestionBank.objects.get(id=key),
+                    through_defaults={"questionScore": value},
+                )
+            return JsonResponse("success", safe=False)
+        except Exception as e:
+            print(e)
+            return JsonResponse("error", safe=False)
     return JsonResponse(html, safe=False)
 
 
 def courseSettingPaperManagement(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    # if(request.method == "POST"):
-    #     operationType = request.POST.get("operationType")
-    #     if(operationType == "delete"):
-    #         deleteRow = json.loads(request.POST.get("deleteRow"))
-    #         try:
-    #             deleteQuestion = models.Paper.objects.get(id=deleteRow['PaperID'])
-    #             #deleteQuestion.delete()
-    #         except Exception as e:
-    #             print(e)
-    #             return JsonResponse("failed",safe=False)
-    #         return JsonResponse("success", safe=False)
-    html = render_to_string("index/AjaxTemplate/PaperOverview.html")
+    PaperList = models.Paper.objects.filter(sourceCourse=course)
+    html = render_to_string("index/AjaxTemplate/PaperOverview.html", locals())
+    if request.GET.get("Return") == "true":
+        return JsonResponse(html, safe=False)
     return render(request, "index/ExaminationPages/paperManagement.html", locals())

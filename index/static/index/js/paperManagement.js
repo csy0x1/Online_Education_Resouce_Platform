@@ -21,7 +21,6 @@ $(function () {
 		class: "active",
 	});
 
-	var PaperInfoCard = $(".PaperInfoCard").html();
 	var previewTable, SelectedTable, PaperInfoTable;
 	$(".CreatePaper").on("click", function () {
 		$.ajax({
@@ -32,7 +31,7 @@ $(function () {
 				$(".CreatePaper").slideToggle(1);
 				$(".Return").slideToggle(1);
 				$(".mainContainer").toggleClass("WideScreen");
-				$(".paperOverview").html(response).trigger("test");
+				$(".paperOverview").html(response).trigger("creatorLoaded");
 				PaperInfoTable = $("#PaperInfoTable").DataTable({
 					language: {
 						url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
@@ -122,11 +121,17 @@ $(function () {
 	});
 
 	$(".Return").on("click", function () {
-		$(".navSideBar").slideToggle(1);
-		$(".CreatePaper").slideToggle(1);
-		$(".Return").slideToggle(1);
-		$(".mainContainer").toggleClass("WideScreen");
-		$(".paperOverview").html(PaperInfoCard);
+		$.ajax({
+			type: "GET",
+			url: "PaperManagement?Return=true",
+			success: function (response) {
+				$(".navSideBar").slideToggle(1);
+				$(".CreatePaper").slideToggle(1);
+				$(".Return").slideToggle(1);
+				$(".mainContainer").toggleClass("WideScreen");
+				$(".paperOverview").html(response);
+			},
+		});
 	});
 
 	$(".mainContainer").on("click", ".remove", function () {
@@ -232,7 +237,7 @@ $(function () {
 		$(".PreviewAnswer").on("click", false); //禁止修改预览题库子表中正确答案的复选框
 	});
 
-	$(".mainContainer").on("click", ".editable", function () {
+	$(".mainContainer").on("click", "td.editable", function () {
 		var td = $(this);
 		var text = td.text().trim();
 		var input = $(
@@ -283,7 +288,7 @@ $(function () {
 		});
 	});
 
-	$(".mainContainer").on("test", function () {
+	$(".mainContainer").on("creatorLoaded", function () {
 		//初始化日期选择器
 		var today = new Date();
 		$("#StartTimeSelector").datetimepicker({
