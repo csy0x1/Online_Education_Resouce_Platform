@@ -32,92 +32,96 @@ $(function () {
 				$(".Return").slideToggle(1);
 				$(".mainContainer").toggleClass("WideScreen");
 				$(".paperOverview").html(response).trigger("creatorLoaded");
-				PaperInfoTable = $("#PaperInfoTable").DataTable({
-					language: {
-						url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
-					},
-				});
-				previewTable = $("#QuestionOverviewTable").DataTable({
-					//题库表初始化
-					processing: true,
-					order: [[2, "asc"]],
-					language: {
-						url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
-					},
-					ajax: "QuestionBank/getQuestionBank",
-					columns: [
-						{
-							className: "selector",
-							orderable: false,
-							defaultContent: '<input type="checkbox" name="selector">',
-							title: '<input type="checkbox" name="selectAll">',
-						},
-						{
-							className: "dt-control",
-							orderable: false,
-							defaultContent: "",
-							title: "",
-						}, //展开收起按钮
-						{ title: "题目内容", className: "QName", data: "QuestionName" }, //题目内容
-						{ title: "题目类型", className: "QType", data: "QuestionType" }, //题目类型
-						{ title: "题目分值", className: "QScore", data: "QuestionScore" }, //题目分值
-						{ title: "是否公开", className: "QPublic", data: "PublicRelease" }, //是否公开
-						{ title: "引用次数", className: "QReference", data: "ReferenceCount" }, //引用次数
-						{
-							title: "选择",
-							orderable: false,
-							defaultContent: '<span class="glyphicon glyphicon-plus select"></span>',
-							className: "QSelect",
-						}, //删除
-					],
-				});
-
-				SelectedTable = $("#SelectedQuestionTable").DataTable({
-					//已选题目表初始化
-					autoWidth: true,
-					processing: true,
-					language: {
-						url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
-					},
-					columns: [
-						{
-							className: "selector",
-							orderable: false,
-							defaultContent: '<input type="checkbox" name="selector">',
-							title: '<input type="checkbox" name="selectAll">',
-						},
-						{
-							className: "dt-control",
-							orderable: false,
-							defaultContent: "",
-							title: "",
-						}, //展开收起按钮
-						{ title: "题目内容", className: "QName", data: "QuestionName", orderable: false }, //题目内容
-						{ title: "题目类型", className: "QType", data: "QuestionType", orderable: false }, //题目类型
-						{
-							title: "题目分值",
-							className: "QScore editable",
-							data: "QuestionScore",
-							orderable: false,
-						}, //题目分值
-						{ title: "是否公开", className: "QPublic", data: "PublicRelease", orderable: false }, //是否公开
-						{
-							title: "引用次数",
-							className: "QReference",
-							data: "ReferenceCount",
-							orderable: false,
-						}, //引用次数
-						{
-							title: "移除",
-							orderable: false,
-							defaultContent: '<span class="glyphicon glyphicon-remove remove"></span>',
-							className: "QRemove",
-						}, //删除
-					],
-				});
 			},
 		});
 		return false;
+	});
+
+	$(".mainContainer").on("creatorLoaded", function () {
+		PaperInfoTable = $("#PaperInfoTable").DataTable({
+			language: {
+				url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
+			},
+		});
+
+		previewTable = $("#QuestionOverviewTable").DataTable({
+			//题库表初始化
+			processing: true,
+			order: [[2, "asc"]],
+			language: {
+				url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
+			},
+			ajax: "QuestionBank/getQuestionBank",
+			columns: [
+				{
+					className: "selector",
+					orderable: false,
+					defaultContent: '<input type="checkbox" name="selector">',
+					title: '<input type="checkbox" name="selectAll">',
+				},
+				{
+					className: "dt-control",
+					orderable: false,
+					defaultContent: "",
+					title: "",
+				}, //展开收起按钮
+				{ title: "题目内容", className: "QName", data: "QuestionName" }, //题目内容
+				{ title: "题目类型", className: "QType", data: "QuestionType" }, //题目类型
+				{ title: "题目分值", className: "QScore", data: "QuestionScore" }, //题目分值
+				{ title: "是否公开", className: "QPublic", data: "PublicRelease" }, //是否公开
+				{ title: "引用次数", className: "QReference", data: "ReferenceCount" }, //引用次数
+				{
+					title: "选择",
+					orderable: false,
+					defaultContent: '<span class="glyphicon glyphicon-plus select"></span>',
+					className: "QSelect",
+				}, //删除
+			],
+		});
+
+		SelectedTable = $("#SelectedQuestionTable").DataTable({
+			//已选题目表初始化
+			autoWidth: true,
+			processing: true,
+			language: {
+				url: "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Chinese.json",
+			},
+			columns: [
+				{
+					className: "selector",
+					orderable: false,
+					defaultContent: '<input type="checkbox" name="selector">',
+					title: '<input type="checkbox" name="selectAll">',
+				},
+				{
+					className: "dt-control",
+					orderable: false,
+					defaultContent: "",
+					title: "",
+				}, //展开收起按钮
+				{ title: "题目内容", className: "QName", data: "QuestionName", orderable: false }, //题目内容
+				{ title: "题目类型", className: "QType", data: "QuestionType", orderable: false }, //题目类型
+				{
+					title: "题目分值",
+					className: "QScore editable",
+					data: "QuestionScore",
+					orderable: false,
+				}, //题目分值
+				{ title: "是否公开", className: "QPublic", data: "PublicRelease", orderable: false }, //是否公开
+				{
+					title: "引用次数",
+					className: "QReference",
+					data: "ReferenceCount",
+					orderable: false,
+				}, //引用次数
+				{
+					title: "移除",
+					orderable: false,
+					defaultContent: '<span class="glyphicon glyphicon-remove remove"></span>',
+					className: "QRemove",
+				}, //删除
+			],
+		});
 	});
 
 	$(".Return").on("click", function () {
@@ -270,8 +274,6 @@ $(function () {
 			var QuestionScore = SelectedTable.row(index).data()["QuestionScore"];
 			SelectedQuestion[QuestionID] = QuestionScore;
 		});
-		console.log(PaperInfo);
-		console.log(SelectedQuestion);
 
 		$.ajax({
 			type: "POST",
@@ -304,6 +306,32 @@ $(function () {
 			minDate: today,
 			//inline: true,
 			sideBySide: true,
+		});
+	});
+
+	$(".mainContainer").on("click", ".PreviewPaper", function () {
+		$.ajax({
+			type: "GET",
+			url: "PaperManagement/getPaper?paperID=" + $(this).attr("name"),
+			success: function (response) {
+				$(".navSideBar").slideToggle(1);
+				$(".CreatePaper").slideToggle(1);
+				$(".mainContainer").toggleClass("WideScreen");
+				$(".paperOverview").html(response);
+			},
+		});
+	});
+
+	$(".mainContainer").on("click", ".return", function () {
+		$.ajax({
+			type: "GET",
+			url: "PaperManagement?Return=true",
+			success: function (response) {
+				$(".navSideBar").slideToggle(1);
+				$(".CreatePaper").slideToggle(1);
+				$(".mainContainer").toggleClass("WideScreen");
+				$(".paperOverview").html(response);
+			},
 		});
 	});
 });

@@ -21,3 +21,98 @@ td {
 .TimeSelector {
     display: flex;
 }
+
+.PaperOverviewArea {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.PaperInfoCard {
+    background: white;
+    display: inline-flex;
+    width: 430px;
+    flex-direction: column;
+    border: 1px solid #80808057;
+    margin: 10px;
+}
+
+.Info {
+    padding: 10px;
+}
+
+.Duration,.Status {
+    font-size: 5px;
+}
+
+.ButtonsBar {
+    background: #e8eeda;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+
+.PreviewPaper {
+    margin: 5px;
+}
+
+.Question {
+    border: 1px solid lightgray;
+    background: #d3d3d34d;
+    padding: 5px 10px;
+}
+
+.PaperInfo {
+    border: 1px solid lightgrey;
+    padding: 10px;
+    font-size: 10px;
+    margin: 10px;
+}
+
+.QuestionArea {
+    /* display: flex; */
+    border: 1px solid lightgray;
+    margin: 10px;
+    /* flex-direction: column; */
+}
+
+.Answer {
+    background: #90ee9085;
+}
+
+span.QuestionContent {
+    font-size: 20px;
+}
+
+span.QuestionNumber {
+    font-size: 25px;
+    color: deepskyblue;
+}
+
+span.OptionCounter {
+    font-size: 15px;
+    color: darkgrey;
+}
+
+span.Option {
+    font-size: 15px;
+}
+
+.Options {
+    padding: 10px;
+    margin: 5px 15px;
+}
+.Header {
+    display: flex;
+    border-bottom: 2px solid lightgray;
+    margin: 10px;
+    padding: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+button.DeletePaper {
+    margin: 5px;
+}

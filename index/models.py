@@ -264,7 +264,7 @@ class QuestionBank(models.Model):
         "Course",
         verbose_name="所属课程",
         on_delete=CASCADE,
-        related_name="questionSourceCourse",
+        related_name="Questions",
     )
     QuestionName = CharField(verbose_name="题目名称", max_length=200)
     QuestionType = CharField(verbose_name="题目类型", max_length=20)
@@ -286,7 +286,7 @@ class QuestionOption(models.Model):
         "QuestionBank",
         verbose_name="所属题目",
         on_delete=CASCADE,
-        related_name="optionSourceQuestion",
+        related_name="Options",
     )
     OptionName = CharField(verbose_name="选项", max_length=100)
 
@@ -301,7 +301,7 @@ class QuestionAnswer(models.Model):
         "QuestionBank",
         verbose_name="所属题目",
         on_delete=CASCADE,
-        related_name="answerSourceQuestion",
+        related_name="Answers",
     )
     Answer = ForeignKey(
         "QuestionOption",

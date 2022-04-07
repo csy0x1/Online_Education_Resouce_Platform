@@ -276,8 +276,8 @@ def get_QuestionBank(course):
         questionData["QuestionScore"] = question.QuestionScore
         questionData["PublicRelease"] = question.PublicRelease
         questionData["ReferenceCount"] = question.ReferenceCount
-        Options = question.optionSourceQuestion.all()
-        Answers = question.answerSourceQuestion.all()
+        Options = question.Options.all()
+        Answers = question.Answers.all()
         for option in Options:
             for answer in Answers:
                 if answer.Answer == option:

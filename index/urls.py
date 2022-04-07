@@ -75,6 +75,11 @@ urlpatterns = [
         views.courseSettingCreatePaper,
         name="createPaper",
     ),
+    path(
+        "course/<int:courseid>/Setting/PaperManagement/getPaper",
+        views.getPaper,
+        name="getPaper",
+    ),
     # 课程学习相关url
     path(
         "course/<int:courseid>/learn/Notice",

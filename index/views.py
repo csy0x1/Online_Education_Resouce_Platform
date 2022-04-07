@@ -600,10 +600,13 @@ def courseSettingCreatePaper(request, courseid):
             )
             instance_Paper.save()
             for key, value in SelectedQuestion.items():
+                Question = models.QuestionBank.objects.get(id=key)
                 instance_Paper.includedQuestions.add(
-                    models.QuestionBank.objects.get(id=key),
+                    Question,
                     through_defaults={"questionScore": value},
                 )
+                Question.ReferenceCount = F("ReferenceCount") + 1
+                Question.save()
             return JsonResponse("success", safe=False)
         except Exception as e:
             print(e)
@@ -619,3 +622,12 @@ def courseSettingPaperManagement(request, courseid):
     if request.GET.get("Return") == "true":
         return JsonResponse(html, safe=False)
     return render(request, "index/ExaminationPages/paperManagement.html", locals())
+
+
+def getPaper(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    paper = models.Paper.objects.get(id=request.GET.get("paperID"))
+    html = render_to_string("index/AjaxTemplate/PaperDetail.html", locals())
+    # return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
+    return JsonResponse(html, safe=False)
