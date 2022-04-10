@@ -1,4 +1,21 @@
 {% load static %}
+<div class="modal fade" id="DeleteWarning" tabindex="-1" role="dialog" aria-labelledby="DeleteWarningModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="DeleteWarningModal">警告</h4>
+            </div>
+            <div class="modal-body">是否确认删除试卷？此操作不可撤销！</div>
+            <div class="modal-footer">
+                <button id="Dismiss" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button id="Confirm" type="button" class="btn btn-danger">确认删除</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 <div class="PaperOverviewArea">
     {% for Paper in PaperList %}
     <div class="PaperInfoCard">
@@ -16,8 +33,8 @@
             </div>
         </div>
         <div class="ButtonsBar">
-            <button name="{{Paper.id}}" class="PreviewPaper">查看</button>
-            <button name="{{Paper.id}}" class="DeletePaper">删除</button>
+            <div name="{{Paper.id}}" class="PreviewPaper"><span>查看</span></div>
+            <div name="{{Paper.id}}" class="DeletePaper"><span>删除</span></div>
         </div>
     </div>
     {% endfor %}

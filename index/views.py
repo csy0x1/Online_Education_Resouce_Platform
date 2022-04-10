@@ -1,23 +1,26 @@
 from __future__ import print_function
+
+import base64
+import json
+import os
+import tempfile
 from datetime import datetime
 from distutils.filelist import FileList
 from http.client import HTTPResponse
-import json
-import os
-from pyexpat import model
-import tempfile
+
+import magic
+import OERP.settings
+import pytz
 from django.contrib.auth import hashers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.db import transaction
 from django.db.models import F, Q
 from django.http import HttpResponseRedirect
 from django.http.response import HttpResponse, JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse
 from django.template.loader import render_to_string
-import OERP.settings
-
-
-import pytz, base64, magic
+from django.urls import reverse
+from pyexpat import model
 from pytz import timezone
 
 from . import forms, models
@@ -564,6 +567,8 @@ def courseSettingQuestionBank(request, courseid):
         operationType = request.POST.get("operationType")
         if operationType == "create":
             VF.questionBankImport(request, course)
+            QuestionBankData = VF.get_QuestionBank(course)
+            return JsonResponse(QuestionBankData, safe=False)
         elif operationType == "preview":
             QuestionBankData = VF.get_QuestionBank(course)
             return JsonResponse(QuestionBankData, safe=False)
@@ -590,27 +595,30 @@ def courseSettingCreatePaper(request, courseid):
             dateTime = datetime.strptime(PaperInfo["EndTime"], "%Y-%m-%d %H:%M")
             EndTime = timezone.localize(dateTime)
 
-            instance_Paper = models.Paper(
-                sourceCourse=course,
-                PaperName=PaperInfo["PaperName"],
-                PaperType=PaperInfo["PaperType"],
-                ExaminationTime=PaperInfo["Duration"],
-                StartTime=StartTime,
-                EndTime=EndTime,
-            )
-            instance_Paper.save()
-            for key, value in SelectedQuestion.items():
-                Question = models.QuestionBank.objects.get(id=key)
-                instance_Paper.includedQuestions.add(
-                    Question,
-                    through_defaults={"questionScore": value},
+            with transaction.atomic():
+                instance_Paper = models.Paper(
+                    sourceCourse=course,
+                    PaperName=PaperInfo["PaperName"],
+                    PaperType=PaperInfo["PaperType"],
+                    ExaminationTime=PaperInfo["Duration"],
+                    StartTime=StartTime,
+                    EndTime=EndTime,
                 )
-                Question.ReferenceCount = F("ReferenceCount") + 1
-                Question.save()
+                instance_Paper.save()
+                for key, value in SelectedQuestion.items():
+                    Question = models.QuestionBank.objects.get(id=key)
+                    instance_Paper.includedQuestions.add(
+                        Question,
+                        through_defaults={"questionScore": value},
+                    )
+                    Question.ReferenceCount = F("ReferenceCount") + 1
+                    Question.save()
             return JsonResponse("success", safe=False)
         except Exception as e:
             print(e)
-            return JsonResponse("error", safe=False)
+            response = JsonResponse(str(e), safe=False)
+            response.status_code = 404
+            return response
     return JsonResponse(html, safe=False)
 
 
@@ -630,4 +638,21 @@ def getPaper(request, courseid):
     paper = models.Paper.objects.get(id=request.GET.get("paperID"))
     html = render_to_string("index/AjaxTemplate/PaperDetail.html", locals())
     # return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
+    return JsonResponse(html, safe=False)
+
+
+def deletePaper(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    PaperList = models.Paper.objects.filter(sourceCourse=course)
+    try:
+        with transaction.atomic():
+            paper = models.Paper.objects.get(id=request.GET.get("paperID"))
+            paper.delete()
+    except Exception as e:
+        print(e)
+        response = JsonResponse("发生错误", safe=False)
+        response.status_code = 404
+        return response
+    html = render_to_string("index/AjaxTemplate/PaperOverview.html", locals())
     return JsonResponse(html, safe=False)

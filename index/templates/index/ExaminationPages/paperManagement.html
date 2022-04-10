@@ -30,8 +30,8 @@
     {{ block.super }}
     <div class="mainContainer">
         <div class="toolBar">
-            <button class="CreatePaper">新增</button>
-            <button class="Return">返回</button>
+            <div class="CreatePaper"><span>新增</span></div>
+            <div class="Return"><span>返回</span></div>
         </div>
         <div class="paperOverview">
             {{html}}
@@ -49,6 +49,7 @@
 
     <!-- basic static -->
     <script src="{% static 'index/js/paperManagement.js' %}"></script>
+    <script src="{% static 'index/js/createPaper.js' %}"></script>
     {% endblock content %}
 </body>
 

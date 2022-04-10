@@ -7,6 +7,8 @@
 	<title>{% block title %}iMooc 在线教育资源平台{% endblock %}</title>
 	<link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="{% static 'index/css/index.css' %}">
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 	<script src="https://cdn.staticfile.org/jquery/3.6.0/jquery.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
 		integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd"
@@ -14,6 +16,11 @@
 	<script src="http://cdn.bootcss.com/bootstrap-hover-dropdown/2.0.10/bootstrap-hover-dropdown.min.js"></script>
 	<script src="//cdn.jsdelivr.net/jquery.color-animation/1/mainfile"></script>
 	<script src="https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	<!-- toastr -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+	<!-- basicStatic -->
 	<script src="{% static 'index/js/indexpage.js' %}"></script>
 	{% block extrastatic %}
 	{% endblock %}
@@ -58,9 +65,11 @@
 							{% if request.session.is_login == True %}
 							<ul class="nav navbar-nav">
 								<li class="dropdown">
-									<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" id="userBox">
-										<img class="img-circle img-responsive dropdown" src="{{ request.session.avatar }}" alt="" width="35" height="33"
-										id="avatar" style="text-decoration:none;" />
+									<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
+										id="userBox">
+										<img class="img-circle img-responsive dropdown"
+											src="{{ request.session.avatar }}" alt="" width="35" height="33" id="avatar"
+											style="text-decoration:none;" />
 										{{ request.session.user_name }}
 									</a>
 									<ul class="dropdown-menu" role="menu" aria-labelledby="user-info">

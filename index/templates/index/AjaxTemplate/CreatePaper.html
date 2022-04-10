@@ -1,6 +1,9 @@
 {% load static %}
 <div class="CreatorContainer">
-    <div class="PaperInfo">
+    <div class="CreatorPaperInfo">
+        <div class="Title">
+            <h3>试卷基础信息</h3>
+        </div>
         <table id="PaperInfoTable" class="table table-striped table-bordered">
             <thead>
                 <tr>
@@ -46,7 +49,10 @@
         </table>
     </div>
     <div class="Creator">
-        <div class="QuestionBankOverview">
+        <div class="CreatorQuestionBankOverview">
+            <div class="Title">
+                <h3>题库</h3>
+            </div>
             <table id="QuestionOverviewTable" class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -63,6 +69,9 @@
             </table>
         </div>
         <div class="SelectedQuestion">
+            <div class="Title">
+                <h3>已选题目</h3>
+            </div>
             <table id="SelectedQuestionTable" class="table table-striped table-bordered">
                 <thead>
                     <tr>
@@ -79,7 +88,7 @@
             </table>
         </div>
     </div>
-    <div>
-        <button type="button" class="submit">提交</button>
+    <div class="submitBar">
+        <div class="submit"><span>创建试卷</span></div>
     </div>
 </div>

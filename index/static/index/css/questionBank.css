@@ -1,10 +1,11 @@
-.mainContainer{
-    float:right;
-    width:80%;
-    background-color:white;
+.mainContainer {
+    float: right;
+    width: 80%;
+    background-color: white;
 }
 
-.remove,.delete{
+.remove,
+.delete {
     cursor: pointer;
 }
 
@@ -20,7 +21,7 @@ input#SubtableQuestion {
     width: 100%;
 }
 
-.questionLabel{
+.questionLabel {
     padding-left: 8px;
 }
 
@@ -37,4 +38,35 @@ textarea#SubtableQuestion {
     resize: vertical;
     height: 100px;
     min-height: 50px;
+}
+
+.TableBottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.CreatorArea {
+    border-bottom: 2px solid darkgray;
+    margin: 20px 10px;
+}
+
+.QuestionBankTable {
+    margin: 20px 10px;
+}
+
+.ToolBar {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+}
+
+#addRow, #submit {
+    margin-right: 10px;
+    cursor: pointer;
+    background: #437ab7;
+    padding: 5px 10px;
+    border-radius: 3px;
+}
+#addRow>span,#submit>span {
+    color: white;
 }

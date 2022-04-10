@@ -80,6 +80,11 @@ urlpatterns = [
         views.getPaper,
         name="getPaper",
     ),
+    path(
+        "course/<int:courseid>/Setting/PaperManagement/deletePaper",
+        views.deletePaper,
+        name="deletePaper",
+    ),
     # 课程学习相关url
     path(
         "course/<int:courseid>/learn/Notice",

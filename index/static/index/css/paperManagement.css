@@ -26,6 +26,7 @@ td {
     display: inline-flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin: 10px;
 }
 
 .PaperInfoCard {
@@ -50,6 +51,7 @@ td {
     width: 100%;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: flex-end;
 }
 
@@ -58,7 +60,7 @@ td {
 }
 
 .Question {
-    border: 1px solid lightgray;
+    border-bottom: 1px solid lightgray;
     background: #d3d3d34d;
     padding: 5px 10px;
 }
@@ -105,7 +107,7 @@ span.Option {
 }
 .Header {
     display: flex;
-    border-bottom: 2px solid lightgray;
+    border-bottom: 2px solid darkgray;
     margin: 10px;
     padding: 10px;
     flex-direction: row;
@@ -115,4 +117,77 @@ span.Option {
 
 button.DeletePaper {
     margin: 5px;
+}
+
+.PreviewPaper {
+    cursor:pointer;
+    margin: 5px;
+    background: #004d66;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.PreviewPaper>span {color: white;}
+
+.DeletePaper {
+    cursor:pointer;
+    margin: 5px;
+    background: #ff4e4e;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.DeletePaper>span {color: white;}
+
+.toolBar {
+    display: flex;
+    flex-direction: row;
+    /* margin: 10px; */
+    padding: 10px;
+    border-bottom: 1px solid darkgray;
+}
+
+.CreatePaper, .Return {
+    margin: 0 10px;
+    cursor: pointer;
+    background: #437ab7;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.CreatePaper>span,.Return>span,.submit>span {
+    color: white;
+}
+
+.CreatorContainer {
+    margin: 20px;
+}
+
+.CreatorPaperInfo {
+    border-bottom: 2px solid darkgray;
+    margin: 20px 0;
+}
+
+.CreatorQuestionBankOverview {
+    border-bottom: 2px solid darkgray;
+    margin: 20px 0;
+}
+
+.TableBottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submitBar {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    border-top:2px solid darkgray
+}
+
+.submit{
+    cursor: pointer;
+    background: #437ab7;
+    padding: 5px 10px;
+    border-radius: 3px;
 }

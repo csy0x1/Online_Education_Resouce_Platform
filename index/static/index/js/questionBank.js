@@ -21,7 +21,9 @@ $(function () {
 		class: "active",
 	});
 
+	var previewTable;
 	var creatorTable = $("#CreatorTable").DataTable({
+		dom: '<"TableTop"f>rt<"TableBottom"lip><"clear">',
 		lengthMenu: [
 			[5, 10, 25, -1],
 			[5, 10, 25, "全部"],
@@ -102,8 +104,41 @@ $(function () {
 				operationType: "create",
 			},
 			success: function (response) {
+				toastr.options = {
+					positionClass: "toast-top-center",
+					progressBar: true,
+					newestOnTop: true,
+					showDuration: 500,
+					hideDuration: 500,
+					timeOut: 2000,
+					extendedTimeOut: 1000,
+					showEasing: "swing",
+					hideEasing: "linear",
+					showMethod: "fadeIn",
+					hideMethod: "fadeOut",
+				};
+				toastr.options.onHidden = function () {
+					creatorTable.clear().draw(true);
+					previewTable.ajax.url("QuestionBank/getQuestionBank").load();
+				};
+				toastr.success("提交成功");
+			},
+			error: function (response) {
+				toastr.options = {
+					positionClass: "toast-top-center",
+					progressBar: true,
+					newestOnTop: true,
+					showDuration: 500,
+					hideDuration: 500,
+					timeOut: 2000,
+					extendedTimeOut: 1000,
+					showEasing: "swing",
+					hideEasing: "linear",
+					showMethod: "fadeIn",
+					hideMethod: "fadeOut",
+				};
+				toastr.error("发生错误，操作未完成");
 				console.log(response);
-				creatorTable.clear().draw(true);
 			},
 		});
 		//console.log(jsonData);
@@ -240,7 +275,8 @@ $(function () {
 		creatorTable.cell($(QuestionHeader)).data(newtext).draw();
 	});
 
-	var previewTable = $("#QuestionPreviewTable").DataTable({
+	previewTable = $("#QuestionPreviewTable").DataTable({
+		dom: '<"TableTop"f>rt<"TableBottom"lip><"clear">',
 		processing: true,
 		order: [[2, "asc"]],
 		language: {
