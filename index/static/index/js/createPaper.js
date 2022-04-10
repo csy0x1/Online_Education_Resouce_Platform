@@ -326,7 +326,15 @@ $(function () {
 			locale: moment.locale("zh-cn"),
 			minDate: today,
 			//inline: true,
+			useCurrent: false,
 			sideBySide: true,
 		});
+	});
+
+	$(".mainContainer").on("dp.change", "#StartTimeSelector", function (e) {
+		$("#EndTimeSelector").data("DateTimePicker").minDate(e.date);
+	});
+	$(".mainContainer").on("dp.change", "#EndTimeSelector", function (e) {
+		$("#StartTimeSelector").data("DateTimePicker").maxDate(e.date);
 	});
 });

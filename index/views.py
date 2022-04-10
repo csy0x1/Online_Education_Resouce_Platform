@@ -595,6 +595,11 @@ def courseSettingCreatePaper(request, courseid):
             dateTime = datetime.strptime(PaperInfo["EndTime"], "%Y-%m-%d %H:%M")
             EndTime = timezone.localize(dateTime)
 
+            if PaperInfo["PaperType"] == "考试":
+                PaperInfo["PaperType"] = True
+            else:
+                PaperInfo["PaperType"] = False
+
             with transaction.atomic():
                 instance_Paper = models.Paper(
                     sourceCourse=course,

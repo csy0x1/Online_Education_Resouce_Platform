@@ -332,7 +332,7 @@ class Paper(models.Model):
     )
 
     PaperName = CharField(verbose_name="试卷名称", max_length=100)
-    PaperType = CharField(verbose_name="试卷类型", max_length=20)
+    PaperType = models.BooleanField(verbose_name="试卷类型", default=False)
     QuestionCount = models.PositiveIntegerField(verbose_name="题目数量", default=0)
     ExaminationTime = models.TimeField(verbose_name="考试时间")
     QuestionTotalScore = models.PositiveIntegerField(verbose_name="试卷总分", default=0)
