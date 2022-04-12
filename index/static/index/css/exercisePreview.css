@@ -1,0 +1,55 @@
+.Question {
+    border-bottom: 1px solid lightgray;
+    background: #d3d3d34d;
+    padding: 5px 10px;
+}
+
+.PaperInfo {
+    border: 1px solid lightgrey;
+    padding: 10px;
+    font-size: 10px;
+    margin: 10px;
+}
+
+.QuestionArea {
+    /* display: flex; */
+    border: 1px solid lightgray;
+    margin: 10px;
+    /* flex-direction: column; */
+}
+
+.Answer {
+    background: #90ee9085;
+}
+
+span.QuestionContent {
+    font-size: 20px;
+}
+
+span.QuestionNumber {
+    font-size: 25px;
+    color: deepskyblue;
+}
+
+span.OptionCounter {
+    font-size: 15px;
+    color: darkgrey;
+}
+
+span.Option {
+    font-size: 15px;
+}
+
+.Options {
+    padding: 10px;
+    margin: 5px 15px;
+}
+.Header {
+    display: flex;
+    border-bottom: 2px solid darkgray;
+    margin: 10px;
+    padding: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}

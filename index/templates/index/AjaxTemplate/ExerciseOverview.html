@@ -1,16 +1,16 @@
 {% load static %}
-<div class="modal fade" id="DeleteWarning" tabindex="-1" role="dialog" aria-labelledby="DeleteWarningModal"
+<div class="modal fade" id="StartExamWarning" tabindex="-1" role="dialog" aria-labelledby="StartExamWarningModal"
     aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class=" modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="DeleteWarningModal">警告</h4>
+                <h4 class="modal-title" id="StartExamWarningModal">警告</h4>
             </div>
-            <div class="modal-body">是否确认删除试卷？此操作不可撤销！</div>
+            <div class="modal-body"><span>考试开始后无法暂停，请确认网络和设备良好！</span></div>
             <div class="modal-footer">
-                <button id="Dismiss" type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button id="Confirm" type="button" class="btn btn-danger">确认删除</button>
+                <button id="Dismiss" type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                <button id="Confirm" type="button" class="btn btn-danger">开始考试</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -39,8 +39,13 @@
             </div>
         </div>
         <div class="ButtonsBar">
-            <div name="{{Paper.id}}" class="PreviewPaper"><span>查看</span></div>
-            <div name="{{Paper.id}}" class="DeletePaper"><span>删除</span></div>
+            {% if Paper.is_expired %}
+            <div name="{{Paper.id}}" class="PreviewPaper"><span>查看试卷</span></div>
+            {% elif Paper.is_started %}
+            <div name="{{Paper.id}}" class="StartExam"><span>开始考试</span></div>
+            {% else %}
+            <div class="PaperUnavilable"><span>考试未开始</span></div>
+            {% endif %}
         </div>
     </div>
     {% endfor %}

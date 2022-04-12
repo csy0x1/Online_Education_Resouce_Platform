@@ -1,7 +1,5 @@
 $(function () {
-    $("[name='Notices']").attr({
-        "class": "active",
-    })
-
-    
-})
+	$("[name='Notices']").attr({
+		class: "active",
+	});
+});

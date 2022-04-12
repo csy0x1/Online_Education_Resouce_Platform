@@ -5,15 +5,15 @@
 }
 
 .navSideBar{
-    background-color:white;
+    /* background-color:white; */
     display:block;
     float:left;
     width:20%;
-    margin-right:10px;
+    /* margin-right:10px; */
 }
 
 .navSideBar img{
-    width:232px;
+    overflow: hidden;width: 222px;
     box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
     border-radius: 4px;
     margin-bottom:10px;
@@ -36,6 +36,10 @@
     margin:5px;
 }
 
+.teachers {
+    width: fit-content;
+}
+
 .courseInfo {
     width: fit-content;
 }
@@ -45,3 +49,5 @@
     width:79%;
     float:right;
 }
+
+ul.nav.nav-pills.nav-stacked {background: white;margin: 0 10px 0 0;}

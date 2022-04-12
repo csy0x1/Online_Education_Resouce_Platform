@@ -18,7 +18,8 @@
     <div>
         <ul class="breadcrumb">
             <li><a class="Index" href="/index/">主页</a></li>
-            <li><a class="Category" href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}" id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
+            <li><a class="Category" href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}"
+                    id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
             <li><a class="Course" href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
                 </a>
             </li>
@@ -35,7 +36,6 @@
             <li role="chapterManagement"><a href="{% url 'index:chapterSetting' courseid %}">章节管理</a></li>
             <li role="QuestionBankManagement"><a href="{% url 'index:questionBank' courseid %}">题库维护</a></li>
             <li role="PaperManagement"><a href="{% url 'index:paperManagement' courseid %}">试卷管理</a></li>
-
         </ul>
     </div>
 

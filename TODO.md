@@ -98,6 +98,7 @@
         - [x] 保存时被选中的题目引用次数+1
         - [x] 界面样式调整
         - [ ] 试卷有开放和结束时间(需调整数据库字段设计)，时间段以外禁止查看和作答试卷
+            > [如何在 django 中自动更改模型字段](https://stackoverflow.com/questions/41505243/how-to-automatically-change-model-fields-in-django) 
         - [x] 试卷可以设置考试时间
         - [ ] 可以查看本课程的学生作答的试卷
         - [ ] 可以批改试卷
@@ -113,7 +114,7 @@
     > [解决form表单通过ajax时，required失效问题](https://www.cnblogs.com/PMXGG/p/14261440.html)
 - [ ] **部分页面可以用localstorage临时存储数据，防止刷新后丢失(如题库维护、考试界面)**
     > [LocalStorage](https://www.runoob.com/jsref/prop-win-localstorage.html)
-- [ ] **课程学习顶部课程名称/教师名称处，教师名称的链接可点击区域过长**
+- [x] ~~**课程学习顶部课程名称/教师名称处，教师名称的链接可点击区域过长**~~
 - [ ] **课程图片裁剪限制最小尺寸**
 - [ ] **缓存前端插件到本地**
 - [ ] **数据库原子操作**

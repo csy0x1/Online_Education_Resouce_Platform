@@ -1,3 +1,4 @@
+from datetime import datetime
 import os
 from tabnanny import verbose
 
@@ -8,6 +9,7 @@ from django.db.models.fields.files import FileField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.lookups import IsNull
 from django.forms import BooleanField
+import pytz
 
 # Create your models here.
 
@@ -338,6 +340,18 @@ class Paper(models.Model):
     QuestionTotalScore = models.PositiveIntegerField(verbose_name="试卷总分", default=0)
     StartTime = models.DateTimeField(verbose_name="开始时间")
     EndTime = models.DateTimeField(verbose_name="结束时间")
+
+    @property
+    def is_started(self):
+        if datetime.now().astimezone(pytz.timezone("UTC")) > self.StartTime:
+            return True
+        return False
+
+    @property
+    def is_expired(self):
+        if datetime.now().astimezone(pytz.timezone("UTC")) > self.EndTime:
+            return True
+        return False
 
     def __str__(self) -> str:
         return self.PaperName

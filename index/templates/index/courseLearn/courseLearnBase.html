@@ -20,7 +20,8 @@
     {% block content %}
     <ul class="breadcrumb">
         <li><a class="Index" href="/index/">主页</a></li>
-        <li><a class="Category" href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}" id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
+        <li><a class="Category" href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}"
+                id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
         <li><a class="Course" href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
             </a>
         </li>
@@ -42,26 +43,29 @@
             </div>
         </div>
     </div>
-    <div class="navSideBar">
-        <div class="courseImage">
-            <img src="{{courseDetail.Course_Img}}" alt="课程图片">
-        </div>
-        <ul class="nav nav-pills nav-stacked">
-            <li name="Notices"><a href="{% url 'index:Notice' courseid %}">公告</a></li>
-            <li name="Grading"><a href="{% url 'index:Grading' courseid %}">评分标准</a></li>
-            <li name="Content"><a href="{% url 'index:Content' courseid %}">课件</a></li>
-            <li><a href="#">测试与作业</a></li>
-            <li><a href="#">考试</a></li>
-            <li><a href="#">讨论区</a></li>
-        </ul>
+    <div class="body">
+        <div class="navSideBar">
+            <div class="courseImage">
+                <img src="{{courseDetail.Course_Img}}" alt="课程图片">
+            </div>
+            <ul class="nav nav-pills nav-stacked">
+                <li name="Notices"><a href="{% url 'index:Notice' courseid %}">公告</a></li>
+                <li name="Grading"><a href="{% url 'index:Grading' courseid %}">评分标准</a></li>
+                <li name="Content"><a href="{% url 'index:Content' courseid %}">课件</a></li>
+                <li name="Exercise"><a href="{% url 'index:Exercise' courseid %}">测试与作业</a></li>
+                <li><a href="#">考试</a></li>
+                <li><a href="#">讨论区</a></li>
+            </ul>
 
-    </div>
-    <div class="mainContainer">
-        {% block learnContent %}
-        {% endblock learnContent %}
+        </div>
+        <div class="mainContainer">
+            {% block learnContent %}
+            {% endblock learnContent %}
+        </div>
     </div>
 
     <script src="{% static 'index/js/setBreadcrumbHref.js' %}"></script>
+
     {% endblock content %}
 </body>
 

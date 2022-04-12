@@ -484,6 +484,25 @@ def courseLearnContent(request, courseid):
     return render(request, "index/courseLearn/courseLearnContent.html", locals())
 
 
+def courseLearnExercise(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    PaperList = models.Paper.objects.filter(sourceCourse=course)
+    html = render_to_string("index/AjaxTemplate/ExerciseOverview.html", locals())
+    if request.GET.get("Return") == "true":
+        return JsonResponse(html, safe=False)
+    return render(request, "index/courseLearn/courseLearnExercise.html", locals())
+
+
+def exerciseGetPaper(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    paper = models.Paper.objects.get(id=request.GET.get("paperID"))
+    html = render_to_string("index/AjaxTemplate/ExercisePreview.html", locals())
+    # return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
+    return JsonResponse(html, safe=False)
+
+
 def GetSection(request, courseid):
     Chapter = request.GET.get("Chapter")
     Chapter = models.Chapter.objects.get(chapterName=Chapter)
