@@ -491,7 +491,18 @@ def courseLearnContent(request, courseid):
 def courseLearnExercise(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
+    user = models.Users.objects.get(name=request.session["user_name"])
     PaperList = models.Paper.objects.filter(sourceCourse=course)
+    AnsweredPaper_Queryset = models.AnsweredPaper.objects.filter(
+        sourcePaper__in=PaperList
+    ).filter(
+        candidates=user
+    )  # 筛选出所有该用户已作答的且属于本课程的试卷
+    print(AnsweredPaper_Queryset)
+    PaperStatus = {}
+    for i in AnsweredPaper_Queryset:
+        PaperStatus[i.sourcePaper] = i.is_finished
+        print(PaperStatus)
     html = render_to_string("index/AjaxTemplate/ExerciseOverview.html", locals())
     if request.GET.get("Return") == "true":
         return JsonResponse(html, safe=False)
@@ -520,6 +531,10 @@ def startExam(request, courseid):
             sourcePaper=paper, candidates=user
         )
         EndTime = AnsweredPaper[0].EndTime.isoformat()
+        if AnsweredPaper[0].is_finished:
+            response = JsonResponse({"status": "Forbidden"}, safe=False)
+            response.status_code = 403
+            return response
     except (ObjectDoesNotExist, IndexError):
         with transaction.atomic():
             datetimenow = datetime.datetime.now()
@@ -536,36 +551,37 @@ def startExam(request, courseid):
             )
             instance.save()
             EndTime = instance.EndTime.isoformat()
-    print(EndTime)
     html = render_to_string("index/AjaxTemplate/ExamPage.html", locals())
     return JsonResponse(html, safe=False)
 
 
+# 考试完成提交答案
 def submitPaper(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
         PaperID = request.POST.get("PaperID")
         paper = models.Paper.objects.get(id=PaperID)
-        AnswerSheet = request.POST.get("AnswerSheet")
+        AnswerSheet = json.loads(request.POST.get("AnswerSheet"))
         user = models.Users.objects.get(name=request.session["user_name"])
         print(PaperID)
-        print(AnswerSheet)
+        print(AnswerSheet)  # {"14":"4","21":"6","22":"6","83":"24"}
         print(user)
-        # with transaction.atomic():
-        #     instance = models.AnsweredPaper(
-        #         sourcePaper=paper,
-        #         candidates=user,
-        #         StartTime=datetime.datetime.now(),
-        #         EndTime=datetime.datetime.now(),
-        #     )
-        #     instance.save()
-        #     for question in paper.Questions.all():
-        #         instance.Answers.create(
-        #             sourceQuestion=question,
-        #             answer=request.POST.get(str(question.id)),
-        #         )
-        #     instance.save()
+        with transaction.atomic():
+            answeredPaperInstance = models.AnsweredPaper.objects.get(
+                sourcePaper=paper, candidates=user
+            )
+            for optionID, questionID in AnswerSheet.items():
+                optionInstance = models.QuestionOption.objects.get(id=optionID)
+                questionInstance = models.QuestionBank.objects.get(id=questionID)
+                answeredPaperInstance.Answersheet.add(
+                    optionInstance,
+                    through_defaults={"sourceQuestion": questionInstance},
+                )
+            answeredPaperInstance.is_finished = True
+            answeredPaperInstance.save()
+
+        return JsonResponse({"status": "success"})
 
 
 def GetSection(request, courseid):

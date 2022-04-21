@@ -36,6 +36,23 @@ $(function () {
 						$(".mainContainer").html(response).trigger("PaperLoaded");
 						$("html, body").animate({ scrollTop: "0px" }, 0);
 					},
+					error: function (response) {
+						console.log(response);
+						toastr.options = {
+							positionClass: "toast-top-center",
+							progressBar: true,
+							newestOnTop: true,
+							showDuration: 500,
+							hideDuration: 500,
+							timeOut: 2000,
+							extendedTimeOut: 1000,
+							showEasing: "swing",
+							hideEasing: "linear",
+							showMethod: "fadeIn",
+							hideMethod: "fadeOut",
+						};
+						toastr.error("操作失败");
+					},
 				});
 			});
 	});
@@ -60,7 +77,6 @@ $(function () {
 			});
 	});
 
-	//检查是否有未做的题目
 	$(".mainContainer").on("click", ".submit", function () {
 		console.log("clicked");
 		var AnswerSheet = {};
@@ -68,6 +84,7 @@ $(function () {
 		$(".QuestionArea").each(function () {
 			var $this = $(this);
 			var OptionName = $this.find("input:first").attr("name");
+			//检查是否有未做的题目
 			var SelectedOption = $("input[name='" + OptionName + "']:checked");
 			if (SelectedOption.length > 0) {
 				$this.find(".QuestionContent").css("color", "");
