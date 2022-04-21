@@ -1,5 +1,5 @@
 {% load static %}
-<div class="modal fade" id="StartExamWarning" tabindex="-1" role="dialog" aria-labelledby="StartExamWarningModal"
+<div class="modal" id="StartExamWarning" tabindex="-1" role="dialog" aria-labelledby="StartExamWarningModal"
     aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class=" modal-content">
@@ -10,7 +10,7 @@
             <div class="modal-body"><span>考试开始后无法暂停，请确认网络和设备良好！</span></div>
             <div class="modal-footer">
                 <button id="Dismiss" type="button" class="btn btn-default" data-dismiss="modal">返回</button>
-                <button id="Confirm" type="button" class="btn btn-danger">开始考试</button>
+                <button id="Confirm" type="button" class="btn btn-danger" data-dismiss="modal">开始考试</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->

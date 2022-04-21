@@ -6,7 +6,7 @@ $(function () {
 			success: function (response) {
 				$(".navSideBar").slideToggle(1);
 				$(".mainContainer").toggleClass("WideScreen");
-				$(".Exercise").html(response);
+				$(".mainContainer").html(response).trigger("PaperLoaded");
 			},
 		});
 	});
@@ -18,7 +18,7 @@ $(function () {
 			success: function (response) {
 				$(".navSideBar").slideToggle(1);
 				$(".mainContainer").toggleClass("WideScreen");
-				$(".Exercise").html(response);
+				$(".mainContainer").html(response);
 			},
 		});
 	});

@@ -4,7 +4,7 @@ import base64
 import json
 import os
 import tempfile
-from datetime import datetime
+import datetime
 from distutils.filelist import FileList
 from http.client import HTTPResponse
 
@@ -13,6 +13,8 @@ import OERP.settings
 import pytz
 from django.contrib.auth import hashers
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.files import File
 from django.db import transaction
 from django.db.models import F, Q
 from django.http import HttpResponseRedirect
@@ -265,13 +267,15 @@ def courseSetting(request, courseid):
                             ]  # 前端传过来BASE64编码的图片，需去掉"data:image/jpeg;base64,"
                             decodedimg = base64.b64decode(f_obj)  # 将BASE64编码的图片解码
                             filepath = (
-                                OERP.settings.MEDIA_ROOT
-                                + "/course_img/"
-                                + course.Course_Name
+                                "Course_Img/"
+                                + course.Course_Name.replace(" ", "_")
                                 + str(courseid)
                                 + ".jpg"
                             )
-                            with open(filepath, "wb") as f:
+                            absolute_filepath = os.path.join(
+                                OERP.settings.MEDIA_ROOT, filepath
+                            )
+                            with open(absolute_filepath, "wb") as f:
                                 f.write(decodedimg)
                             course.Course_Img = filepath
                             course.save()
@@ -283,7 +287,7 @@ def courseSetting(request, courseid):
                     )
                     course.Course_Category = category_obj
                     timezone = pytz.timezone("Asia/Shanghai")
-                    dateTime = datetime.strptime(formData[7], "%Y-%m-%d %H:%M")
+                    dateTime = datetime.datetime.strptime(formData[7], "%Y-%m-%d %H:%M")
                     course.Ending_Time = timezone.localize(dateTime)
                     course.save()
                     return JsonResponse({"status": "success"})
@@ -498,9 +502,70 @@ def exerciseGetPaper(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     paper = models.Paper.objects.get(id=request.GET.get("paperID"))
+    user = models.Users.objects.get(name=request.session["user_name"])
+    print(user)
     html = render_to_string("index/AjaxTemplate/ExercisePreview.html", locals())
-    # return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
+    # html = render_to_string("index/AjaxTemplate/ExamPage.html", locals())
+    return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
+    # return JsonResponse(html, safe=False)
+
+
+def startExam(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    paper = models.Paper.objects.get(id=request.GET.get("paperID"))
+    user = models.Users.objects.get(name=request.session["user_name"])
+    try:
+        AnsweredPaper = models.AnsweredPaper.objects.filter(
+            sourcePaper=paper, candidates=user
+        )
+        EndTime = AnsweredPaper[0].EndTime.isoformat()
+    except (ObjectDoesNotExist, IndexError):
+        with transaction.atomic():
+            datetimenow = datetime.datetime.now()
+            instance = models.AnsweredPaper(
+                sourcePaper=paper,
+                candidates=user,
+                StartTime=datetimenow,
+                EndTime=datetimenow
+                + datetime.timedelta(
+                    hours=paper.ExaminationTime.hour,
+                    minutes=paper.ExaminationTime.minute,
+                    seconds=paper.ExaminationTime.second,
+                ),
+            )
+            instance.save()
+            EndTime = instance.EndTime.isoformat()
+    print(EndTime)
+    html = render_to_string("index/AjaxTemplate/ExamPage.html", locals())
     return JsonResponse(html, safe=False)
+
+
+def submitPaper(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    if request.method == "POST":
+        PaperID = request.POST.get("PaperID")
+        paper = models.Paper.objects.get(id=PaperID)
+        AnswerSheet = request.POST.get("AnswerSheet")
+        user = models.Users.objects.get(name=request.session["user_name"])
+        print(PaperID)
+        print(AnswerSheet)
+        print(user)
+        # with transaction.atomic():
+        #     instance = models.AnsweredPaper(
+        #         sourcePaper=paper,
+        #         candidates=user,
+        #         StartTime=datetime.datetime.now(),
+        #         EndTime=datetime.datetime.now(),
+        #     )
+        #     instance.save()
+        #     for question in paper.Questions.all():
+        #         instance.Answers.create(
+        #             sourceQuestion=question,
+        #             answer=request.POST.get(str(question.id)),
+        #         )
+        #     instance.save()
 
 
 def GetSection(request, courseid):
@@ -608,10 +673,14 @@ def courseSettingCreatePaper(request, courseid):
 
             timezone = pytz.timezone("Asia/Shanghai")
 
-            dateTime = datetime.strptime(PaperInfo["StartTime"], "%Y-%m-%d %H:%M")
+            dateTime = datetime.datetime.strptime(
+                PaperInfo["StartTime"], "%Y-%m-%d %H:%M"
+            )
             StartTime = timezone.localize(dateTime)
 
-            dateTime = datetime.strptime(PaperInfo["EndTime"], "%Y-%m-%d %H:%M")
+            dateTime = datetime.datetime.strptime(
+                PaperInfo["EndTime"], "%Y-%m-%d %H:%M"
+            )
             EndTime = timezone.localize(dateTime)
 
             if PaperInfo["PaperType"] == "考试":

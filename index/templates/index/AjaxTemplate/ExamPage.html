@@ -1,0 +1,67 @@
+{% load static %}
+{% load customtags %}
+
+<div class="modal fade" id="SubmitWarning" tabindex="1" role="dialog" aria-labelledby="SubmitWarningModal"
+    aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class=" modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="SubmitWarningModal">警告</h4>
+            </div>
+            <div class="modal-body"><span class="ModalContent">123</span></div>
+            <div class="modal-footer">
+                <button id="Dismiss" type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                <button id="Confirm" type="button" class="btn btn-danger" data-dismiss="modal">提交试卷</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+<div class="PaperDetailContainer">
+    <div class="Header">
+        <span>查看试卷</span>
+        <button type="button" class="return">返回</button>
+    </div>
+    <div class="ExamPaperInfo">
+        <div>
+            <span>
+                试卷名称：{{paper.PaperName}}
+            </span>
+            <span>&nbsp; | &nbsp;</span>
+            <span>
+                考试时长：{{paper.ExaminationTime}}
+            </span>
+            <div class="Timer">
+                <span>剩余时间: </span>
+                <span id="clock" value="{{EndTime}}"></span>
+            </div>
+        </div>
+    </div>
+    {% for Question in paper.includedQuestions.all%}
+    <div class="QuestionArea" id="{{Question.id}}">
+        <div class="Question">
+            <span class="QuestionNumber">
+                {{forloop.counter}}、
+            </span>
+            <span class="QuestionContent">
+                {{Question.QuestionName}}
+            </span>
+        </div>
+        {% for Option in Question.Options.all %}
+        <div class="Options">
+            {% if Question.QuestionType == '单选' %}
+            <input type="radio" name="Option_{{Question.id}}">
+            {% elif Question.QuestionType == '多选' %}
+            <input type="checkbox" name="Option_{{Question.id}}">
+            {% endif %}
+            <span class="OptionCounter">{{forloop.counter|toAlphaBet}}: </span>
+            <span class="Option" id="{{Option.id}}">{{Option.OptionName}}</span>
+        </div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    <div class="LowerToolBar">
+        <button type="button" class="submit">提交</button>
+    </div>
+</div>

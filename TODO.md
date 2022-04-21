@@ -15,7 +15,7 @@
 - [x] **~~课程公告部分提交表单发布公告会多出一个 GET 请求，且 url 会自动挂上参数()~~**
     >  https://blog.csdn.net/yu980219/article/details/114813267
        1. Form 表单不添加 method 的条件下，默认提交方式为 “get”，
-       2. 如果不给 button 添加 type=“button”，点击 button 时会触发表单的 submit 事件，导致页面刷新，url 请求会再次发送；(问题所在，提交按钮没有添加 type)b
+       2. 如果不给 button 添加 type=“button”，点击 button 时会触发表单的 submit 事件，导致页面刷新，url 请求会再次发送；(问题所在，提交按钮没有添加 type)
 
 - [x] **~~Markdown 编辑器设置最高高度，以及限定最高高度的情况下最后一行会被编辑器切断，显示不完整~~**  
     >   solved
@@ -109,7 +109,7 @@
         - [ ] 可以引用一张旧试卷
     - [ ] 课程学习测试与作业界面
     - [ ] 课程学习考试界面
-- [ ] **公告提交时需校验，防止发布标题和内容都为空的公告**
+- [ ] **公告提交时需校验，防止发布标题和内容都为空的公告；或提供默认值**
 - [ ] **题库维护新增题目时，使用ajax提交表单无法使用原生required属性来限制字段必填**
     > [解决form表单通过ajax时，required失效问题](https://www.cnblogs.com/PMXGG/p/14261440.html)
 - [ ] **部分页面可以用localstorage临时存储数据，防止刷新后丢失(如题库维护、考试界面)**
@@ -119,3 +119,5 @@
 - [ ] **缓存前端插件到本地**
 - [ ] **数据库原子操作**
     > [Rollback save with transaction atomic](https://stackoverflow.com/questions/34730385/django-rollback-save-with-transaction-atomic)
+- [ ] **发布公告的后端代码在courseSettingNotice()和postNotice()中都定义了，并且没有使用后者**
+- [ ] **课程文件上传未校验文件格式**

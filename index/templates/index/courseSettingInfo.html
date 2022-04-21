@@ -12,7 +12,9 @@
     {% block extrastatic %}
     {{ block.super }}
     <!-- cropperjs -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css"
+        integrity="sha512-0SPWAwpC/17yYyZ/4HSllgaK7/gg9OlVozq8K7rf3J8LvCjYEEIfzzpnA2/SSjpGIunCSD18r3UhvDcu/xncWA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!-- basic static -->
     <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseSettingInfo.css' %}">
     <!-- FancyTree -->
@@ -39,8 +41,8 @@
     {% block content %}
     <div>
         {{ block.super }}
-        <div class="modal fade" tabindex="-1"  role="dialog" aria-labelledby="ImageCropper"
-         id="ImageCropperModal" data-backdrop="static" data-keyboard="true">
+        <div class="modal fade" tabindex="-1" role="dialog" aria-labelledby="ImageCropper" id="ImageCropperModal"
+            data-backdrop="static" data-keyboard="true">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="CropModalTitle">
@@ -71,7 +73,8 @@
                 <div class="form-group">
                     <div class="item form-Name">
                         <label for="Course_Name" class="control-label col-sm-2">课程名称:</label>
-                        <input class="form-control" id="CourseIdInput" placeholder="课程名称" value="{{course.Course_Name}}">
+                        <input class="form-control" id="CourseIdInput" placeholder="课程名称"
+                            value="{{course.Course_Name}}">
                     </div>
                 </div>
                 <div class="form-group">
@@ -98,7 +101,8 @@
                 <div class="form-group">
                     <div class="item form-Grade">
                         <textarea name="GradeRequirementsTA" id="GradeRequirementsTA"
-                            class="MarkdownEditor form-control" rows="10" placeholder="成绩要求">{{courseDetail.Grade_Requirements}}</textarea>
+                            class="MarkdownEditor form-control" rows="10"
+                            placeholder="成绩要求">{{courseDetail.Grade_Requirements}}</textarea>
                     </div>
                 </div>
                 <div class="form-group">
@@ -135,7 +139,8 @@
                                     <span id="uploadspan">上传封面</span>
                                     <span id="editspan">编辑封面</span>
                                 </div>
-                                <input id="input-CourseImage" name="input-CourseImage" type="file">
+                                <input id="input-CourseImage" name="input-CourseImage" type="file" single
+                                    accept="image/jpeg,image/png">
                             </div>
                         </div>
                     </div>
@@ -143,13 +148,14 @@
 
                 <div class="form-group">
                     <span class="helper">
-                        <p class="bg-info">快捷键：Lshift+F1: 新增一章；Lshift+F2: 新增一节; Lshift+DEL: 删除当前节点；回车：保存课程大纲</p>
+                        <p class="bg-info">快捷键：Lshift+左键点击: 修改节点名称；Lshift+F1: 新增一章；Lshift+F2: 新增一节; Lshift+DEL:
+                            删除当前节点；回车：保存课程大纲</p>
                     </span>
                     <label for="Course_Category" class="control-label col-sm-2">课程大纲:</label>
                     <div id="tree"></div>
                 </div>
 
-                
+
                 <div class="form-group">
                     <div class="item form-Category">
                         <label for="CourseCategory" class="control-label col-sm-2">课程分类:</label>
@@ -165,7 +171,8 @@
                         <label for="{{settingForm.Ending_Time.id_for_label}}"
                             class="control-label col-sm-2">结课时间:</label>
                         <div class='input-group date' id='datetimepicker1'>
-                            <input type="datetime" id="Ending_Time" class="dateTimeselector form-control col-sm-10" value="{{courseDetail.Ending_Time}}">  
+                            <input type="datetime" id="Ending_Time" class="dateTimeselector form-control col-sm-10"
+                                default="{{courseDetail.nonLocalized_ETime}}">
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
@@ -180,7 +187,9 @@
     </div>
 
     <!-- cropperjs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js" integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"
+        integrity="sha512-ooSWpxJsiXe6t4+PPjCgYmVfr1NS5QXJACcR/FPpsdm6kqG1FmQ2SVyg2RXeVuCRBLr0lWHnWJP6Zs1Efvxzww=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
     <!-- basic static -->
     <script src="{% static 'index/js/courseSettingInfo.js' %}"></script>

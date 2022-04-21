@@ -82,6 +82,12 @@ def Get_Course(courseid):  # 获取课程信息
     courseInfo["常见问题"] = courseInfo.pop("QA")
     # 将时间格式从TZ格式(2021-04-26T22:55:09.695785+08:00)转换成datetime对象再转换成字符串格式输出
     # https://stackoverflow.com/questions/13182075/how-to-convert-a-timezone-aware-string-to-datetime-in-python-without-dateutil
+    courseDetail["nonLocalized_STime"] = datetime.fromisoformat(
+        courseDetail["Starting_Time"]
+    ).strftime("%Y-%m-%d %H:%M")
+    courseDetail["nonLocalized_ETime"] = datetime.fromisoformat(
+        courseDetail["Ending_Time"]
+    ).strftime("%Y-%m-%d %H:%M")
     courseDetail["Starting_Time"] = (
         datetime.fromisoformat(courseDetail["Starting_Time"])
         .strftime("%Y{y}%m{m}%d{d} %H:%M")

@@ -377,9 +377,32 @@ class AnsweredPaper(models.Model):
         null=True,
         blank=True,
     )
+    StartTime = models.DateTimeField(verbose_name="开始时间")
+    EndTime = models.DateTimeField(verbose_name="结束时间")
+    Score = models.PositiveIntegerField(verbose_name="得分", default=0)
+    Answersheet = models.ManyToManyField(
+        "QuestionOption",
+        verbose_name="答题卡",
+        related_name="Answersheet",
+        through="AnswerSheet",
+        through_fields=("sourcePaper", "selectedOption"),
+    )
+    is_finished = models.BooleanField(verbose_name="是否完成", default=False)
+
+    @property
+    def is_expired(self):
+        if datetime.now().astimezone(pytz.timezone("UTC")) > self.EndTime:
+            return True
+        return False
 
 
 class PaperQuestionsInformation(models.Model):
     sourcePaper = ForeignKey(Paper, on_delete=CASCADE)
     sourceQuestion = ForeignKey(QuestionBank, on_delete=CASCADE)
     questionScore = models.PositiveIntegerField(verbose_name="题目分值", default=0)
+
+
+class AnswerSheet(models.Model):
+    sourcePaper = ForeignKey("AnsweredPaper", on_delete=CASCADE)
+    sourceQuestion = ForeignKey("QuestionBank", on_delete=CASCADE)
+    selectedOption = ForeignKey("QuestionOption", on_delete=CASCADE)

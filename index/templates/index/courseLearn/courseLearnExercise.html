@@ -15,19 +15,24 @@
     <!-- basicStatic -->
     <link rel="stylesheet" href="{% static 'index/css/exerciseOverview.css' %}">
     <link rel="stylesheet" href="{% static 'index/css/exercisePreview.css' %}">
+    <link rel="stylesheet" href="{% static 'index/css/Examination.css' %}">
+
     {% endblock extrastatic %}
     {{ block.super }}
 </head>
 
 <body>
     {% block learnContent %}
-    <div class="Exercise">
-        {{html}}
-    </div>
+    {{html}}
+
+    <!-- jQuery.countdown -->
+    <script src="{% static 'jquery.countdown-2.2.0/jquery.countdown.js' %}"></script>
+
     <!-- basicStatic -->
     <script src="{% static 'index/js/courseLearnExercise.js' %}"></script>
     <script src="{% static 'index/js/exercisePreview.js' %}"></script>
     <script src="{% static 'index/js/courseLearnStartExam.js' %}"></script>
+
     {% endblock learnContent %}
 </body>
 

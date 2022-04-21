@@ -3,7 +3,7 @@ $(function () {
 		class: "active",
 	});
 
-	$(".PaperUnavilable").on("click", function () {
+	$(".mainContainer").on("click", ".PaperUnavilable", function () {
 		toastr.options = {
 			positionClass: "toast-top-center",
 			progressBar: true,
