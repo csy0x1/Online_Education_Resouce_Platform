@@ -493,16 +493,7 @@ def courseLearnExercise(request, courseid):
     course = models.Course.objects.get(id=courseid)
     user = models.Users.objects.get(name=request.session["user_name"])
     PaperList = models.Paper.objects.filter(sourceCourse=course)
-    AnsweredPaper_Queryset = models.AnsweredPaper.objects.filter(
-        sourcePaper__in=PaperList
-    ).filter(
-        candidates=user
-    )  # 筛选出所有该用户已作答的且属于本课程的试卷
-    print(AnsweredPaper_Queryset)
-    PaperStatus = {}
-    for i in AnsweredPaper_Queryset:
-        PaperStatus[i.sourcePaper] = i.is_finished
-        print(PaperStatus)
+    Paper_Status = VF.get_Paper_Status(user, PaperList)
     html = render_to_string("index/AjaxTemplate/ExerciseOverview.html", locals())
     if request.GET.get("Return") == "true":
         return JsonResponse(html, safe=False)

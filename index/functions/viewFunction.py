@@ -296,3 +296,20 @@ def get_QuestionBank(course):
         data = {}
         data["data"] = QuestionBankData
     return data
+
+
+def get_Paper_Status(user, PaperList):
+    data = {}
+    AnsweredPaper_Queryset = models.AnsweredPaper.objects.filter(
+        sourcePaper__in=PaperList
+    ).filter(
+        candidates=user
+    )  # 筛选出所有该用户已作答的且属于本课程的试卷
+    for paper in PaperList:
+        for Answeredpaper in AnsweredPaper_Queryset:
+            if Answeredpaper.sourcePaper == paper:
+                data[paper] = Answeredpaper.is_finished
+                break
+            else:
+                data[paper] = False
+    return data

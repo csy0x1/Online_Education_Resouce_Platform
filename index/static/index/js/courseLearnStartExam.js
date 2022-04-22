@@ -37,7 +37,7 @@ $(function () {
 						$("html, body").animate({ scrollTop: "0px" }, 0);
 					},
 					error: function (response) {
-						console.log(response);
+						console.error(response);
 						toastr.options = {
 							positionClass: "toast-top-center",
 							progressBar: true,
@@ -97,32 +97,55 @@ $(function () {
 				UnfinishedQuestion++;
 			}
 		});
+
+		function submitPaper(e) {
+			//e.preventDefault();
+			//$("#StartExamWarning").modal("hide");
+			$.ajax({
+				type: "POST",
+				url: "Exercise/examination/submitPaper",
+				headers: { "X-CSRFToken": csrftoken },
+				dataType: "json",
+				data: {
+					PaperID: PaperID,
+					AnswerSheet: JSON.stringify(AnswerSheet),
+				},
+				success: function (response) {
+					$.ajax({
+						type: "GET",
+						url: "Exercise?Return=true",
+						success: function (response) {
+							$(".navSideBar").slideToggle(1);
+							$(".mainContainer").toggleClass("WideScreen");
+							$(".mainContainer").html(response);
+						},
+					});
+					toastr.options = {
+						positionClass: "toast-top-center",
+						progressBar: true,
+						newestOnTop: true,
+						showDuration: 500,
+						hideDuration: 500,
+						timeOut: 2000,
+						extendedTimeOut: 1000,
+						showEasing: "swing",
+						hideEasing: "linear",
+						showMethod: "fadeIn",
+						hideMethod: "fadeOut",
+					};
+					toastr.success("提交成功");
+				},
+			});
+		}
+
 		if (UnfinishedQuestion > 0) {
 			console.log(PaperID);
 			$(".ModalContent").text("您还有" + UnfinishedQuestion + "道题目未完成，是否继续提交？");
 			$("#SubmitWarning").modal("show");
-			$("#Confirm")
-				.off("click")
-				.on("click", function (e) {
-					//e.preventDefault();
-					//$("#StartExamWarning").modal("hide");
-					$.ajax({
-						type: "POST",
-						url: "Exercise/examination/submitPaper",
-						headers: { "X-CSRFToken": csrftoken },
-						dataType: "json",
-						data: {
-							PaperID: PaperID,
-							AnswerSheet: JSON.stringify(AnswerSheet),
-						},
-						success: function (response) {
-							// $(".navSideBar").slideToggle(1);
-							// $(".mainContainer").toggleClass("WideScreen");
-							// $(".mainContainer").html(response).trigger("PaperLoaded");
-							// $("html, body").animate({ scrollTop: "0px" }, 0);
-						},
-					});
-				});
+			$("#Confirm").off("click").on("click", submitPaper);
+		} else {
+			console.log(UnfinishedQuestion);
+			submitPaper();
 		}
 	});
 });

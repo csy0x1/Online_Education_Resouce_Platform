@@ -17,21 +17,21 @@
 </div>
 
 <div class="PaperOverviewArea">
-    {% for Paper in PaperList %}
+    {% for key,value in Paper_Status.items %}
     <div class="PaperInfoCard">
         <div class="Info">
             <div class="PaperName">
-                <h3>{{Paper.PaperName}}</h3>
+                <h3>{{key.PaperName}}</h3>
             </div>
             <div class="Duration">
                 <span>考试时间: </span>
-                <span>{{Paper.StartTime}} 至 {{Paper.EndTime}}</span>
+                <span>{{key.StartTime}} 至 {{key.EndTime}}</span>
             </div>
             <div class="Status">
                 <span>考试状态: </span>
-                {% if Paper.is_expired %}
+                {% if key.is_expired %}
                 <span>已结束</span>
-                {% elif Paper.is_started %}
+                {% elif key.is_started %}
                 <span>已开始</span>
                 {% else %}
                 <span>未开始</span>
@@ -39,10 +39,10 @@
             </div>
         </div>
         <div class="ButtonsBar">
-            {% if Paper.is_expired %}
-            <div name="{{Paper.id}}" class="PreviewPaper"><span>查看试卷</span></div>
-            {% elif Paper.is_started %}
-            <div name="{{Paper.id}}" class="StartExam"><span>开始考试</span></div>
+            {% if key.is_expired or value %}
+            <div name="{{key.id}}" class="PreviewPaper"><span>查看试卷</span></div>
+            {% elif key.is_started and value is not True %}
+            <div name="{{key.id}}" class="StartExam"><span>开始考试</span></div>
             {% else %}
             <div class="PaperUnavilable"><span>考试未开始</span></div>
             {% endif %}
