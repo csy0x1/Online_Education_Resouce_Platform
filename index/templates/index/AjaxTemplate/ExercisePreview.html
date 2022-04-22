@@ -28,15 +28,40 @@
         </div>
         {% for Option in Question.Options.all %}
         {% if Option.answer.all %}
+        {% if Option in Answersheet %}
+        <div class="Options Answer SelectedAnswer">
+            <div class="Optiondiv">
+                <span class="OptionCounter">{{forloop.counter|toAlphaBet}}: </span>
+                <span class="Option">{{Option.OptionName}}</span>
+            </div>
+            <div class="OptionStatus">
+                <span class="glyphicon glyphicon-ok"></span>
+            </div>
+
+        </div>
+        {% else %}
         <div class="Options Answer">
             <span class="OptionCounter">{{forloop.counter|toAlphaBet}}: </span>
             <span class="Option">{{Option.OptionName}}</span>
+        </div>
+        {% endif %}
+        {% else %}
+        {% if Option in Answersheet %}
+        <div class="Options Selected">
+            <div class="Optiondiv">
+                <span class="OptionCounter">{{forloop.counter|toAlphaBet}}: </span>
+                <span class="Option">{{Option.OptionName}}</span>
+            </div>
+            <div class="OptionStatus">
+                <span class="glyphicon glyphicon-remove"></span>
+            </div>
         </div>
         {% else %}
         <div class="Options">
             <span class="OptionCounter">{{forloop.counter|toAlphaBet}}: </span>
             <span class="Option">{{Option.OptionName}}</span>
         </div>
+        {% endif %}
         {% endif %}
         {% endfor %}
     </div>

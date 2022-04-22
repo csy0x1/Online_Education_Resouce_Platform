@@ -405,4 +405,6 @@ class PaperQuestionsInformation(models.Model):
 class AnswerSheet(models.Model):
     sourcePaper = ForeignKey("AnsweredPaper", on_delete=CASCADE)
     sourceQuestion = ForeignKey("QuestionBank", on_delete=CASCADE)
-    selectedOption = ForeignKey("QuestionOption", on_delete=CASCADE)
+    selectedOption = ForeignKey(
+        "QuestionOption", on_delete=CASCADE, related_name="selectedOption"
+    )

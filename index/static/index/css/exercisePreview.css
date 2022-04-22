@@ -22,6 +22,16 @@
     background: #90ee9085;
 }
 
+.Selected{
+    background: #ff454548;
+}
+
+.SelectedAnswer, .Selected {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
 span.QuestionContent {
     font-size: 20px;
 }

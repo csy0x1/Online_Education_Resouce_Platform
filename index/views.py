@@ -492,7 +492,7 @@ def courseLearnExercise(request, courseid):
     courseDetail, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     user = models.Users.objects.get(name=request.session["user_name"])
-    PaperList = models.Paper.objects.filter(sourceCourse=course)
+    PaperList = models.Paper.objects.filter(sourceCourse=course, PaperType=False)
     Paper_Status = VF.get_Paper_Status(user, PaperList)
     html = render_to_string("index/AjaxTemplate/ExerciseOverview.html", locals())
     if request.GET.get("Return") == "true":
@@ -506,10 +506,18 @@ def exerciseGetPaper(request, courseid):
     paper = models.Paper.objects.get(id=request.GET.get("paperID"))
     user = models.Users.objects.get(name=request.session["user_name"])
     print(user)
+    try:
+        AnsweredPaper = models.AnsweredPaper.objects.get(
+            sourcePaper=paper, candidates=user
+        )
+        Answersheet = AnsweredPaper.Answersheet.all()
+    except ObjectDoesNotExist as e:
+        Answersheet = {}
+    print(Answersheet)
     html = render_to_string("index/AjaxTemplate/ExercisePreview.html", locals())
     # html = render_to_string("index/AjaxTemplate/ExamPage.html", locals())
-    return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
-    # return JsonResponse(html, safe=False)
+    # return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
+    return JsonResponse(html, safe=False)
 
 
 def startExam(request, courseid):
@@ -573,6 +581,18 @@ def submitPaper(request, courseid):
             answeredPaperInstance.save()
 
         return JsonResponse({"status": "success"})
+
+
+def courseLearnExamination(request, courseid):
+    courseDetail, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    user = models.Users.objects.get(name=request.session["user_name"])
+    PaperList = models.Paper.objects.filter(sourceCourse=course, PaperType=True)
+    Paper_Status = VF.get_Paper_Status(user, PaperList)
+    html = render_to_string("index/AjaxTemplate/ExerciseOverview.html", locals())
+    if request.GET.get("Return") == "true":
+        return JsonResponse(html, safe=False)
+    return render(request, "index/courseLearn/courseLearnExamination.html", locals())
 
 
 def GetSection(request, courseid):
