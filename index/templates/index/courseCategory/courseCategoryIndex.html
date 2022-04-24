@@ -1,0 +1,66 @@
+{% extends 'index/index.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{category.CategoryName}}-iMooc在线教育资源平台{% endblock title %}</title>
+
+    {% block extrastatic %}
+    <link rel="stylesheet" type="text/css" href="{% static 'index/css/courseCategoryIndex.css' %}">
+    {% endblock extrastatic %}
+
+</head>
+
+<body>
+    {% block content %}
+    <div class="subCategoriesContainer">
+        <span class="parentCates" id="{{category.CategoryID}}" href="{% url 'index:category' category.CategoryID %}">全部</span>
+        {% for subcate in subCategories %}
+        <span class="subCates" id="{{subcate.CategoryID}}" href="{% url 'index:category' category.CategoryID %}">{{subcate}}</span>
+        {% endfor %}
+    </div>
+
+    <div class="CoursesContainer">
+        <div class="CoursesByCategory">
+            <div>
+                <h3>全部课程</h3>
+            </div>
+            <div>
+                {% for course in courses %}
+                <div class="CourseCard">
+                    <div class="CourseCardUpper">
+                        <div class="CourseCover">
+                            <img src="{{course.Course_Img.url}}">
+                        </div>
+                    </div>
+                    <div class="CourseCardLower">
+                        <div class="CourseInfo">
+                            <h3 class="CourseTitle" id="{{course.id}}">{{course.Course_Name}}</h3>
+                            <p class="CourseTeacher">{{course.Course_Teacher}}</p>
+                        </div>
+                        <div class="CourseDetail">
+                            <div class="StartingTime">
+                                <span>{{course.Starting_Time}} 开课</span>
+                            </div>
+                            <div class="StudentCount">
+                                <span>{{course.Stu_Count}}人参加</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %} 
+            </div>
+
+        </div>
+    </div>
+
+    <script src="{% static 'index/js/courseCategoryIndex.js' %}"></script>
+    {% endblock content %}
+
+</body>
+
+</html>

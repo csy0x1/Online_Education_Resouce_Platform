@@ -1,0 +1,44 @@
+{% load static %}
+{% load customtags %}
+<div class="PaperDetailContainer">
+    <div class="Header">
+        <span>查看试卷</span>
+        <button type="button" class="return">返回</button>
+    </div>
+    <div class="PaperInfo">
+        <p>
+            <span>
+                试卷名称：{{paper.PaperName}}
+            </span>
+            &nbsp; | &nbsp;
+            <span>
+                考试时长：{{paper.ExaminationTime}}
+            </span>
+        </p>
+    </div>
+    {% for Question in paper.includedQuestions.all%}
+    <div class="QuestionArea">
+        <div class="Question">
+            <span class="QuestionNumber">
+                {{forloop.counter}}、
+            </span>
+            <span class="QuestionContent">
+                {{Question.QuestionName}}
+            </span>
+        </div>
+        {% for Option in Question.Options.all %}
+        {% if Option.answer.all %}
+        <div class="Options Answer">
+            <span class="OptionCounter">{{forloop.counter|toAlphaBet}}: </span>
+            <span class="Option">{{Option.OptionName}}</span>
+        </div>
+        {% else %}
+        <div class="Options">
+            <span class="OptionCounter">{{forloop.counter|toAlphaBet}}: </span>
+            <span class="Option">{{Option.OptionName}}</span>
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    {% endfor %}
+</div>

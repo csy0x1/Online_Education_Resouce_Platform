@@ -35,7 +35,7 @@ class NoticeAdmin(admin.ModelAdmin):
 
 
 class FilesAdmin(admin.ModelAdmin):
-    list_display = ("id", "sourceSection", "courseFile")
+    list_display = ("id","fileName","courseFile", "sourceSection")
 
 
 admin.site.register(Users, UserAdmin)

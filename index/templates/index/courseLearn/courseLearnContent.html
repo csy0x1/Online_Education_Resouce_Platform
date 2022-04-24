@@ -7,7 +7,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{courseDetail.Course_Name}} - iMooc在线教育资源平台</title>
+    {% block extrastatic %}
+    {{ block.super }}
+    <!-- courseFilePreview -->
+    <link rel="stylesheet" href="{% static 'index/css/courseFilePreview.css' %}">
+
+    <!-- bootstrap-select -->
+    <link rel="stylesheet" href="{% static 'bootstrap-select/css/bootstrap-select.min.css' %}">
+
+    {% endblock extrastatic %}
 </head>
 
 <body>
@@ -17,28 +26,29 @@
         <ul class="breadcrumb">
             <li><a href="{% url 'index:Content' courseid %}">课件</a></li>
             <li>
-                <select class="ChapterSelector">
+                <select class="ChapterSelector" id="ChapterSelector">
                     {% for Chapter in Chapters %}
                     <option>{{Chapter}}</option>
                     {% endfor %}
                 </select>
             </li>
             <li>
-                <select class="SectionSelector">
+                <select class="SectionSelector" id="SectionSelector">
                 </select>
             </li>
         </ul>
     </div>
 
     <div class="fileList">
-        <table class="table table-hover fileTable">
-            <tr>
-                <th>课程资源</th>
-            </tr>
-
-        </table>
+        {% include 'index/AjaxTemplate/CourseFilePreview.html' %}
     </div>
+
+    <!-- basic js -->
     <script src="{%static 'index/js/courseLearnContent.js' %}"></script>
+
+    <!-- bootstrap-select -->
+    <script src="{% static 'bootstrap-select/js/bootstrap-select.min.js' %}"></script>
+
     {% endblock learnContent %}
 
 </body>

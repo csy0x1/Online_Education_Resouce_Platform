@@ -1,0 +1,109 @@
+.subCategoriesContainer{
+    background-color: #fff;
+    overflow:hidden;
+    box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+    border-radius:7px;
+    padding:20px;
+}
+
+.subCates,.parentCates{
+    position:relative;
+    padding:5px;
+    text-align:center;
+    cursor:pointer;
+    border-radius:50px;
+    margin:5px;
+    font-size:13px;
+}
+
+.subCates:hover{
+    color:rgb(0,204,153)
+}
+.parentCates:hover{
+    color:rgb(0,204,153)
+}
+
+.active{
+    position:relative;
+    color:white;
+    background-color:rgb(0,204,153);
+    padding:10px;
+    text-align:center;
+    cursor:pointer;
+    border-radius:50px;
+}
+
+.active:hover{
+    color:white
+}
+
+.CourseCard{
+    display:inline-block;
+    background-color:white;
+    width:224px;
+    height:252px;
+    margin:10px;
+    overflow: hidden;
+    border-radius:8px;
+    cursor: pointer;
+    transition:all ease-in 0.2s;
+}
+
+.CourseCard:hover{
+    box-shadow: 0 4px 16px 0 rgb(0 0 0 / 12%);
+}
+
+.CourseCover{
+    width:224px;
+    height:131.25px;
+    overflow:hidden;
+}
+
+.CourseCover img{
+    width:100%;
+}
+
+.CourseCard h3{
+    display:--webkit-box;
+    font-size:14px;
+    font-weight:bold;
+    line-height:18px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+.CourseCardLower {
+    padding: 10px 12px;
+}
+.CourseInfo {
+    height: 48px;
+    position: relative;
+    bottom: 20px;
+}
+
+.CourseTeacher{
+    margin: 0 0 10px;
+    font-size: 12px;
+    color: #999;
+    overflow: hidden;
+    height: 17px;
+    text-overflow: ellipsis;
+    line-height: 17px;
+}
+.CourseInfo {
+    height: 60px;
+    position: relative;
+    bottom: 20px;
+}
+.CourseDetail {
+    height: 12px;
+    line-height: 12px;
+    font-size: 12px;
+    overflow: hidden;
+    position: relative;
+}
+.StartingTime {
+    float: left;
+}
+.StudentCount {
+    float: right;
+}

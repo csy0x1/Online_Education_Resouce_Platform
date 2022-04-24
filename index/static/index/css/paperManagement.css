@@ -1,0 +1,193 @@
+.mainContainer{
+    float:right;
+    width:80%;
+    background-color:white;
+margin-top: 10px;}
+
+.Return{
+    display: none;
+}
+
+.WideScreen{
+    display: block;
+    float: right;
+    width:100%;
+}
+
+td {
+    position: relative;
+}
+
+.TimeSelector {
+    display: flex;
+}
+
+.PaperOverviewArea {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.PaperInfoCard {
+    background: white;
+    display: inline-flex;
+    width: 430px;
+    flex-direction: column;
+    border: 1px solid #80808057;
+    margin: 10px;
+}
+
+.Info {
+    padding: 10px;
+}
+
+.Duration,.Status {
+    font-size: 5px;
+}
+
+.ButtonsBar {
+    background: #e8eeda;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.PreviewPaper {
+    margin: 5px;
+}
+
+.Question {
+    border-bottom: 1px solid lightgray;
+    background: #d3d3d34d;
+    padding: 5px 10px;
+}
+
+.PaperInfo {
+    border: 1px solid lightgrey;
+    padding: 10px;
+    font-size: 10px;
+    margin: 10px;
+}
+
+.QuestionArea {
+    /* display: flex; */
+    border: 1px solid lightgray;
+    margin: 10px;
+    /* flex-direction: column; */
+}
+
+.Answer {
+    background: #90ee9085;
+}
+
+span.QuestionContent {
+    font-size: 20px;
+}
+
+span.QuestionNumber {
+    font-size: 25px;
+    color: deepskyblue;
+}
+
+span.OptionCounter {
+    font-size: 15px;
+    color: darkgrey;
+}
+
+span.Option {
+    font-size: 15px;
+}
+
+.Options {
+    padding: 10px;
+    margin: 5px 15px;
+}
+.Header {
+    display: flex;
+    border-bottom: 2px solid darkgray;
+    margin: 10px;
+    padding: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+button.DeletePaper {
+    margin: 5px;
+}
+
+.PreviewPaper {
+    cursor:pointer;
+    margin: 5px;
+    background: #004d66;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.PreviewPaper>span {color: white;}
+
+.DeletePaper {
+    cursor:pointer;
+    margin: 5px;
+    background: #ff4e4e;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.DeletePaper>span {color: white;}
+
+.toolBar {
+    display: flex;
+    flex-direction: row;
+    /* margin: 10px; */
+    padding: 10px;
+    border-bottom: 1px solid darkgray;
+}
+
+.CreatePaper, .Return {
+    margin: 0 10px;
+    cursor: pointer;
+    background: #437ab7;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.CreatePaper>span,.Return>span,.submit>span {
+    color: white;
+}
+
+.CreatorContainer {
+    margin: 20px;
+}
+
+.CreatorPaperInfo {
+    border-bottom: 2px solid darkgray;
+    margin: 20px 0;
+}
+
+.CreatorQuestionBankOverview {
+    border-bottom: 2px solid darkgray;
+    margin: 20px 0;
+}
+
+.TableBottom {
+    display: flex;
+    justify-content: space-between;
+}
+
+.submitBar {
+    display: flex;
+    flex-direction: row;
+    padding: 10px 0;
+    border-top:2px solid darkgray
+}
+
+.submit{
+    cursor: pointer;
+    background: #437ab7;
+    padding: 5px 10px;
+    border-radius: 3px;
+}

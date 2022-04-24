@@ -159,6 +159,19 @@
 .MPContent{
     margin:10px;
     cursor: pointer;
+    overflow:hidden;
+}
+
+.CourseCover {
+    width: 100px;
+    display: inline-block;
+    height: 60px;
+    margin: 0px;
+    overflow: hidden;
+}
+
+.CourseCover img{
+    width: 100%;
 }
 
 .RankNumber{

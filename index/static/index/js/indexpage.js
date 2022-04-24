@@ -1,7 +1,4 @@
 $(document).ready(function () {
-    $(".user-dropdown").mouseover(function () {   //用户头像下拉菜单
-        $('.dropdown-toggle').dropdown('toggle')
-    })
 
     $('#indexCarousel').carousel({  //轮播间隔
         interval: 3000
@@ -60,5 +57,11 @@ $(document).ready(function () {
         var courseID = $(this).children(".RankCourseInfo").children(".courseID").text() //获取课程ID
         var href = '/course/' + courseID
         $(location).attr('href', href)
+    })
+
+    $(".ChildCategory").each(function(){
+        var $this = $(this)
+        var categoryID = $this.attr('id')
+        $this.attr("href",$this.attr("href")+"?subcategory="+categoryID)
     })
 })

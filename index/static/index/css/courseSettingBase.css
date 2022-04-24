@@ -10,3 +10,8 @@
     width:20%;
     margin-top: 10px;
 }
+
+ul.nav.nav-pills.nav-stacked {
+    background: white;
+    margin: 0 10px 0 0;
+}

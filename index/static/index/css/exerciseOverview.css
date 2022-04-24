@@ -1,0 +1,70 @@
+.mainContainer{
+    float:right;
+    width:80%;
+    background-color:white;
+}
+
+.WideScreen{
+    display: block;
+    float: right;
+    width:100%;
+}
+
+.PaperOverviewArea {
+    display: inline-flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 10px;
+}
+
+.PaperInfoCard {
+    background: white;
+    display: inline-flex;
+    width: 430px;
+    flex-direction: column;
+    border: 1px solid #80808057;
+    margin: 10px;
+}
+
+.Info {
+    padding: 10px;
+}
+
+.ButtonsBar {
+    background: #e8eeda;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.Duration,.Status {
+    font-size: 5px;
+}
+
+.PreviewPaper>span,.StartExam>span,.PaperUnavilable>span {color: white;}
+
+.PreviewPaper {
+    cursor:pointer;
+    margin: 5px;
+    background: #004d66;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.StartExam {
+    cursor:pointer;
+    margin: 5px;
+    background: #43b797;
+    padding: 3px 10px;
+    border-radius: 3px;
+}
+
+.PaperUnavilable {
+    cursor:pointer;
+    margin: 5px;
+    background: #7d7d7d;
+    padding: 3px 10px;
+    border-radius: 3px;
+}

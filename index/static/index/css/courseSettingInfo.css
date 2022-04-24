@@ -21,8 +21,9 @@
 }
 
 .form-Img img{
-    height: 60%;
+    height: 160px;
     width: 100%;
+    border-radius: 4px;
 }
 
 .item input{
@@ -33,13 +34,87 @@
     width:85%;
 }
 
+input#input-CourseImage {
+    display: none;
+}
+
+.currentCover {
+    width: 300px;
+}
+
+.image-uploading {
+    width: 300px;
+}
+
+.ImageToolbar {
+    display: flex;
+    justify-content: space-evenly;
+    color: white;
+    position: relative;
+    bottom: 20px;
+    visibility: hidden;
+}
+
+.ImageToolbar span {
+    background: rgba(0,0,0,.7);
+    padding: 0 10px;
+    cursor: pointer;
+    border-radius: 4px 4px 0 0;
+}
+
 .imgUpload{
-    float:left;
     width:85%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    flex-direction: row;
 }
 
 .imgUpload p{
     margin-top:10px;
+}
+
+.CropModalTitle{
+    margin-left:50px;
+}
+
+.EditArea{
+    display:flex;
+    align-items:center;
+}
+
+.ImageCropDiv{
+    width: 472px;
+    height: 260px;
+    margin: 20px 50px 50px 50px;
+}
+
+.ImageCropDiv img{
+    max-width: 100%;
+}
+
+.Preview{
+    width: 192px;
+    height: 120px;
+    overflow: hidden;
+    margin-left: 50px;
+}
+
+.ModalButtons{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.ModalButtons button{
+    margin-left:20px;
+    padding:5px 40px;
+}
+
+.PreviewArea p {
+    margin-left: 50px;
+    display: flex;
+    justify-content: center;
 }
 
 #datetimepicker1{
@@ -49,4 +124,16 @@
 .fancytree-container{
     float:left;
     width:85%;
+}
+.CodeMirror, .CodeMirror-scroll {
+    box-sizing: content-box;
+	max-height: 200px;
+}
+
+.CodeMirror-fullscreen.CodeMirror {
+    max-height: none;
+}
+
+.CodeMirror-fullscreen .CodeMirror-scroll {
+    max-height: none;
 }

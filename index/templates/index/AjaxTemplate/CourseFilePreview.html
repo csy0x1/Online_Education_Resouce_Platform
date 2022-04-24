@@ -1,0 +1,70 @@
+{% load static %}
+<!-- video.js -->
+<link href="//vjs.zencdn.net/7.17.0/video-js.min.css" rel="stylesheet">
+{% if videos|length > 0 %}
+<div class="PreviewContainer">
+  <div class="PreviewArea">
+    <video id="Video" class="video-js vjs-big-play-centered" controls preload="auto" data-setup='{"height":"400"}'>
+      <source src="{{video.courseFile.url}}" type="video/mp4">
+      <p class="vjs-no-js">
+        To view this video please enable JavaScript, and consider upgrading to a
+        web browser that
+        <a href="https://videojs.com/html5-video-support/" target="_blank">
+          supports HTML5 video
+        </a>
+      </p>
+    </video>
+  </div>
+
+  <div class="OnlinePreviewFileList">
+    <div class="panel-group" role="tablist">
+      <div class="panel panel-default">
+        <div class="panel-heading" role="tab" id="collapseListGroupHeading1">
+          <h4 class="panel-title">
+            <a class="" role="button" data-toggle="collapse" href="#collapseListGroup1" aria-expanded="true"
+              aria-controls="collapseListGroup1">
+              在线预览文件列表
+            </a>
+          </h4>
+        </div>
+        <div id="collapseListGroup1" class="panel-collapse collapse in" role="tabpanel"
+          aria-labelledby="collapseListGroupHeading1" aria-expanded="true" style="">
+          <ul class="list-group">
+            {% for f in videos %}
+            <li class="list-group-item" id="{{forloop.counter0}}">{{f.filename}}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endif %}
+
+<table class="table table-hover fileTable">
+  <thead>
+    <tr>
+      <th>课件名称</th>
+      <th>下载课件</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for key,value in data.items %}
+    <tr>
+      <td>
+        <p>{{key}}</p>
+      </td>
+      <td>
+        <a href="{{value}}">下载</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<!-- video.js -->
+<script src="//vjs.zencdn.net/7.17.0/video.min.js"></script>
+
+<!-- basic -->
+<script src="{%static 'index/js/FilePreview.js' %}"></script>

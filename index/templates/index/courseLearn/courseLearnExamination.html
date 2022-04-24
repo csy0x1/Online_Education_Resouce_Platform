@@ -1,0 +1,39 @@
+{% extends 'index/courseLearn/courseLearnBase.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{courseDetail.Course_Name}} - iMooc在线教育资源平台</title>
+
+    {% block extrastatic %}
+    {{ block.super }}
+    <!-- basicStatic -->
+    <link rel="stylesheet" href="{% static 'index/css/exerciseOverview.css' %}">
+    <link rel="stylesheet" href="{% static 'index/css/exercisePreview.css' %}">
+    <link rel="stylesheet" href="{% static 'index/css/Examination.css' %}">
+
+    {% endblock extrastatic %}
+    {{ block.super }}
+</head>
+
+<body>
+    {% block learnContent %}
+    {{html}}
+
+    <!-- jQuery.countdown -->
+    <script src="{% static 'jquery.countdown-2.2.0/jquery.countdown.js' %}"></script>
+
+    <!-- basicStatic -->
+    <script src="{% static 'index/js/courseLearnExamination.js' %}"></script>
+    <script src="{% static 'index/js/exercisePreview.js' %}"></script>
+    <script src="{% static 'index/js/courseLearnStartExam.js' %}"></script>
+
+    {% endblock learnContent %}
+</body>
+
+</html>

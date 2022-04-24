@@ -1,65 +1,54 @@
-body{
-  background-color: #f3f7f9;
+body {
+	background-color: #f3f7f9;
 }
 
-.container-fluid{
+.container-fluid {
 	margin: 0 auto;
 	width: 1190px;
-  min-width: 1190px;
+	min-width: 1190px;
 }
-.navbar-default{
+.navbar-default {
 	width: auto;
 }
 
-#nav-right-search{
-  position:relative;
-  left: 280px
+#nav-right-search {
+	position: relative;
+	left: 280px;
 }
-.infobar{
-  position: relative;
-  width: auto;
-  height: 143px;
-  background-color:#333;
+.infobar {
+	position: relative;
+	width: auto;
+	height: 143px;
+	background-color: #333;
 }
-#footer{
+#footer {
 	width: auto;
 	margin: 20px auto;
 	width: 1190px;
 }
-.footer h4{
-  color: #CCC;
+.footer h4 {
+	color: #ccc;
 }
-.footer h5{
-	color:#CCCCCC;
+.footer h5 {
+	color: #cccccc;
 }
-#avatar{
-  position:relative;
-  right:50px;
-  bottom:35px;
-  padding-bottom: 7px;
-  padding-top: 7px;
+#avatar {
+	display: inline;
 }
-#user-info{
-  position:relative;
-  height: 50px;
-  width: 72px;
-  background: transparent;
-  font-size:16px;
-  padding:15px 0px;
-}
-.user-name{
-  display:block;
-  overflow:hidden;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-#search-btn{
-  position: relative;
-  top: 0px;
-}
-#user-info-dropdown{
-  min-width: 105px;
-  right:15px
+#nav-right-login {
+	font-size: 16px;
+	display: inline-block;
+	padding:0px;
 }
 
+#userBox{
+	position:relative;
+	padding:7px;
+    display:inline-block;
+}
+
+#search-btn {
+	position: relative;
+	top: 0px;
+}
 
