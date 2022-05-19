@@ -1,5 +1,6 @@
 {% extends 'index/courseLearn/courseLearnBase.html' %}
 {% load static %}
+{% load martortags %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,7 +20,7 @@
 <body>
     {% block learnContent %}
     <div class="GradingContent">
-        {{courseDetail.Grade_Requirements | linebreaks}}
+        {{courseDetail.Grade_Requirements | safe_markdown | linebreaks}}
     </div>
 
     <script src="{%static 'index/js/courseLearnGrading.js' %}"></script>

@@ -22,6 +22,7 @@ class CourseCategoryAdmini(admin.ModelAdmin):
 class CourseAdmin(admin.ModelAdmin):
     list_display = ("id", "Course_Name", "Stu_Count")
     readonly_fields = ("Starting_Time", "id")
+    filter_horizontal = ("Assistant_Teacher",)
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -35,7 +36,7 @@ class NoticeAdmin(admin.ModelAdmin):
 
 
 class FilesAdmin(admin.ModelAdmin):
-    list_display = ("id","fileName","courseFile", "sourceSection")
+    list_display = ("id", "fileName", "courseFile", "sourceSection")
 
 
 admin.site.register(Users, UserAdmin)

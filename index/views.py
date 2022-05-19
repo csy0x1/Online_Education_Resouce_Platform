@@ -7,11 +7,14 @@ import tempfile
 import datetime
 from distutils.filelist import FileList
 from http.client import HTTPResponse
+from django.dispatch import receiver
 
 import magic
 import OERP.settings
 import pytz
-from django.contrib.auth import hashers
+from django.contrib.auth import hashers, authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django_comments.signals import comment_was_posted
 from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.files import File
@@ -25,6 +28,8 @@ from django.urls import reverse
 from pyexpat import model
 from pytz import timezone
 
+from django_comments.models import Comment as CommentModel
+
 from . import forms, models
 from .functions import viewFunction as VF
 
@@ -33,6 +38,18 @@ from .functions import viewFunction as VF
 
 def index(request):
     rootlist, dict = VF.Get_Category()
+    Cate = {}
+    moreCate = {}
+    i = 0
+    print(Cate)
+    for key, value in dict.items():
+        if i < 8:
+            Cate[key] = value
+        else:
+            moreCate[key] = value
+        i += 1
+    print(Cate)
+    print(moreCate)
     (
         userCount,
         newestUser,
@@ -41,40 +58,48 @@ def index(request):
     recommendCourses = VF.Get_Recommend_Courses()
     # testjson = json.dumps(testjson)    #向JSONfield传递json可以直接传dict，不用编码成json
     # VF.test(testjson)
+    user = request.user
     return render(request, "index/indexpage.html", locals())
 
 
-def login(request):
-    if request.session.get("is_login", None):  # 不允许重复登录
+def userLogin(request):
+    if request.user.is_authenticated:  # 不允许重复登录
         return redirect("/index/")
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
-        message = "请检查输入的内容"
-        nextUrl = request.session.get("next", None)  # 获取跳转链接，登录后跳转回登录前的页面
-        if username.strip() and password:  # 确保用户名和密码不为空
-            pass  # 做合法性检测
-            try:
-                user = models.Users.objects.get(name=username)
-            except:  # 出错
-                message = "用户不存在!"
-                return render(request, "index/login.html", {"message": message})
-            if hashers.check_password(password, user.password):
-                request.session["is_login"] = True
-                request.session["user_id"] = user.id
-                request.session["user_name"] = user.name
-                request.session["avatar"] = user.profile_picture.url
-                # request.session.set_expiry(0)
-                # print(user.profile_picture.url)
-                if nextUrl:
-                    return redirect(nextUrl)
-                else:
-                    return redirect("/index/")
-            else:
-                message = "密码错误!"
-                return render(request, "index/login.html", {"message": message})
-        else:  # 输入内容有误
-            return render(request, "index/login.html", {"message": message})
+        user = authenticate(request, username=username, password=password)
+        if user is not None and user.is_active:
+            login(request, user)
+            return redirect("/index/")
+            pass
+        else:
+            print("error")
+        # message = "请检查输入的内容"
+        # nextUrl = request.session.get("next", None)  # 获取跳转链接，登录后跳转回登录前的页面
+        # if username.strip() and password:  # 确保用户名和密码不为空
+        #     pass  # 做合法性检测
+        #     try:
+        #         user = models.Users.objects.get(name=username)
+        #     except:  # 出错
+        #         message = "用户不存在!"
+        #         return render(request, "index/login.html", {"message": message})
+        #     if hashers.check_password(password, user.password):
+        #         request.session["is_login"] = True
+        #         request.session["user_id"] = user.id
+        #         request.session["user_name"] = user.name
+        #         request.session["avatar"] = user.profile_picture.url
+        #         # request.session.set_expiry(0)
+        #         # print(user.profile_picture.url)
+        #         if nextUrl:
+        #             return redirect(nextUrl)
+        #         else:
+        #             return redirect("/index/")
+        #     else:
+        #         message = "密码错误!"
+        #         return render(request, "index/login.html", {"message": message})
+        # else:  # 输入内容有误
+        #     return render(request, "index/login.html", {"message": message})
     return render(request, "index/login.html")
 
 
@@ -92,29 +117,32 @@ def register(request):
             email = reg_form.cleaned_data.get("email")
             captcha = reg_form.cleaned_data.get("captcha")
 
-            tempuser = models.Users.objects.filter(name=username)
-            tempmail = models.Users.objects.filter(email=email)
-            print(tempuser, tempmail)
-            if tempuser:
-                print("1")
-                message = "用户名已被注册"
-                return render(request, "index/register.html", locals())
-            if tempmail:
-                print("2")
-                message = "邮箱已被注册"
-                return render(request, "index/register.html", locals())
-            if password != re_password:
-                message = "两次输入的密码不一致"
-                return render(request, "index/register.html", locals())
-            else:
-                new_user = models.Users()
-                new_user.name = username
-                new_user.password = hashers.make_password(
-                    re_password, None, "pbkdf2_sha256"
-                )
-                new_user.email = email
-                new_user.save()
-                return redirect("/login/")
+            # tempuser = models.Users.objects.filter(name=username)
+            # tempmail = models.Users.objects.filter(email=email)
+            # print(tempuser, tempmail)
+            # if tempuser:
+            #     print("1")
+            #     message = "用户名已被注册"
+            #     return render(request, "index/register.html", locals())
+            # if tempmail:
+            #     print("2")
+            #     message = "邮箱已被注册"
+            #     return render(request, "index/register.html", locals())
+            # if password != re_password:
+            #     message = "两次输入的密码不一致"
+            #     return render(request, "index/register.html", locals())
+            # else:
+            # new_user = models.Users()
+            # new_user.name = username
+            # new_user.password = hashers.make_password(
+            #     re_password, None, "pbkdf2_sha256"
+            # )
+            # new_user.email = email
+            # new_user.save()
+            models.Users.objects.create_user(
+                username=username, password=re_password, email=email
+            )
+            return redirect("/login/")
         else:
             return render(request, "index/register.html", locals())
 
@@ -122,13 +150,14 @@ def register(request):
     return render(request, "index/register.html", locals())
 
 
-def logout(request):
-    if not request.session.get("is_login", None):
+def userLogout(request):
+    if not request.user.is_authenticated:
         return redirect("/login/")
-    request.session.flush()
+    logout(request)
     return render(request, "index/info.html")
 
 
+@login_required()
 def settings(request):
     if request.method == "POST":
         set_Form = forms.settingForm(request.POST)
@@ -140,14 +169,18 @@ def settings(request):
     return render(request, "index/setting.html")
 
 
+@login_required()
 def profile(request):
-    user = models.Users.objects.get(name=request.session["user_name"])
+    user = request.user
+    # user = models.Users.objects.get(name=request.session["user_name"])
     profileForm = forms.settingForm(instance=user)
     return render(request, "index/profile.html", locals())
 
 
+@login_required()
 def avatar(request):
-    user = models.Users.objects.get(name=request.session["user_name"])
+    user = request.user
+    # user = models.Users.objects.get(name=request.session["user_name"])
     profileForm = forms.settingForm(instance=user)
     avatar = user.profile_picture.url
     return render(request, "index/avatar.html", locals())
@@ -167,14 +200,14 @@ def getTitle(children):
 
 
 def courseInfo(request, courseid):
-    courseDetail, courseInfo, teacher = VF.Get_Course(courseid)
+    courseDetail, courseInfo, teacher, AssistantTeacher = VF.Get_Course(courseid)
     isSignedUp = False
+    course = models.Course.objects.get(id=courseid)
     try:
-        username = request.session["user_name"]
-        user = models.Users.objects.filter(name=username)  # filter返回Queryset对象
-        access = user[0].access  # 获取用户权限
-        isLogin = True
-        if user.filter(selected_courses=courseid).exists():  # 使用exists方法判断该用户是否已选择该课程
+        # username = request.session["user_name"]
+        user = request.user  # filter返回Queryset对象
+        access = user.access  # 获取用户权限
+        if course in user.selected_courses.all():  # 使用exists方法判断该用户是否已选择该课程
             isSignedUp = True
         else:
             # do other thing
@@ -185,12 +218,13 @@ def courseInfo(request, courseid):
     return render(request, "index/courseInfo.html", locals())
 
 
+@login_required()
 def SignUp(request, courseid):
     isSignUp = request.POST.get("isSignUp")
     if isSignUp:
-        username = request.session["user_name"]
+        user = request.user
         course = models.Course.objects.get(id=courseid)
-        user = models.Users.objects.get(name=username)
+        # user = models.Users.objects.get(name=username)
         user.selected_courses.add(course.id)
         # 应修改：User表中已选课程的字段类型不应为Charfield, 应为关系类型字段，应该是多对多(checked)
         course.Stu_Count = F("Stu_Count") + 1  # 用F表达式增加报名人数
@@ -201,12 +235,13 @@ def SignUp(request, courseid):
     return HttpResponse(message)
 
 
+@login_required()
 def Resign(request, courseid):
     isResign = request.POST.get("isResign")
     if isResign:
-        username = request.session["user_name"]
+        user = request.user
         course = models.Course.objects.get(id=courseid)
-        user = models.Users.objects.get(name=username)
+        # user = models.Users.objects.get(name=username)
         user.selected_courses.remove(course.id)
         course.Stu_Count = F("Stu_Count") - 1
         user.save()
@@ -215,27 +250,22 @@ def Resign(request, courseid):
     return HttpResponse(message)
 
 
-def list(request):  # 评论功能测试，无用界面
-    # pk=1
-    course = models.Course.objects.get(id=1)
-    return render(request, "comments/list.html", locals())
-
-
+@login_required()
 def courseSetting(request, courseid):
-    if not VF.checkLogin(request):
+    user = request.user
+    if not user.is_authenticated:
         nextUrl = request.path
         request.session["next"] = nextUrl
         return redirect("/login?next=%s" % nextUrl)
     else:
-        username = request.session["user_name"]
-        user = models.Users.objects.get(name=username)
-        if user.access != "teacher":
-            # return HttpResponseRedirect(reverse("index:index",))
-            return render(request, "index/courseSettingError.html")
-        courseDetail, _, _ = VF.Get_Course(courseid)
+        courseDetail, _, _, _ = VF.Get_Course(courseid)
         course = models.Course.objects.get(id=courseid)
         categories = models.CourseCategory.objects.all()
         img = course.Course_Img
+        # user = models.Users.objects.get(name=username)
+        if user != course.Course_Teacher and user not in course.Assistant_Teacher.all():
+            # return HttpResponseRedirect(reverse("index:index",))
+            return render(request, "index/courseSettingError.html")
         if request.method == "POST":
             operationType = request.POST.get("operationType")
             # if operationType == "uploadImage":
@@ -298,15 +328,17 @@ def courseSetting(request, courseid):
     return render(request, "index/courseSettingInfo.html", locals())
 
 
+@login_required()
 def courseSettingStudent(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     students = course.students.all()
     return render(request, "index/courseSettingStudent.html", locals())
 
 
+@login_required()
 def courseSettingNotice(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     # noticeForm = forms.NoticeForm()
     historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
@@ -321,8 +353,9 @@ def courseSettingNotice(request, courseid):
     return render(request, "index/courseSettingNotice.html", locals())
 
 
+@login_required()
 def courseSettingChapter(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     Chapters = models.Chapter.objects.filter(sourceCourse=course)
     # FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
@@ -389,6 +422,7 @@ def courseSettingChapter(request, courseid):
     return render(request, "index/courseSettingChapter.html", locals())
 
 
+@login_required()
 def postNotice(request, courseid):
     course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
@@ -401,6 +435,7 @@ def postNotice(request, courseid):
     return HttpResponse("succeed")
 
 
+@login_required()
 def deleteNotice(request, courseid):
     List = request.POST.getlist("announcementList")
     print(List)
@@ -409,6 +444,7 @@ def deleteNotice(request, courseid):
     return HttpResponse("succeed")
 
 
+@login_required()
 def saveNode(request, courseid):  # 保存节点，测试通过，待重构
     course = models.Course.objects.get(id=courseid)
     dict = request.POST.get("dict")  # 获取树状图的数据
@@ -419,32 +455,37 @@ def saveNode(request, courseid):  # 保存节点，测试通过，待重构
     return HttpResponse(dict)
 
 
+@login_required()
 def getNode(request, courseid):  # 读取节点，生成章节树状图
     course = models.Course.objects.filter(id=courseid)
     Chapter_Tree = course[0].Course_Chapter
     return HttpResponse(Chapter_Tree)
 
 
+@login_required()
 def removeStudents(request, courseid):
     studentsList = request.POST.getlist("studentsList")
     course = models.Course.objects.get(id=courseid)
     for student in studentsList:
-        stu = models.Users.objects.get(name=student)
+        stu = models.Users.objects.get(username=student)
         course.students.remove(stu.id)
         course.save()
     return HttpResponse("succeed")
 
 
+@login_required()
 def courseLearn(request, courseid):
     return HttpResponseRedirect(reverse("index:Notice", args=(courseid,)))
 
 
+@login_required()
 def courseLearnNotice(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     historyNotices = models.CourseNotice.objects.filter(sourceCourse=course)
     if len(historyNotices) == 0:
-        newestNotice = models.CourseNotice.objects.get(sourceCourse=None)
+        pass
+        # newestNotice = models.CourseNotice.objects.get(sourceCourse=None)
     else:
         newestNotice = historyNotices.order_by("-createTime")[:1][0]
     paginator = Paginator(historyNotices, 5)  # 分页功能
@@ -459,19 +500,19 @@ def courseLearnNotice(request, courseid):
     return render(request, "index/courseLearn/courseLearnNotice.html", locals())
 
 
+@login_required()
 def courseLearnGrading(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     return render(request, "index/courseLearn/courseLearnGrading.html", locals())
 
 
+@login_required()
 def courseLearnContent(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     Chapters = models.Chapter.objects.filter(sourceCourse=course)
     page = request.GET.get("page")
-    print("pageis")
-    print(page)
     # Section = models.Section.objects.get(sectionName="1.1 sb Bot2")
     # FilesForm = forms.CourseFilesForm()
     # FilesList = models.CourseFiles.objects.filter(sourceSection=Section)
@@ -488,10 +529,12 @@ def courseLearnContent(request, courseid):
     return render(request, "index/courseLearn/courseLearnContent.html", locals())
 
 
+@login_required()
 def courseLearnExercise(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    user = models.Users.objects.get(name=request.session["user_name"])
+    user = request.user
+    # user = models.Users.objects.get(name=request.session["user_name"])
     PaperList = models.Paper.objects.filter(sourceCourse=course, PaperType=False)
     Paper_Status = VF.get_Paper_Status(user, PaperList)
     html = render_to_string("index/AjaxTemplate/ExerciseOverview.html", locals())
@@ -500,12 +543,13 @@ def courseLearnExercise(request, courseid):
     return render(request, "index/courseLearn/courseLearnExercise.html", locals())
 
 
+@login_required()
 def exerciseGetPaper(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     paper = models.Paper.objects.get(id=request.GET.get("paperID"))
-    user = models.Users.objects.get(name=request.session["user_name"])
-    print(user)
+    user = request.user
+    # user = models.Users.objects.get(name=request.session["user_name"])
     try:
         AnsweredPaper = models.AnsweredPaper.objects.get(
             sourcePaper=paper, candidates=user
@@ -513,18 +557,19 @@ def exerciseGetPaper(request, courseid):
         Answersheet = AnsweredPaper.Answersheet.all()
     except ObjectDoesNotExist as e:
         Answersheet = {}
-    print(Answersheet)
     html = render_to_string("index/AjaxTemplate/ExercisePreview.html", locals())
     # html = render_to_string("index/AjaxTemplate/ExamPage.html", locals())
     # return render(request, "index/AjaxTemplate/PaperDetail.html", locals())
     return JsonResponse(html, safe=False)
 
 
+@login_required()
 def startExam(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     paper = models.Paper.objects.get(id=request.GET.get("paperID"))
-    user = models.Users.objects.get(name=request.session["user_name"])
+    user = request.user
+    # user = models.Users.objects.get(name=request.session["user_name"])
     try:
         AnsweredPaper = models.AnsweredPaper.objects.filter(
             sourcePaper=paper, candidates=user
@@ -555,17 +600,19 @@ def startExam(request, courseid):
 
 
 # 考试完成提交答案
+@login_required()
 def submitPaper(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     if request.method == "POST":
         PaperID = request.POST.get("PaperID")
         paper = models.Paper.objects.get(id=PaperID)
         AnswerSheet = json.loads(request.POST.get("AnswerSheet"))
-        user = models.Users.objects.get(name=request.session["user_name"])
-        print(PaperID)
-        print(AnswerSheet)  # {"14":"4","21":"6","22":"6","83":"24"}
-        print(user)
+        user = request.user
+        # user = models.Users.objects.get(name=request.session["user_name"])
+        # print(PaperID)
+        # print(AnswerSheet)  # {"14":"4","21":"6","22":"6","83":"24"}
+        # print(user)
         with transaction.atomic():
             answeredPaperInstance = models.AnsweredPaper.objects.get(
                 sourcePaper=paper, candidates=user
@@ -583,10 +630,12 @@ def submitPaper(request, courseid):
         return JsonResponse({"status": "success"})
 
 
+@login_required()
 def courseLearnExamination(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
-    user = models.Users.objects.get(name=request.session["user_name"])
+    user = request.user
+    # user = models.Users.objects.get(name=request.session["user_name"])
     PaperList = models.Paper.objects.filter(sourceCourse=course, PaperType=True)
     Paper_Status = VF.get_Paper_Status(user, PaperList)
     html = render_to_string("index/AjaxTemplate/ExerciseOverview.html", locals())
@@ -595,6 +644,26 @@ def courseLearnExamination(request, courseid):
     return render(request, "index/courseLearn/courseLearnExamination.html", locals())
 
 
+@login_required()
+def courseLearnComment(request, courseid):
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
+    course = models.Course.objects.get(id=courseid)
+    user = request.user
+    CommentsList = CommentModel.objects.filter(object_pk=courseid).reverse()
+    paginator = Paginator(CommentsList, 5)  # 分页功能
+    if request.method == "GET":
+        page = request.GET.get("page")
+        try:
+            Comments = paginator.page(page)
+        except PageNotAnInteger:
+            Comments = paginator.page(1)
+        except EmptyPage:
+            Comments = paginator.page(paginator.num_pages)
+    # user = models.Users.objects.get(name=request.session["user_name"])
+    return render(request, "index/courseLearn/courseLearnComment.html", locals())
+
+
+@login_required()
 def GetSection(request, courseid):
     Chapter = request.GET.get("Chapter")
     Chapter = models.Chapter.objects.get(chapterName=Chapter)
@@ -606,6 +675,7 @@ def GetSection(request, courseid):
     return JsonResponse(data, safe=False)
 
 
+@login_required()
 def GetContent(request, courseid):
     Section = request.POST.get("Section")
     operation = request.POST.get("Operation")
@@ -651,6 +721,7 @@ def categoryPage(request, categoryID):
     return render(request, "index/courseCategory/courseCategoryIndex.html", locals())
 
 
+@login_required()
 def getQuestionBank(request, courseid):
     course = models.Course.objects.get(id=courseid)
     QuestionBankData = VF.get_QuestionBank(course)
@@ -670,8 +741,9 @@ def getQuestionBank(request, courseid):
     return JsonResponse(QuestionBankData, safe=False)
 
 
+@login_required()
 def courseSettingQuestionBank(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     VF.get_QuestionBank(course)
     if request.method == "POST":  # 保存题库
@@ -689,8 +761,9 @@ def courseSettingQuestionBank(request, courseid):
     )
 
 
+@login_required()
 def courseSettingCreatePaper(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     html = render_to_string("index/AjaxTemplate/CreatePaper.html")
     if request.method == "POST":
@@ -742,8 +815,9 @@ def courseSettingCreatePaper(request, courseid):
     return JsonResponse(html, safe=False)
 
 
+@login_required()
 def courseSettingPaperManagement(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     PaperList = models.Paper.objects.filter(sourceCourse=course)
     html = render_to_string("index/AjaxTemplate/PaperOverview.html", locals())
@@ -752,8 +826,9 @@ def courseSettingPaperManagement(request, courseid):
     return render(request, "index/ExaminationPages/paperManagement.html", locals())
 
 
+@login_required()
 def getPaper(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     paper = models.Paper.objects.get(id=request.GET.get("paperID"))
     html = render_to_string("index/AjaxTemplate/PaperDetail.html", locals())
@@ -761,8 +836,9 @@ def getPaper(request, courseid):
     return JsonResponse(html, safe=False)
 
 
+@login_required()
 def deletePaper(request, courseid):
-    courseDetail, _, _ = VF.Get_Course(courseid)
+    courseDetail, _, _, _ = VF.Get_Course(courseid)
     course = models.Course.objects.get(id=courseid)
     PaperList = models.Paper.objects.filter(sourceCourse=course)
     try:

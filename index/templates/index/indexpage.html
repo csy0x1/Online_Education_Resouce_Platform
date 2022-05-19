@@ -19,17 +19,38 @@
     <div class="container">
         <div class="category">
             <div id="category-container">
-                {% for root,ChildCategory in dict.items %}
+                {% for root,ChildCategory in Cate.items %}
                 <div class="content">
                     <a class="header ParentCategory" href="{% url 'index:category' root.CategoryID %}">{{root}}</a>
                     {% for child in ChildCategory %}
-                    <a class="item ChildCategory" href="{% url 'index:category' root.CategoryID %}" id="{{child.CategoryID}}">{{child}}</a>
+                    <a class="item ChildCategory" href="{% url 'index:category' root.CategoryID %}"
+                        id="{{child.CategoryID}}">{{child}}</a>
                     {% if not forloop.last %}
                     <p>/</p>
                     {% endif %}
                     {% endfor %}
                 </div>
                 {% endfor %}
+                <div class="content" id="moreContent">
+                    <a class="header" href="#">更多</a>
+                </div>
+                <div class="sub-content-area" hidden>
+                    <div class="subContainer">
+                        {% for root,ChildCategory in moreCate.items %}
+                        <div class="content">
+                            <a class="header ParentCategory"
+                                href="{% url 'index:category' root.CategoryID %}">{{root}}</a>
+                            {% for child in ChildCategory %}
+                            <a class="item ChildCategory" href="{% url 'index:category' root.CategoryID %}"
+                                id="{{child.CategoryID}}">{{child}}</a>
+                            {% if not forloop.last %}
+                            <p>/</p>
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -43,12 +64,12 @@
                 <div class="item active">
                     <img src="/media/material/AMD04661.jpg" alt="First slide">
                 </div>
-                <!--                <div class="item">
-                    <img src="/media/material/Icecreamparlor.jpg" alt="Second slide">
-                </div>-->
-                <!--                <div class="item">
-                    <img src="/media/material/1372918.jpg" alt="Third slide">
-                </div> -->
+                <div class="item">
+                    <img src="/media/material/2020-5-30_23-11-34-456.png" alt="Second slide">
+                </div>
+                <div class="item">
+                    <img src="/media/material/psc (1).jfif" alt="Third slide">
+                </div>
             </div>
             <a class="left carousel-control" href="#indexCarousel" role="button" data-slide="prev" hidden>
                 <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -62,13 +83,13 @@
 
         <div class="userInfo">
             <div id="userInfo-container">
-                {% if request.session.is_login == True %}
+                {% if request.user.is_authenticated %}
                 <div class="avatar">
-                    <img class="img-circle img-responsive" src="{{ request.session.avatar }}" width="72" height="72"
+                    <img class="img-circle img-responsive" src="{{ request.user.avatar_url }}" width="72" height="72"
                         id="userInfo-avatar" alt="头像">
                 </div>
                 <div class="username">
-                    <p>{{ request.session.user_name }}</p>
+                    <p>{{ request.user }}</p>
                 </div>
                 {% else %}
                 <div class="info1">

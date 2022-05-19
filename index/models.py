@@ -1,4 +1,5 @@
 from datetime import datetime
+from email.policy import default
 import os
 from tabnanny import verbose
 
@@ -9,12 +10,13 @@ from django.db.models.fields.files import FileField
 from django.db.models.fields.related import ForeignKey
 from django.db.models.lookups import IsNull
 from django.forms import BooleanField
+from django.contrib.auth.models import AbstractUser
 import pytz
 
 # Create your models here.
 
 
-class Users(models.Model):
+class Users(AbstractUser):
     gender = (
         ("male", "男"),
         ("female", "女"),
@@ -35,11 +37,11 @@ class Users(models.Model):
         blank=True,
         default="avatar/default-profile-picture.jpg",
     )
-    name = models.CharField(
-        verbose_name="*用户名", max_length=128, unique=True, null=False
-    )  # 昵称
+    # name = models.CharField(
+    #     verbose_name="*用户名", max_length=128, unique=True, null=False
+    # )  # 昵称
     real_name = models.CharField(
-        verbose_name="真实姓名", max_length=64, null=True, blank=True
+        verbose_name="真实姓名", max_length=64, null=True, blank=True, default="未填写"
     )  # 真实姓名
     password = models.CharField(
         verbose_name="*密码", max_length=256, editable=False
@@ -53,7 +55,7 @@ class Users(models.Model):
     )  # 权限级别
     # selected_course = models.CharField(verbose_name='已选课程',max_length=256,null=True,blank=True)  #已选课程
     selected_courses = models.ManyToManyField(
-        "Course", related_name="students", null=True, blank=True
+        "Course", related_name="students", null=True, blank=True, verbose_name="已选课程"
     )  # 已选课程
     sex = models.CharField(
         verbose_name="*性别", max_length=32, choices=gender, default="default"
@@ -63,8 +65,8 @@ class Users(models.Model):
         verbose_name="删除标记", default=False, editable=False
     )  # 删除标记
 
-    def __str__(self) -> str:
-        return self.name
+    # def __str__(self) -> str:
+    #     return self.name
 
     class Meta:
         ordering = ["-create_time"]
@@ -86,10 +88,13 @@ class Course(models.Model):
     Course_Teacher = models.ForeignKey(
         "Users",
         on_delete=models.CASCADE,
-        limit_choices_to={"access": "teacher"},
         null=True,
         blank=True,
         related_name="teacher",
+        verbose_name="开课教师",
+    )
+    Assistant_Teacher = models.ManyToManyField(
+        "Users", related_name="assistant", null=True, blank=True, verbose_name="助理教师"
     )
     Course_Info = models.TextField(verbose_name="课程说明", default="暂未设置")
     Course_Goal = models.TextField(verbose_name="课程目标", default="暂未设置")

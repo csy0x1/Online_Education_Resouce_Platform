@@ -47,7 +47,13 @@
                         <input class="studentCkBox" type="checkbox">
                     </td>
                     <td class="student-Name">
-                        {{ student.name }}
+
+                        {% if student.real_name != None %}
+                        {{ student.real_name }}
+                        {% else %}
+                        {{ student.username }}
+                        {% endif %}
+
                     </td>
                 </tr>
                 {% endfor %}

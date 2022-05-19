@@ -54,6 +54,10 @@ SITE_ID = 1
 
 COMMENTS_APP = "threadedcomments"
 
+AUTH_USER_MODEL = "index.Users"
+
+LOGIN_URL = "/login/"
+
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",

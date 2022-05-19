@@ -62,15 +62,15 @@
 							</form>
 						</div>
 						<div class="nav-right-login navbar-right" id="nav-right-login">
-							{% if request.session.is_login == True %}
+							{% if request.user.is_authenticated %}
 							<ul class="nav navbar-nav">
 								<li class="dropdown">
 									<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
 										id="userBox">
 										<img class="img-circle img-responsive dropdown"
-											src="{{ request.session.avatar }}" alt="" width="35" height="33" id="avatar"
-											style="text-decoration:none;" />
-										{{ request.session.user_name }}
+											src="{{ request.user.avatar_url }}" alt="" width="35" height="33"
+											id="avatar" style="text-decoration:none;" />
+										{{ request.user }}
 									</a>
 									<ul class="dropdown-menu" role="menu" aria-labelledby="user-info">
 										<li><a href="/setting">设置</a></li>

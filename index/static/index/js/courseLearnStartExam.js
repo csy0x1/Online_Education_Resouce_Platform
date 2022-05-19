@@ -113,7 +113,7 @@ $(function () {
 				success: function (response) {
 					$.ajax({
 						type: "GET",
-						url: "Exercise?Return=true",
+						url: "Examination?Return=true",
 						success: function (response) {
 							$(".navSideBar").slideToggle(1);
 							$(".mainContainer").toggleClass("WideScreen");

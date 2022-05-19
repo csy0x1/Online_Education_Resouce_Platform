@@ -63,13 +63,14 @@ def Get_Course(courseid):  # 获取课程信息
             ]
 
     courseDetail = CourseDetailSerializer(object).data
+    teacher = models.Users.objects.get(pk=courseDetail["Course_Teacher"])
+    AssistantTeacher = object.Assistant_Teacher.all()
+    # courseDetail["Course_Teacher"] = models.Users.objects.get(
+    #     pk=courseDetail["Course_Teacher"]
+    # )  # 格式化器只获取了外键的ID，要通过ID再获取外键的数值
     try:
         courseDetail["Course_Category"] = models.CourseCategory.objects.get(
             pk=courseDetail["Course_Category"]
-        )  # 格式化器只获取了外键的ID，要通过ID再获取外键的数值
-        teacher = models.Users.objects.get(pk=courseDetail["Course_Teacher"])
-        courseDetail["Course_Teacher"] = models.Users.objects.get(
-            pk=courseDetail["Course_Teacher"]
         )  # 格式化器只获取了外键的ID，要通过ID再获取外键的数值
     except:
         pass
@@ -83,10 +84,10 @@ def Get_Course(courseid):  # 获取课程信息
     # 将时间格式从TZ格式(2021-04-26T22:55:09.695785+08:00)转换成datetime对象再转换成字符串格式输出
     # https://stackoverflow.com/questions/13182075/how-to-convert-a-timezone-aware-string-to-datetime-in-python-without-dateutil
     courseDetail["nonLocalized_STime"] = datetime.fromisoformat(
-        courseDetail["Starting_Time"]
+        str(courseDetail["Starting_Time"])
     ).strftime("%Y-%m-%d %H:%M")
     courseDetail["nonLocalized_ETime"] = datetime.fromisoformat(
-        courseDetail["Ending_Time"]
+        str(courseDetail["Ending_Time"])
     ).strftime("%Y-%m-%d %H:%M")
     courseDetail["Starting_Time"] = (
         datetime.fromisoformat(courseDetail["Starting_Time"])
@@ -99,7 +100,7 @@ def Get_Course(courseid):  # 获取课程信息
         .format(y="年", m="月", d="日")
     )
 
-    return courseDetail, courseInfo, teacher
+    return courseDetail, courseInfo, teacher, AssistantTeacher
 
 
 def Get_Recommend_Courses():  # 获取课程排行信息
@@ -267,10 +268,13 @@ def questionBankImport(request, course):  # 导入题库
 
 def get_QuestionBank(course):
     QuestionBankData = []
+    data = {}
     Question_Queryset = models.QuestionBank.objects.filter(
         Q(sourceCourse=course) | Q(PublicRelease=True)
     )
     counter = 0
+    if len(Question_Queryset) == 0:
+        return None
     for question in Question_Queryset:
         counter = counter + 1
         questionData = {}
@@ -293,7 +297,6 @@ def get_QuestionBank(course):
                     optionsData[option.OptionName] = False
         questionData["Option"] = optionsData
         QuestionBankData.append(questionData)
-        data = {}
         data["data"] = QuestionBankData
     return data
 
@@ -306,10 +309,9 @@ def get_Paper_Status(user, PaperList):
         candidates=user
     )  # 筛选出所有该用户已作答的且属于本课程的试卷
     for paper in PaperList:
+        data[paper] = False
         for Answeredpaper in AnsweredPaper_Queryset:
             if Answeredpaper.sourcePaper == paper:
                 data[paper] = Answeredpaper.is_finished
                 break
-            else:
-                data[paper] = False
     return data

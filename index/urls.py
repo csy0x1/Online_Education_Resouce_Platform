@@ -132,6 +132,11 @@ urlpatterns = [
         views.courseLearnExamination,
         name="Examination",
     ),
+    path(
+        "course/<int:courseid>/learn/Comment",
+        views.courseLearnComment,
+        name="Comment",
+    ),
     path("course/<int:courseid>/learn", views.courseLearn, name="Learn"),
     # path('course/<int:courseid>/Setting/<str:section>',views.courseSetting, name='courseSetting'),
     path("course/<int:courseid>/", views.courseInfo, name="courseInfo"),

@@ -22,8 +22,11 @@
         <div>
             <ul class="breadcrumb">
                 <li><a class="Index" href="/index/">主页</a></li>
-                <li><a class="Category" href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}" id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
-                <li class="active"><a class="Course" href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
+                <li><a class="Category"
+                        href="{% url 'index:category' courseDetail.Course_Category.ParentID.CategoryID %}"
+                        id="{{courseDetail.Course_Category.CategoryID}}">{{courseDetail.Course_Category}}</a></li>
+                <li class="active"><a class="Course"
+                        href="{% url 'index:courseInfo' courseid %}">{{courseDetail.Course_Name}}
                     </a>
                 </li>
             </ul>
@@ -37,7 +40,7 @@
             </div>
             <div class="info-termInfo">
                 <div class="info-teacherName">
-                    <span>开课教师: {{courseDetail.Course_Teacher}} </span>
+                    <span>开课教师: {{teacher}} </span>
                 </div>
                 <div class="info-termTime">
                     <span>开课时间: {{courseDetail.Starting_Time}} ~ {{courseDetail.Ending_Time}}</span>
@@ -46,11 +49,12 @@
             <div class="info-StudentCount">
                 <span>已有 {{courseDetail.Stu_Count}} 人参加</span>
             </div>
-            {% if not isLogin %}
+            {% if not user.is_authenticated %}
             <div class="LoginBtn">
                 <p>登录以加入课程</p>
             </div>
-            {% elif access == 'teacher' %}
+            {% else %}
+            {% if user in teacher or user in AssistantTeacher %}
             <div class="courseBtn-Learn">
                 <p>开始学习</p>
             </div>
@@ -68,6 +72,7 @@
             <div class="courseBtn-SignUp">
                 <p>立即参加</p>
             </div>
+            {% endif %}
             {% endif %}
         </div>
     </div>
@@ -128,8 +133,24 @@
         <div class="teacherContent">
             <img class="img-circle img-responsive infoAvatar" src={{teacher.profile_picture.url}} alt="头像" height="50px"
                 width="50px">
+            {% if teacher.real_name != None %}
             <p class="infoName">{{teacher.real_name}}</p>
+            {% else %}
+            <p class="infoName">{{teacher.username}}</p>
+            {% endif %}
         </div>
+        {% for ATeacher in AssistantTeacher %}
+        <div class="teacherContent">
+            <img class="img-circle img-responsive infoAvatar" src={{ATeacher.profile_picture.url}} alt="头像"
+                height="50px" width="50px">
+            {% if ATeacher.real_name != None %}
+            <p class="infoName">{{ATeacher.real_name}}</p>
+            {% else %}
+            <p class="infoName">{{ATeacher.username}}</p>
+            {% endif %}
+        </div>
+        {% endfor %}
+
     </div>
     {% endblock %}
 </body>

@@ -1,0 +1,26 @@
+.CommentBody {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+	padding: 10px;
+	background: white;
+	box-shadow: 0 0 20px 0 rgb(12 1 4 / 5%);
+	border-radius: 5px;
+}
+
+.PublishDate {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.Author {
+	color: #337ab7;
+	font-weight: bold;
+	font-size: medium;
+	margin-bottom: 5px;
+}
+
+textarea#id_comment {
+    resize: vertical;
+    min-height: 100px;
+}

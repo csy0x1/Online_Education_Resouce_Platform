@@ -21,21 +21,19 @@ from django.urls.conf import include
 from django.contrib.auth import views as auth_views
 from index import views
 
-app_name = 'rootURL'
+app_name = "rootURL"
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include('index.urls')),
-    path('login/',views.login),
-    path('register/',views.register),
-    path('logout/',views.logout),
-    path('captcha/', include('captcha.urls')),
-    path('setting/',views.settings),
-    path('profile/',views.profile),
-    path('avatar/',views.avatar),
-    path('aboutus/',views.aboutus),
-    path('course/',include('index.urls')),
-    path('list/',views.list),
-    path(r'^comments/', include(django_comments.urls)),
-
+    path("admin/", admin.site.urls),
+    path("", include("index.urls")),
+    path("login/", views.userLogin),
+    path("register/", views.register),
+    path("logout/", views.userLogout),
+    path("captcha/", include("captcha.urls")),
+    path("setting/", views.settings),
+    path("profile/", views.profile),
+    path("avatar/", views.avatar),
+    path("aboutus/", views.aboutus),
+    path("course/", include("index.urls")),
+    path(r"^comments/", include(django_comments.urls)),
 ]

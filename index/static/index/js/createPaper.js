@@ -273,6 +273,7 @@ $(function () {
 				SelectedQuestion: JSON.stringify(SelectedQuestion),
 			},
 			success: function (response) {
+				$(".Return").trigger("click");
 				toastr.options = {
 					positionClass: "toast-top-center",
 					progressBar: true,
@@ -285,9 +286,6 @@ $(function () {
 					hideEasing: "linear",
 					showMethod: "fadeIn",
 					hideMethod: "fadeOut",
-				};
-				toastr.options.onHidden = function () {
-					$(".Return").trigger("click");
 				};
 				toastr.success("创建成功");
 			},

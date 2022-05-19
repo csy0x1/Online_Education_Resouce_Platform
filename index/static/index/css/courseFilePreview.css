@@ -17,6 +17,10 @@
     align-items: flex-start;
 }
 
+ul.list-group {
+    overflow-wrap: break-word;
+}
+
 .WideScreen{
     display: block;
     float: right;
